@@ -1,0 +1,76 @@
+buildscript {
+    ext {
+        Versions = [
+                androidGradleVersion: "4.1.1",
+                kotlinVersion: "1.4.21",
+                hiltVersion: "2.28-alpha",
+                hiltLifecycleVersion: "1.0.0-alpha02",
+                appcompat: "1.2.0",
+                materialVersion: "1.3.0-alpha04",
+                activity: "1.2.0-alpha04",
+                fragment: "1.3.0-alpha04",
+                navigation: "2.3.2",
+                coroutines: "1.3.9",
+                viewpager: "1.0.0",
+                amplify: "1.6.4",
+                dexter: "6.2.2",
+                junitVersion: "4.13.1"
+        ]
+        Android = [
+                buildToolsVersion: "30.0.2",
+                minSdkVersion: 23,
+                targetSdkVersion: 29,
+                compileSdkVersion: 30,
+                applicationId: "it.uniroma1.macc.project",
+                versionCode: 1,
+                versionName: "0.1"
+        ]
+        Libs = [
+                kotlinStd: "org.jetbrains.kotlin:kotlin-stdlib:${Versions.kotlinVersion}",
+                hiltAndroid: "com.google.dagger:hilt-android:${Versions.hiltVersion}",
+                hiltAndroidCompiler: "com.google.dagger:hilt-android-compiler:${Versions.hiltVersion}",
+                hiltCompiler: "androidx.hilt:hilt-compiler:${Versions.hiltLifecycleVersion}",
+                hiltLifecycleViewModel: "androidx.hilt:hilt-lifecycle-viewmodel:${Versions.hiltLifecycleVersion}",
+                appcompat: "androidx.appcompat:appcompat:${Versions.appcompat}",
+                materialDesign: "com.google.android.material:material:${Versions.materialVersion}",
+                activity: "androidx.activity:activity-ktx:${Versions.activity}",
+                fragment: "androidx.fragment:fragment-ktx:${Versions.fragment}",
+                navigationFragment: "androidx.navigation:navigation-fragment-ktx:${Versions.navigation}",
+                coroutines: "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.coroutines}",
+                viewpager: "androidx.viewpager:viewpager:${Versions.viewpager}",
+                amplify : [
+                        "com.amplifyframework:core:${Versions.amplify}",
+                        "com.amplifyframework:aws-api:${Versions.amplify}",
+                        "com.amplifyframework:aws-auth-cognito:${Versions.amplify}",
+                        "com.amplifyframework:aws-storage-s3:${Versions.amplify}"
+                ],
+                dexter: "com.karumi:dexter:${Versions.dexter}"
+        ]
+        TestLibs = [
+                junit: "junit:junit:${Versions.junitVersion}"
+        ]
+    }
+
+    repositories {
+        jcenter()
+        maven { url "https://maven.google.com" }
+    }
+
+    dependencies {
+        classpath "com.android.tools.build:gradle:${Versions.androidGradleVersion}"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlinVersion}"
+        classpath "com.google.dagger:hilt-android-gradle-plugin:${Versions.hiltVersion}"
+        //classpath 'com.google.gms:google-services:4.3.5'
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}

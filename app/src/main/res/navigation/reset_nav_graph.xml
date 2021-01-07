@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/reset_nav_graph.xml"
+    app:startDestination="@id/resetPasswordFirstStepFragment">
+
+    <fragment
+        android:id="@+id/resetPasswordFirstStepFragment"
+        android:name="it.uniroma1.macc.project.ui.screens.auth.ResetPasswordFirstStepFragment"
+        android:label="fragment_reset_password_first_step"
+        tools:layout="@layout/fragment_reset_password_first_step" >
+        <action
+            android:id="@+id/action_resetPasswordFirstStepFragment_to_resetPasswordSecondStepFragment"
+            app:destination="@id/resetPasswordSecondStepFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/resetPasswordSecondStepFragment"
+        android:name="it.uniroma1.macc.project.ui.screens.auth.ResetPasswordSecondStepFragment"
+        android:label="fragment_reset_password_second_step"
+        tools:layout="@layout/fragment_reset_password_second_step" />
+</navigation>

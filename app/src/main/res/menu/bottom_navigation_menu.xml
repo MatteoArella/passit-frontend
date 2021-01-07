@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/page_annunci"
+        android:icon="@drawable/ic_list_black_24dp"
+        android:title="Annunci"/>
+    <item
+        android:id="@+id/page_chat"
+        android:icon="@drawable/ic_chat_black_24dp"
+        android:title="Messaggi"/>
+    <item
+        android:id="@+id/page_profile"
+        android:icon="@drawable/ic_person_outline_black_24dp"
+        android:title="Profilo"/>
+</menu>

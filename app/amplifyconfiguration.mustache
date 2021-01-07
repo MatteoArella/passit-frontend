@@ -1,0 +1,67 @@
+{
+    "Version": "1.0",
+    "auth": {
+        "plugins": {
+            "awsCognitoAuthPlugin": {
+                "IdentityManager": {
+                    "Default": {}
+                },
+                "CredentialsProvider": {
+                    "CognitoIdentity": {
+                        "Default": {
+                            "PoolId": "{{ IdentityPoolId }}",
+                            "Region": "{{ Region }}"
+                        }
+                    }
+                },
+                "CognitoUserPool": {
+                    "Default": {
+                        "PoolId": "{{ UserPoolId }}",
+                        "AppClientId": "{{ UserPoolAppClientId }}",
+                        "AppClientSecret": "{{ UserPoolAppClientSecret }}",
+                        "Region": "{{ Region }}"
+                    }
+                },
+                "Auth": {
+                    "Default": {
+                        "authenticationFlowType": "USER_SRP_AUTH",
+                        "OAuth": {
+                            "WebDomain": "{{ UserPoolDomain }}",
+                            "WebClientId": "{{ GoogleClientId }}",
+                            "AppClientId": "{{ UserPoolAppClientId }}",
+                            "AppClientSecret": "{{ UserPoolAppClientSecret }}",
+                            "SignInRedirectURI": "{{ UserPoolCallbackUrl }}",
+                            "SignOutRedirectURI": "{{ UserPoolLogoutUrl }}",
+                            "Scopes": [
+                                "email",
+                                "openid",
+                                "profile",
+                                "phone"
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "api": {
+        "plugins": {
+            "awsAPIPlugin": {
+                "GraphApi": {
+                    "endpointType": "GraphQL",
+                    "endpoint": "{{ APIUrl }}",
+                    "region": "{{ Region }}",
+                    "authorizationType": "AWS_IAM"
+                }
+            }
+        }
+    },
+    "storage": {
+        "plugins": {
+            "awsS3StoragePlugin": {
+                "bucket": "{{ StorageBucketName }}",
+                "region": "{{ Region }}"
+            }
+        }
+    }
+}

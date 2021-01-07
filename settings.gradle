@@ -1,0 +1,5 @@
+include ":app"
+
+includeBuild "project-application-plugin"
+
+rootProject.name = "Project"

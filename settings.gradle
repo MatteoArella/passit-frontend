@@ -2,4 +2,4 @@ include ":app"
 
 includeBuild "project-application-plugin"
 
-rootProject.name = "Project"
+rootProject.name = "passit"

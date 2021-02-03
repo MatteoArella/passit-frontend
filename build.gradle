@@ -21,7 +21,7 @@ buildscript {
                 minSdkVersion: 23,
                 targetSdkVersion: 29,
                 compileSdkVersion: 30,
-                applicationId: "it.uniroma1.macc.project",
+                applicationId: "com.github.passit",
                 versionCode: 1,
                 versionName: "0.1"
         ]
@@ -60,7 +60,6 @@ buildscript {
         classpath "com.android.tools.build:gradle:${Versions.androidGradleVersion}"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlinVersion}"
         classpath "com.google.dagger:hilt-android-gradle-plugin:${Versions.hiltVersion}"
-        //classpath 'com.google.gms:google-services:4.3.5'
     }
 }
 

@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/signUpFirstStepFragment"
-        android:name="it.uniroma1.macc.project.ui.screens.auth.SignUpFirstStepFragment"
+        android:name="com.github.passit.ui.screens.auth.SignUpFirstStepFragment"
         android:label="fragment_sign_up_first_step"
         tools:layout="@layout/fragment_sign_up_first_step" >
         <action
@@ -18,7 +18,7 @@
     </fragment>
     <fragment
         android:id="@+id/signUpSecondStepFragment"
-        android:name="it.uniroma1.macc.project.ui.screens.auth.SignUpSecondStepFragment"
+        android:name="com.github.passit.ui.screens.auth.SignUpSecondStepFragment"
         android:label="fragment_sign_up_second_step"
         tools:layout="@layout/fragment_sign_up_second_step" />
 </navigation>

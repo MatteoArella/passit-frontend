@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="it.uniroma1.macc.project">
+    package="com.github.passit">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CAMERA" />
 
     <application
-        android:name="it.uniroma1.macc.project.MainApplication"
+        android:name="com.github.passit.MainApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -16,8 +16,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.App">
 
-        <activity android:name="it.uniroma1.macc.project.ui.screens.auth.ResetPasswordActivity" android:launchMode="singleTop"/>
-        <activity android:name="it.uniroma1.macc.project.ui.screens.launch.LaunchScreenActivity"
+        <activity android:name="com.github.passit.ui.screens.auth.ResetPasswordActivity" android:launchMode="singleTop"/>
+        <activity android:name="com.github.passit.ui.screens.launch.LaunchScreenActivity"
             android:alwaysRetainTaskState="true"
             android:launchMode="singleTop">
             <intent-filter>
@@ -25,9 +25,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="it.uniroma1.macc.project.ui.screens.auth.ConfirmCodeActivity" android:launchMode="singleTop"/>
+        <activity android:name="com.github.passit.ui.screens.auth.ConfirmCodeActivity" android:launchMode="singleTop"/>
         <activity
-            android:name="it.uniroma1.macc.project.ui.screens.auth.SignInActivity"
+            android:name="com.github.passit.ui.screens.auth.SignInActivity"
             android:screenOrientation="portrait"
             android:launchMode="singleTop"/>
         <activity
@@ -36,12 +36,11 @@
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-
-                <data android:scheme="maccproject" />
+                <data android:scheme="${redirectPrefix}" />
             </intent-filter>
         </activity>
-        <activity android:name="it.uniroma1.macc.project.ui.screens.auth.SignUpActivity" android:launchMode="singleTop"/>
-        <activity android:name="it.uniroma1.macc.project.ui.screens.main.MainActivity" android:launchMode="singleTop" android:alwaysRetainTaskState="true"/>
+        <activity android:name="com.github.passit.ui.screens.auth.SignUpActivity" android:launchMode="singleTop"/>
+        <activity android:name="com.github.passit.ui.screens.main.MainActivity" android:launchMode="singleTop" android:alwaysRetainTaskState="true"/>
 
         <meta-data
             android:name="preloaded_fonts"

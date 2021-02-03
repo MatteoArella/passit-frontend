@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Project</string>
+    <string name="app_name">PassIt!</string>
 
     <string name="email">Email</string>
     <string name="password">Password</string>
@@ -15,7 +15,7 @@
 
     <!-- FIRST STEP SIGN UP -->
     <string name="signup_title">Let\'s get started!</string>
-    <string name="signup_subtitle">Create an account to HelpLine…</string>
+    <string name="signup_subtitle">Create an account to PassIt…</string>
     <string name="confirmation_password">Confirm Password</string>
     <string name="signup_next">Next</string>
     <string name="signin_link_prefix">Already have an account?</string>

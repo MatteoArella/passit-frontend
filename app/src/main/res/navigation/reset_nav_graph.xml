@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/resetPasswordFirstStepFragment"
-        android:name="it.uniroma1.macc.project.ui.screens.auth.ResetPasswordFirstStepFragment"
+        android:name="com.github.passit.ui.screens.auth.ResetPasswordFirstStepFragment"
         android:label="fragment_reset_password_first_step"
         tools:layout="@layout/fragment_reset_password_first_step" >
         <action
@@ -18,7 +18,7 @@
     </fragment>
     <fragment
         android:id="@+id/resetPasswordSecondStepFragment"
-        android:name="it.uniroma1.macc.project.ui.screens.auth.ResetPasswordSecondStepFragment"
+        android:name="com.github.passit.ui.screens.auth.ResetPasswordSecondStepFragment"
         android:label="fragment_reset_password_second_step"
         tools:layout="@layout/fragment_reset_password_second_step" />
 </navigation>

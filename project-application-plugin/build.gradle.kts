@@ -37,8 +37,8 @@ tasks.withType<JavaCompile> {
 gradlePlugin {
     plugins {
         create("projectApplicationPlugin") {
-            id = "it.uniroma1.macc.project.project-application"
-            implementationClass = "it.uniroma1.macc.project.gradle.plugins.ProjectApplicationPlugin"
+            id = "com.github.passit.project-application"
+            implementationClass = "com.github.passit.gradle.plugins.ProjectApplicationPlugin"
         }
     }
 }

@@ -3,7 +3,7 @@ plugins {
     id "kotlin-android"
     id "kotlin-kapt"
     id "dagger.hilt.android.plugin"
-    id "it.uniroma1.macc.project.project-application"
+    id "com.github.passit.project-application"
 }
 
 def mockPropertiesFile = rootProject.file("template.properties")
@@ -41,6 +41,8 @@ android {
         multiDexEnabled = true
 
         testInstrumentationRunner = getInstrumentation()
+
+        manifestPlaceholders = [ redirectPrefix: getRedirectPrefix() ]
     }
 
     buildTypes {
@@ -78,6 +80,11 @@ android {
     }
 }
 
+// TODO: place into gradle project plugin and retrieve from CloudFormation
+def getRedirectPrefix() {
+    project.getProperties().get("redirectPrefix") ?: "passit"
+}
+
 def getTestTags() {
     project.getProperties().get("tags") ?: ""
 }
@@ -87,7 +94,7 @@ def getTestScenario() {
 }
 
 def getInstrumentation() {
-    project.hasProperty("bdd") ? "it.uniroma1.macc.project.runner.CucumberInstrumentationRunner" : "androidx.test.runner.AndroidJUnitRunner"
+    project.hasProperty("bdd") ? "com.github.passit.runner.CucumberInstrumentationRunner" : "androidx.test.runner.AndroidJUnitRunner"
 }
 
 

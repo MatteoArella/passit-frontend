@@ -1,6 +1,7 @@
 package com.github.passit.gradle.plugins.amplify
 
-import com.github.passit.gradle.tasks.amplify.AmplifyCloudFormationImportTask
+import com.github.passit.gradle.tasks.amplify.CloudFormationImportTask
+import com.github.passit.gradle.tasks.amplify.ConfigureAmplifyTask
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.TaskProvider
@@ -15,19 +16,29 @@ open class AmplifyCloudFormationImportPlugin : Plugin<Project> {
             project.objects
         )
 
-        val amplifyCloudFormationImportTask: TaskProvider<AmplifyCloudFormationImportTask> =
+        val cloudFormationImportTask: TaskProvider<CloudFormationImportTask> =
             project.tasks.register(
-                "generateAmplifyConfiguration", AmplifyCloudFormationImportTask::class.java
+                "cloudFormationImportTask", CloudFormationImportTask::class.java
             ) { task ->
                 task.group = "Build"
                 task.projectDirectory.set(extension.projectDirectory)
-                task.amplifyTemplate.set(extension.amplifyTemplate)
-                task.awsTemplate.set(extension.awsTemplate)
                 task.backendStackName.set(extension.backendStackName)
-                task.amplifyConfigFile.set(extension.amplifyConfigFile)
-                task.awsConfigFile.set(extension.awsConfigFile)
             }
 
-        project.tasks.named("assemble") { task -> task.dependsOn(amplifyCloudFormationImportTask) }
+        val configureAmplifyTask: TaskProvider<ConfigureAmplifyTask> =
+            project.tasks.register(
+                "generateAmplifyConfiguration", ConfigureAmplifyTask::class.java
+            ) { task ->
+                task.group = "Build"
+                task.projectDirectory.set(extension.projectDirectory)
+                task.stackOutputs.set(cloudFormationImportTask.get().stackOutputs)
+                task.amplifyTemplate.set(extension.amplifyTemplate)
+                task.awsTemplate.set(extension.awsTemplate)
+                task.amplifyConfigFile.set(extension.amplifyConfigFile)
+                task.awsConfigFile.set(extension.awsConfigFile)
+                task.dependsOn(cloudFormationImportTask)
+            }
+
+        project.tasks.named("assemble") { task -> task.dependsOn(configureAmplifyTask) }
     }
 }

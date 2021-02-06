@@ -23,6 +23,7 @@ open class AmplifyCloudFormationImportPlugin : Plugin<Project> {
                 task.group = "Build"
                 task.projectDirectory.set(extension.projectDirectory)
                 task.backendStackName.set(extension.backendStackName)
+                task.outputs.upToDateWhen { false }
             }
 
         val configureAmplifyTask: TaskProvider<ConfigureAmplifyTask> =

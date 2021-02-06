@@ -1,7 +1,5 @@
 package com.github.passit.gradle.tasks.amplify
 
-import com.github.mustachejava.DefaultMustacheFactory
-import com.github.mustachejava.MustacheFactory
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.provider.MapProperty

@@ -35,7 +35,7 @@ class SignUpFirstStepFragment : Fragment(), CoroutineScope by MainScope() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentSignUpFirstStepBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -43,23 +43,23 @@ class SignUpFirstStepFragment : Fragment(), CoroutineScope by MainScope() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.emailTextField.setValidator(resources.getString(R.string.error_invalid_email)) { s -> s.isValidEmail() }
-        binding.passwordTextField.setValidator(resources.getString(R.string.error_invalid_password)) { s -> s.isValidPassword() }
-        binding.confirmationPasswordTextField.setValidator(resources.getString(R.string.signup_passwords_missmatch)) { s -> s.isValidPassword() }
+        binding.emailTextLayout.setValidator(resources.getString(R.string.error_invalid_email)) { s -> s.isValidEmail() }
+        binding.passwordTextLayout.setValidator(resources.getString(R.string.error_invalid_password)) { s -> s.isValidPassword() }
+        binding.confirmationPasswordTextLayout.setValidator(resources.getString(R.string.signup_passwords_missmatch)) { s -> s.isValidPassword() }
 
         binding.signUpNextBtn.setOnClickListener {
             // validate input
-            if (binding.emailTextField.text.isNullOrEmpty() or binding.passwordTextField.text.isNullOrEmpty() or binding.confirmationPasswordTextField.text.isNullOrEmpty()) {
+            if (binding.emailTextLayout.editText?.text.isNullOrEmpty() or binding.passwordTextLayout.editText?.text.isNullOrEmpty() or binding.confirmationPasswordTextLayout.editText?.text.isNullOrEmpty()) {
                 launch { ErrorAlert(requireContext()).setTitle("Error").setMessage(resources.getString(R.string.signup_missing_parameters)).show() }
             }
-            else if (binding.passwordTextField.text.toString() != binding.confirmationPasswordTextField.text.toString()) {
+            else if (binding.passwordTextLayout.editText?.text.toString() != binding.confirmationPasswordTextLayout.editText?.text.toString()) {
                 launch { ErrorAlert(requireContext()).setTitle("Error").setMessage(resources.getString(R.string.signup_passwords_missmatch)).show() }
             } else {
                 // bind data
-                authModel.email.postValue(binding.emailTextField.text.toString())
+                authModel.email.postValue(binding.emailTextLayout.editText?.text.toString())
 
                 // encrypt password
-                val encryptedData = cryptoManager.encrypt(binding.passwordTextField.text.toString(), cryptoManager.getCipherForEncryption())
+                val encryptedData = cryptoManager.encrypt(binding.passwordTextLayout.editText?.text.toString(), cryptoManager.getCipherForEncryption())
                 authModel.password.postValue(encryptedData)
 
                 findNavController().navigate(R.id.action_signUpFirstStepFragment_to_signUpSecondStepFragment)

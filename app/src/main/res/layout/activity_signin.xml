@@ -43,6 +43,7 @@
             />
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/emailTextLayout"
             style="@style/TextInputLayoutStyle"
             android:layout_marginTop="60dp"
             android:inputType="textEmailAddress"
@@ -50,7 +51,6 @@
             app:startIconDrawable="@drawable/ic_mail_outline_black_24dp">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/emailTextField"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 />
@@ -58,6 +58,7 @@
 
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/passwordTextLayout"
             style="@style/TextInputLayoutStyle"
             android:inputType="textPassword"
             android:hint="@string/password"
@@ -65,7 +66,6 @@
             app:endIconMode="password_toggle">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/passwordTextField"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
@@ -76,7 +76,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
-
+<!--
             <CheckBox
                 android:id="@+id/remember"
                 android:layout_width="wrap_content"
@@ -84,7 +84,7 @@
                 android:layout_weight="1"
                 android:checked="true"
                 android:text="@string/remember"/>
-
+-->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/resetPasswordBtn"
                 style="@style/Widget.MaterialComponents.Button.TextButton"

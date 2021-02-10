@@ -11,6 +11,8 @@ import com.github.passit.R
 import com.github.passit.databinding.FragmentResetPasswordSecondStepBinding
 import dagger.hilt.android.AndroidEntryPoint
 import com.github.passit.ui.models.auth.AuthViewModel
+import com.github.passit.ui.validators.isValidPassword
+import com.github.passit.ui.validators.setValidator
 import com.github.passit.ui.view.ErrorAlert
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
@@ -27,13 +29,16 @@ class ResetPasswordSecondStepFragment : Fragment(), CoroutineScope by MainScope(
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentResetPasswordSecondStepBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.passwordTextLayout.setValidator(getString(R.string.error_invalid_password)) { s -> s.isValidPassword() }
+        binding.confirmationPasswordTextLayout.setValidator(getString(R.string.error_invalid_password)) { s -> s.isValidPassword() }
 
         binding.sendNewResetPasswordBtn.setOnClickListener {
             launch {
@@ -46,11 +51,11 @@ class ResetPasswordSecondStepFragment : Fragment(), CoroutineScope by MainScope(
         }
 
         binding.confirmResetPasswordBtn.setOnClickListener {
-            if (binding.passwordTextField.text.toString() != binding.confirmationPasswordTextField.text.toString()) {
+            if (binding.passwordTextLayout.editText?.text.toString() != binding.confirmationPasswordTextLayout.editText?.text.toString()) {
                 launch { ErrorAlert(requireContext()).setTitle("Error").setMessage(resources.getString(R.string.signup_passwords_missmatch)).show() }
             } else {
                 launch {
-                    authModel.confirmResetPassword(binding.passwordTextField.text.toString(), binding.verificationCodeTextField.text.toString()).collect { result ->
+                    authModel.confirmResetPassword(binding.passwordTextLayout.editText?.text.toString(), binding.verificationCodeTextLayout.editText?.text.toString()).collect { result ->
                         result.onSuccess {
                                 startActivity(Intent(requireContext(), SignInActivity::class.java))
                                 activity?.finishAffinity()

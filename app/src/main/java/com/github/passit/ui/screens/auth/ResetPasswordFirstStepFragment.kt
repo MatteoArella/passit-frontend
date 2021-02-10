@@ -40,14 +40,14 @@ class ResetPasswordFirstStepFragment : Fragment(), CoroutineScope by MainScope()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.emailTextField.setValidator("Email is not valid") { s -> s.isValidEmail() }
+        binding.emailTextLayout.setValidator("Email is not valid") { s -> s.isValidEmail() }
 
         binding.confirmResetEmailBtn.setOnClickListener {
             launch {
-                authModel.resetPassword(binding.emailTextField.text.toString()).collect { result ->
+                authModel.resetPassword(binding.emailTextLayout.editText?.text.toString()).collect { result ->
                     result
                         .onSuccess {
-                            authModel.email.postValue(binding.emailTextField.text.toString())
+                            authModel.email.postValue(binding.emailTextLayout.editText?.text.toString())
                             findNavController().navigate(R.id.action_resetPasswordFirstStepFragment_to_resetPasswordSecondStepFragment)
                         }
                         .onError { error ->

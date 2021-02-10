@@ -34,12 +34,12 @@ class ConfirmCodeActivity : AppCompatActivity(), CoroutineScope by MainScope() {
         binding = ActivityConfirmCodeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.verificationCodeTextField.setValidator("Verification code cannot be empty") { s -> s.isNotEmpty() }
+        binding.verificationCodeTextLayout.setValidator("Verification code cannot be empty") { s -> s.isNotEmpty() }
 
         email =  intent.extras?.getString(CONFIRMATION_KEY)!!
 
         binding.confirmSignUpBtn.setOnClickListener {
-            launch { authModel.confirmSignUp(email, binding.verificationCodeTextField.text.toString()).collect(::handleConfirmSignUpResult) }
+            launch { authModel.confirmSignUp(email, binding.verificationCodeTextLayout.editText?.text.toString()).collect(::handleConfirmSignUpResult) }
         }
 
         binding.resendConfirmationBtn.setOnClickListener {

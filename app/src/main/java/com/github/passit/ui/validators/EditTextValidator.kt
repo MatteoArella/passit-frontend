@@ -2,10 +2,10 @@ package com.github.passit.ui.validators
 
 import android.text.Editable
 import android.text.TextWatcher
-import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 
-private fun TextInputEditText.afterTextChanged(afterTextChanged: (String) -> Unit) {
-    this.addTextChangedListener(object: TextWatcher {
+private fun TextInputLayout.afterTextChanged(afterTextChanged: (String) -> Unit) {
+    this.editText?.addTextChangedListener(object: TextWatcher {
         override fun afterTextChanged(s: Editable?) {
             afterTextChanged.invoke(s.toString())
         }
@@ -16,9 +16,8 @@ private fun TextInputEditText.afterTextChanged(afterTextChanged: (String) -> Uni
     })
 }
 
-fun TextInputEditText.setValidator(message: String, validator: (String) -> Boolean) {
+fun TextInputLayout.setValidator(message: String, validator: (String) -> Boolean) {
     this.afterTextChanged {
         this.error = if (validator(it)) null else message
     }
-    //this.error = if (validator(this.text.toString())) null else message
 }

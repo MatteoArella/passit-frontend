@@ -49,13 +49,13 @@
             android:textSize="18sp" />
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/verificationCodeTextLayout"
             style="@style/TextInputLayoutStyle"
             android:layout_marginTop="60dp"
             android:hint="@string/verification_code_hint"
             app:startIconDrawable="@drawable/ic_key_black_24dp">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/verificationCodeTextField"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="number"

@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import com.github.passit.R
 import com.github.passit.domain.usecase.core.Result
 import com.github.passit.data.repository.auth.AuthSignUpResult
 import com.github.passit.databinding.FragmentSignUpSecondStepBinding
@@ -73,7 +74,7 @@ class SignUpSecondStepFragment : Fragment(), CoroutineScope by MainScope() {
                 confirmSignUp.launch(authModel.email.value)
             }
             .onError { error ->
-                ErrorAlert(requireContext()).setTitle("Sign Up Error").setMessage(error.localizedMessage).show()
+                ErrorAlert(requireContext()).setTitle(getString(R.string.signup_error_alert_title)).setMessage(error.localizedMessage).show()
             }
             .onStateLoading { binding.progressIndicator.visibility = View.VISIBLE }
             .onStateLoaded { binding.progressIndicator.visibility = View.INVISIBLE }

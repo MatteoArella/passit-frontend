@@ -44,7 +44,7 @@ class ResetPasswordSecondStepFragment : Fragment(), CoroutineScope by MainScope(
             launch {
                 authModel.resetPassword(authModel.email.value.toString()).collect { result ->
                     result.onError { error ->
-                        ErrorAlert(requireContext()).setTitle("Reset Password Error").setMessage(error.localizedMessage).show()
+                        ErrorAlert(requireContext()).setTitle(getString(R.string.reset_password_error_alert_title)).setMessage(error.localizedMessage).show()
                     }
                 }
             }
@@ -52,7 +52,7 @@ class ResetPasswordSecondStepFragment : Fragment(), CoroutineScope by MainScope(
 
         binding.confirmResetPasswordBtn.setOnClickListener {
             if (binding.passwordTextLayout.editText?.text.toString() != binding.confirmationPasswordTextLayout.editText?.text.toString()) {
-                launch { ErrorAlert(requireContext()).setTitle("Error").setMessage(resources.getString(R.string.signup_passwords_missmatch)).show() }
+                launch { ErrorAlert(requireContext()).setTitle(getString(R.string.reset_password_error_alert_title)).setMessage(resources.getString(R.string.signup_passwords_missmatch)).show() }
             } else {
                 launch {
                     authModel.confirmResetPassword(binding.passwordTextLayout.editText?.text.toString(), binding.verificationCodeTextLayout.editText?.text.toString()).collect { result ->
@@ -61,7 +61,7 @@ class ResetPasswordSecondStepFragment : Fragment(), CoroutineScope by MainScope(
                                 activity?.finishAffinity()
                             }
                             .onError { error ->
-                                ErrorAlert(requireContext()).setTitle("Reset Password Error").setMessage(error.localizedMessage).show()
+                                ErrorAlert(requireContext()).setTitle(getString(R.string.reset_password_error_alert_title)).setMessage(error.localizedMessage).show()
                             }
                     }
                 }

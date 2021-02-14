@@ -72,7 +72,7 @@ class SignInActivity : AppCompatActivity(), CoroutineScope by MainScope() {
                     confirmSignUp.launch(binding.emailTextLayout.editText?.text.toString())
                 }
                 else -> launch {
-                    ErrorAlert(this@SignInActivity).setTitle("Sign In Error").setMessage(error.localizedMessage?.toString()).show()
+                    ErrorAlert(this@SignInActivity).setTitle(getString(R.string.signin_error_alert_title)).setMessage(error.localizedMessage?.toString()).show()
                 }
             }}
             .onStateLoading {

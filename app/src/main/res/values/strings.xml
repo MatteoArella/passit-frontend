@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">PassIt!</string>
 
+    <!-- SIGN IN -->
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="signin_title">Login</string>
@@ -12,6 +13,7 @@
     <string name="register_link">Sign up</string>
     <string name="error_invalid_email">"Invalid email address"</string>
     <string name="error_invalid_password">Invalid Password</string>
+    <string name="signin_error_alert_title">Sign In Error</string>
 
     <!-- FIRST STEP SIGN UP -->
     <string name="signup_title">Let\'s get started!</string>
@@ -21,6 +23,7 @@
     <string name="signin_link_prefix">Already have an account?</string>
     <string name="signin_link">Sign in</string>
     <string name="signup_passwords_missmatch">Passwords don\'t match</string>
+    <string name="signup_error_alert_title">Sign Up Error</string>
 
     <!-- SECOND STEP SIGN UP -->
     <string name="signup_final_title">Almost done!</string>
@@ -40,6 +43,8 @@
     <string name="resend_confirmation_code_prefix">Didn\'t you receive any mail?</string>
     <string name="resend_confirmation_code">Send again</string>
     <string name="signup_confirm">Confirm</string>
+    <string name="confirmation_error_alert_title">Confirmation Error</string>
+    <string name="verification_code_empty_error">Verification code cannot be empty</string>
 
     <!-- RESET PASSWORD -->
     <string name="reset_password_title">Reset Password</string>
@@ -50,6 +55,7 @@
     <string name="new_password">New Password</string>
     <string name="confirm_new_password">Confirm New Password</string>
     <string name="reset_password_confirm">Confirm</string>
+    <string name="reset_password_error_alert_title">Reset Password Error</string>
 
     <!-- PROFILE -->
     <string name="profile_username">%1$s %2$s</string>

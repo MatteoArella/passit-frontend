@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
+import com.github.passit.R
 import com.github.passit.data.repository.auth.AuthSignUpResult
 import com.github.passit.domain.usecase.core.Result
 import com.github.passit.databinding.ActivityConfirmCodeBinding
@@ -19,7 +20,6 @@ class ConfirmCodeActivity : AppCompatActivity(), CoroutineScope by MainScope() {
 
     companion object {
         const val CONFIRMATION_KEY = "email"
-        const val RC_CONFIRMATION = 1
     }
 
     private lateinit var binding: ActivityConfirmCodeBinding
@@ -27,14 +27,13 @@ class ConfirmCodeActivity : AppCompatActivity(), CoroutineScope by MainScope() {
     private val authModel: AuthViewModel by viewModels()
 
     private lateinit var email: String
-    private val TAG = "auth"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityConfirmCodeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.verificationCodeTextLayout.setValidator("Verification code cannot be empty") { s -> s.isNotEmpty() }
+        binding.verificationCodeTextLayout.setValidator(getString(R.string.verification_code_empty_error)) { s -> s.isNotEmpty() }
 
         email =  intent.extras?.getString(CONFIRMATION_KEY)!!
 
@@ -54,7 +53,7 @@ class ConfirmCodeActivity : AppCompatActivity(), CoroutineScope by MainScope() {
                 this@ConfirmCodeActivity.finish()
             }
             .onError { error ->
-                ErrorAlert(this@ConfirmCodeActivity).setTitle("Confirmation Error").setMessage(error.localizedMessage).show()
+                ErrorAlert(this@ConfirmCodeActivity).setTitle(getString(R.string.confirmation_error_alert_title)).setMessage(error.localizedMessage).show()
             }
             .onStateLoading { binding.progressIndicator.visibility = View.VISIBLE }
             .onStateLoaded { binding.progressIndicator.visibility = View.INVISIBLE }
@@ -62,7 +61,7 @@ class ConfirmCodeActivity : AppCompatActivity(), CoroutineScope by MainScope() {
 
     private fun handleResendConfirmCodeResult(resendConfirmationCodeResult: Result<Error, AuthSignUpResult>) {
         resendConfirmationCodeResult.onError { error ->
-            ErrorAlert(this@ConfirmCodeActivity).setTitle("Confirmation Error").setMessage(error.localizedMessage).show()
+            ErrorAlert(this@ConfirmCodeActivity).setTitle(getString(R.string.confirmation_error_alert_title)).setMessage(error.localizedMessage).show()
         }
     }
 }

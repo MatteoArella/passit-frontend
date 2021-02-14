@@ -50,10 +50,10 @@ class SignUpFirstStepFragment : Fragment(), CoroutineScope by MainScope() {
         binding.signUpNextBtn.setOnClickListener {
             // validate input
             if (binding.emailTextLayout.editText?.text.isNullOrEmpty() or binding.passwordTextLayout.editText?.text.isNullOrEmpty() or binding.confirmationPasswordTextLayout.editText?.text.isNullOrEmpty()) {
-                launch { ErrorAlert(requireContext()).setTitle("Error").setMessage(resources.getString(R.string.signup_missing_parameters)).show() }
+                launch { ErrorAlert(requireContext()).setTitle(getString(R.string.signup_error_alert_title)).setMessage(resources.getString(R.string.signup_missing_parameters)).show() }
             }
             else if (binding.passwordTextLayout.editText?.text.toString() != binding.confirmationPasswordTextLayout.editText?.text.toString()) {
-                launch { ErrorAlert(requireContext()).setTitle("Error").setMessage(resources.getString(R.string.signup_passwords_missmatch)).show() }
+                launch { ErrorAlert(requireContext()).setTitle(getString(R.string.signup_error_alert_title)).setMessage(resources.getString(R.string.signup_passwords_missmatch)).show() }
             } else {
                 // bind data
                 authModel.email.postValue(binding.emailTextLayout.editText?.text.toString())

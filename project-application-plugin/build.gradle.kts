@@ -6,7 +6,7 @@ buildscript {
     }
 
     dependencies {
-        classpath("com.android.tools.build:gradle:4.1.1")
+        classpath("com.android.tools.build:gradle:4.1.2")
     }
 }
 
@@ -25,7 +25,7 @@ dependencies {
     implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 
-    implementation("com.android.tools.build:gradle:4.1.1")
+    implementation("com.android.tools.build:gradle:4.1.2")
     // gson
     implementation("com.google.code.gson:gson:2.8.6")
 

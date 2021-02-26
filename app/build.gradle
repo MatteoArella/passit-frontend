@@ -117,31 +117,32 @@ dependencies {
 
     implementation Libs.viewpager
 
-    implementation "com.google.code.gson:gson:2.8.6"
+    implementation Libs.gson
 
-    implementation "androidx.multidex:multidex:2.0.1"
-    implementation "androidx.legacy:legacy-support-v4:1.0.0"
+    implementation Libs.multidex
+    implementation Libs.legacy
 
-    implementation "androidx.core:core-ktx:1.3.2"
+    implementation Libs.coreKtx
 
-    implementation "androidx.constraintlayout:constraintlayout:2.0.4"
+    implementation Libs.constraintLayout
 
     // square picasso
-    implementation "com.squareup.picasso:picasso:2.71828"
+    implementation Libs.squarePicasso
 
     // dexter
     implementation Libs.dexter
 
     testImplementation TestLibs.junit
-    androidTestImplementation "androidx.test.ext:junit:1.1.2"
-    androidTestImplementation "androidx.test.espresso:espresso-core:3.3.0"
+    testImplementation TestLibs.extJunit
+
+    androidTestImplementation TestLibs.extJunit
+    androidTestImplementation TestLibs.espressoCore
 
     // bdd
-    androidTestImplementation "io.cucumber:cucumber-android:4.3.1"
-    androidTestImplementation "androidx.test:rules:1.3.0"
-    androidTestImplementation "androidx.test:runner:1.3.0"
-    androidTestImplementation "androidx.test.ext:junit:1.1.2"
-    androidTestImplementation "com.android.support.test.espresso:espresso-intents:3.3.0"
+    androidTestImplementation TestLibs.cucumber
+    androidTestImplementation TestLibs.rules
+    androidTestImplementation TestLibs.runner
+    androidTestImplementation TestLibs.espressoIntents
 }
 
 amplify {

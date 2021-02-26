@@ -44,10 +44,22 @@ buildscript {
                         "com.amplifyframework:aws-auth-cognito:${Versions.amplify}",
                         "com.amplifyframework:aws-storage-s3:${Versions.amplify}"
                 ],
-                dexter: "com.karumi:dexter:${Versions.dexter}"
+                dexter: "com.karumi:dexter:${Versions.dexter}",
+                gson: "com.google.code.gson:gson:2.8.6",
+                multidex: "androidx.multidex:multidex:2.0.1",
+                legacy: "androidx.legacy:legacy-support-v4:1.0.0",
+                coreKtx: "androidx.core:core-ktx:1.3.2",
+                constraintLayout: "androidx.constraintlayout:constraintlayout:2.0.4",
+                squarePicasso: "com.squareup.picasso:picasso:2.71828"
         ]
         TestLibs = [
-                junit: "junit:junit:${Versions.junitVersion}"
+                junit: "junit:junit:${Versions.junitVersion}",
+                extJunit: "androidx.test.ext:junit:1.1.2",
+                espressoCore: "androidx.test.espresso:espresso-core:3.3.0",
+                cucumber: "io.cucumber:cucumber-android:4.3.1",
+                rules: "androidx.test:rules:1.3.0",
+                runner: "androidx.test:runner:1.3.0",
+                espressoIntents: "com.android.support.test.espresso:espresso-intents:3.3.0"
         ]
     }
 

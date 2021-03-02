@@ -2,6 +2,7 @@ package com.github.passit.ui.screens.profile
 
 import android.Manifest
 import android.content.Intent
+import android.content.*
 import android.graphics.Bitmap.CompressFormat
 import android.os.Bundle
 import android.util.Log
@@ -11,6 +12,13 @@ import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import com.github.passit.R
+import com.github.passit.databinding.FragmentProfileBinding
+import com.github.passit.domain.model.User
+import com.github.passit.domain.usecase.core.Result
+import com.github.passit.ui.models.auth.AuthViewModel
+import com.github.passit.ui.screens.auth.SignInActivity
+import com.github.passit.ui.view.ErrorAlert
 import com.google.gson.Gson
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.PermissionToken
@@ -20,19 +28,14 @@ import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.single.PermissionListener
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
-import com.github.passit.R
-import com.github.passit.databinding.FragmentProfileBinding
-import com.github.passit.domain.model.User
-import com.github.passit.domain.usecase.core.Result
-import com.github.passit.ui.models.auth.AuthViewModel
-import com.github.passit.ui.screens.auth.SignInActivity
-import com.github.passit.ui.view.ErrorAlert
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
+import java.io.InputStream
 import java.util.*
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.catch
+
 
 @AndroidEntryPoint
 class ProfileFragment : Fragment(), CoroutineScope by MainScope() {
@@ -46,7 +49,7 @@ class ProfileFragment : Fragment(), CoroutineScope by MainScope() {
             launch {
                 ByteArrayOutputStream().use { bos ->
                     withContext(Dispatchers.IO) { bitmap.compress(CompressFormat.PNG, 50, bos) }
-                    ByteArrayInputStream(bos.toByteArray()).use { bs ->
+                    ByteArrayInputStream(bos.toByteArray()).buffered().use { bs ->
                         authModel.changeUserPicture(bs).catch { e -> Log.i("changePicture", "$e") }.collect {
                             Log.i("upload", Gson().toJson(it))
                         }
@@ -56,9 +59,23 @@ class ProfileFragment : Fragment(), CoroutineScope by MainScope() {
         }
     }
 
+   private val uploadPicture = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+        uri?.let {
+            launch {
+                withContext(Dispatchers.IO) {
+                    getActivity()?.applicationContext?.contentResolver?.openInputStream(it)?.buffered()?.use {
+                        authModel.changeUserPicture(it).catch { e -> Log.i("changePicture", "$e") }.collect {
+                            Log.i("upload", Gson().toJson(it))
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View {
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
         return binding.root
@@ -77,16 +94,7 @@ class ProfileFragment : Fragment(), CoroutineScope by MainScope() {
             launch { authModel.signOut().collect(::handleSignOutResult) }
         }
 
-        binding.changeProfilePictureCard.setOnClickListener {
-            binding.plusProfilePictureImageView.visibility = View.VISIBLE
-        }
-        binding.coverView.setOnClickListener {
-            if (binding.plusProfilePictureImageView.visibility == View.VISIBLE) {
-                binding.plusProfilePictureImageView.visibility = View.GONE
-            }
-        }
-
-        binding.plusProfilePictureImageView.setOnClickListener {
+        binding.shootProfilePicBtn.setOnClickListener {
             launch {
                 Dexter.withContext(context)
                     .withPermission(Manifest.permission.CAMERA)
@@ -95,11 +103,11 @@ class ProfileFragment : Fragment(), CoroutineScope by MainScope() {
                             takePicture.launch(null)
                         }
 
-                        override fun onPermissionDenied(p0: PermissionDeniedResponse?) { }
+                        override fun onPermissionDenied(p0: PermissionDeniedResponse?) {}
 
                         override fun onPermissionRationaleShouldBeShown(
-                            permission: PermissionRequest?,
-                            token: PermissionToken?
+                                permission: PermissionRequest?,
+                                token: PermissionToken?
                         ) {
                             token?.continuePermissionRequest()
                         }
@@ -107,15 +115,38 @@ class ProfileFragment : Fragment(), CoroutineScope by MainScope() {
                     .check()
             }
         }
+
+        binding.uploadProfilePicBtn.setOnClickListener {
+            launch {
+                Dexter.withContext(context)
+                        .withPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+                        .withListener(object : PermissionListener {
+                            override fun onPermissionGranted(response: PermissionGrantedResponse) {
+                                uploadPicture.launch("image/*")
+                            }
+
+                            override fun onPermissionDenied(p0: PermissionDeniedResponse?) {}
+
+                            override fun onPermissionRationaleShouldBeShown(
+                                    permission: PermissionRequest?,
+                                    token: PermissionToken?
+                            ) {
+                                token?.continuePermissionRequest()
+                            }
+                        })
+                        .check()
+            }
+        }
+
     }
 
     private fun showUserProfile(profile: User?) {
         profile?.let {
             binding.emailTextField.text = profile.email
             binding.userName.text = getString(
-                R.string.profile_username,
-                it.givenName.capitalize(Locale.getDefault()),
-                it.familyName.capitalize(Locale.getDefault())
+                    R.string.profile_username,
+                    it.givenName.capitalize(Locale.getDefault()),
+                    it.familyName.capitalize(Locale.getDefault())
             )
             it.phoneNumber?.let { phone ->
                 binding.phoneTextField.text = phone

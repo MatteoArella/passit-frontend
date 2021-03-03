@@ -19,8 +19,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.github.passit.R
 import com.github.passit.databinding.FragmentProfileBinding
-import com.github.passit.domain.model.User
-import com.github.passit.domain.usecase.core.Result
+import com.github.passit.domain.model.auth.User
+import com.github.passit.core.domain.Result
 import com.github.passit.ui.models.auth.AuthViewModel
 import com.github.passit.ui.screens.auth.SignInActivity
 import com.github.passit.ui.view.ErrorAlert

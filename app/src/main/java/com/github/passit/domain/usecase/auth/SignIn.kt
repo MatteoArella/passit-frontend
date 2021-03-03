@@ -1,17 +1,17 @@
 package com.github.passit.domain.usecase.auth
 
-import com.github.passit.data.repository.auth.AuthSignInResult
+import com.github.passit.domain.model.auth.AuthSignIn
 import com.github.passit.domain.repository.IdentityRepository
-import com.github.passit.domain.usecase.core.Result
-import com.github.passit.domain.usecase.core.UseCase
+import com.github.passit.core.domain.Result
+import com.github.passit.core.domain.UseCase
 import com.github.passit.domain.usecase.exception.auth.SignInError
 import javax.inject.Inject
 
 class SignIn @Inject constructor(
         private val identityRepository: IdentityRepository
-) : UseCase<SignIn.Params, SignInError, AuthSignInResult>() {
+) : UseCase<SignIn.Params, SignInError, AuthSignIn>() {
 
-    override suspend fun run(params: Params): Result<SignInError, AuthSignInResult> {
+    override suspend fun run(params: Params): Result<SignInError, AuthSignIn> {
         return try {
             val result = identityRepository.signIn(params.email, params.password)
             Result.Success(result)

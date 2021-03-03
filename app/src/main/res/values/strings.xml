@@ -59,4 +59,19 @@
 
     <!-- PROFILE -->
     <string name="profile_username">%1$s %2$s</string>
+
+    <!-- INSERTIONS LIST -->
+    <string name="create_insertion">Create</string>
+
+    <!-- CREATE INSERTION -->
+    <string name="create_insertion_title">Create a new Insertion</string>
+    <string name="create_insertion_subtitle">So that other users can find your service</string>
+    <string name="insertion_input_title">Title</string>
+    <string name="insertion_input_description">Description</string>
+    <string name="insertion_input_subject">Subject</string>
+    <string name="create_insertion_ok">Create</string>
+    <string name="create_insertion_cancel">Cancel</string>
+    <string name="create_insertion_title_empty_error">Title cannot be empty</string>
+    <string name="create_insertion_description_empty_error">Description cannot be empty</string>
+    <string name="create_insertion_subject_empty_error">Subject cannot be empty</string>
 </resources>

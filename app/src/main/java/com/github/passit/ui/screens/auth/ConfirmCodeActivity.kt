@@ -5,8 +5,8 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
 import com.github.passit.R
-import com.github.passit.data.repository.auth.AuthSignUpResult
-import com.github.passit.domain.usecase.core.Result
+import com.github.passit.domain.model.auth.AuthSignUp
+import com.github.passit.core.domain.Result
 import com.github.passit.databinding.ActivityConfirmCodeBinding
 import com.github.passit.ui.view.ErrorAlert
 import dagger.hilt.android.AndroidEntryPoint
@@ -46,8 +46,8 @@ class ConfirmCodeActivity : AppCompatActivity(), CoroutineScope by MainScope() {
         }
     }
 
-    private fun handleConfirmSignUpResult(confirmSignUpResult: Result<Error, AuthSignUpResult>) {
-        confirmSignUpResult
+    private fun handleConfirmSignUpResult(confirmSignUp: Result<Error, AuthSignUp>) {
+        confirmSignUp
             .onSuccess {
                 setResult(RESULT_OK)
                 this@ConfirmCodeActivity.finish()
@@ -59,8 +59,8 @@ class ConfirmCodeActivity : AppCompatActivity(), CoroutineScope by MainScope() {
             .onStateLoaded { binding.progressIndicator.visibility = View.INVISIBLE }
     }
 
-    private fun handleResendConfirmCodeResult(resendConfirmationCodeResult: Result<Error, AuthSignUpResult>) {
-        resendConfirmationCodeResult.onError { error ->
+    private fun handleResendConfirmCodeResult(resendConfirmationCode: Result<Error, AuthSignUp>) {
+        resendConfirmationCode.onError { error ->
             ErrorAlert(this@ConfirmCodeActivity).setTitle(getString(R.string.confirmation_error_alert_title)).setMessage(error.localizedMessage).show()
         }
     }

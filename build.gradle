@@ -14,6 +14,7 @@ buildscript {
                 viewpager: "1.0.0",
                 amplify: "1.6.4",
                 dexter: "6.2.2",
+                roomVersion: "2.2.6",
                 junitVersion: "4.13.1"
         ]
         Android = [
@@ -36,6 +37,7 @@ buildscript {
                 activity: "androidx.activity:activity-ktx:${Versions.activity}",
                 fragment: "androidx.fragment:fragment-ktx:${Versions.fragment}",
                 navigationFragment: "androidx.navigation:navigation-fragment-ktx:${Versions.navigation}",
+                navigationUi: "androidx.navigation:navigation-ui-ktx:${Versions.navigation}",
                 coroutines: "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.coroutines}",
                 viewpager: "androidx.viewpager:viewpager:${Versions.viewpager}",
                 amplify : [
@@ -50,8 +52,12 @@ buildscript {
                 legacy: "androidx.legacy:legacy-support-v4:1.0.0",
                 coreKtx: "androidx.core:core-ktx:1.3.2",
                 constraintLayout: "androidx.constraintlayout:constraintlayout:2.0.4",
+                coordinatorLayout: "androidx.coordinatorlayout:coordinatorlayout:1.1.0",
                 squarePicasso: "com.squareup.picasso:picasso:2.71828",
-                ucrop: "com.github.yalantis:ucrop:2.2.6"
+                ucrop: "com.github.yalantis:ucrop:2.2.6",
+                roomRuntime: "androidx.room:room-runtime:${Versions.roomVersion}",
+                roomCompiler: "androidx.room:room-compiler:${Versions.roomVersion}",
+                roomKotlinExt: "androidx.room:room-ktx:${Versions.roomVersion}"
         ]
         TestLibs = [
                 junit: "junit:junit:${Versions.junitVersion}",
@@ -60,7 +66,8 @@ buildscript {
                 cucumber: "io.cucumber:cucumber-android:4.3.1",
                 rules: "androidx.test:rules:1.3.0",
                 runner: "androidx.test:runner:1.3.0",
-                espressoIntents: "com.android.support.test.espresso:espresso-intents:3.3.0"
+                espressoIntents: "com.android.support.test.espresso:espresso-intents:3.3.0",
+                roomTesting: "androidx.room:room-testing:${Versions.roomVersion}"
         ]
     }
 

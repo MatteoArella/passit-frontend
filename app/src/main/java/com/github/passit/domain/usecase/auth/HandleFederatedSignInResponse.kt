@@ -2,8 +2,8 @@ package com.github.passit.domain.usecase.auth
 
 import android.content.Intent
 import com.github.passit.domain.repository.IdentityRepository
-import com.github.passit.domain.usecase.core.UseCase
-import com.github.passit.domain.usecase.core.Result
+import com.github.passit.core.domain.UseCase
+import com.github.passit.core.domain.Result
 import javax.inject.Inject
 
 class HandleFederatedSignInResponse @Inject constructor(

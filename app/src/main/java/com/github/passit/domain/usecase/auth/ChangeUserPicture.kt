@@ -1,12 +1,11 @@
 package com.github.passit.domain.usecase.auth
 
 import androidx.annotation.NonNull
-import com.github.passit.data.repository.auth.UserAttribute
+import com.github.passit.domain.model.auth.UserAttribute
 import com.github.passit.domain.repository.IdentityRepository
 import com.github.passit.domain.repository.StorageRepository
-import com.github.passit.domain.usecase.core.Result
-import com.github.passit.domain.usecase.core.UseCase
-import kotlinx.coroutines.flow.*
+import com.github.passit.core.domain.Result
+import com.github.passit.core.domain.UseCase
 import java.io.InputStream
 import java.net.URL
 import java.util.*

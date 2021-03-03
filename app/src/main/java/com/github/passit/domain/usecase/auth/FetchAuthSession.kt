@@ -1,16 +1,16 @@
 package com.github.passit.domain.usecase.auth
 
-import com.github.passit.data.repository.auth.AuthSessionResult
+import com.github.passit.domain.model.auth.AuthSession
 import com.github.passit.domain.repository.IdentityRepository
-import com.github.passit.domain.usecase.core.Result
-import com.github.passit.domain.usecase.core.UseCase
+import com.github.passit.core.domain.Result
+import com.github.passit.core.domain.UseCase
 import javax.inject.Inject
 
 class FetchAuthSession @Inject constructor(
         private val identityRepository: IdentityRepository
-) : UseCase<FetchAuthSession.Params, Error, AuthSessionResult>() {
+) : UseCase<FetchAuthSession.Params, Error, AuthSession>() {
 
-    override suspend fun run(params: Params): Result<Error, AuthSessionResult> {
+    override suspend fun run(params: Params): Result<Error, AuthSession> {
         return try {
             val result = identityRepository.fetchAuthSession()
             Result.Success(result)

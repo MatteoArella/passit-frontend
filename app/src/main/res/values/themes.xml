@@ -14,6 +14,9 @@
         <item name="bottomNavigationStyle">@style/Widget.App.BottomNavigationView</item>
 
         <item name="android:windowAnimationStyle">@style/ActivityAnimation</item>
+
+        <item name="extendedFloatingActionButtonStyle">@style/Widget.App.ExtendedFloatingActionButton</item>
+        <item name="floatingActionButtonStyle">@style/Widget.App.FloatingActionButton</item>
     </style>
 
     <style name="Widget.App.Button.TextButton" parent="Widget.MaterialComponents.Button.TextButton">
@@ -48,6 +51,25 @@
     <style name="ThemeOverlay.App.BottomNavigationView" parent="">
         <item name="colorPrimary">@color/colorSecondaryLight</item>
         <item name="colorOnPrimary">@color/colorPrimary</item>
+    </style>
+
+    <style name="Widget.App.ExtendedFloatingActionButton" parent="Widget.MaterialComponents.ExtendedFloatingActionButton.Icon">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.FloatingActionButton</item>
+        <item name="shapeAppearanceOverlay">
+            @style/ShapeAppearance.App.SmallComponent
+        </item>
+    </style>
+
+    <style name="Widget.App.FloatingActionButton" parent="Widget.MaterialComponents.FloatingActionButton">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.FloatingActionButton</item>
+        <item name="shapeAppearanceOverlay">
+            @style/ShapeAppearance.App.SmallComponent
+        </item>
+    </style>
+
+    <style name="ThemeOverlay.App.FloatingActionButton" parent="">
+        <item name="colorSecondary">@color/colorPrimary</item>
+        <item name="colorOnSecondary">@color/colorPrimaryText</item>
     </style>
 
     <style name="ActivityAnimation"

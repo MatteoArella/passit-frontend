@@ -7,11 +7,11 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.amplifyframework.auth.cognito.AWSCognitoAuthPlugin.WEB_UI_SIGN_IN_ACTIVITY_CODE
-import com.github.passit.data.repository.auth.AuthSignInResult
+import com.github.passit.domain.model.auth.AuthSignIn
 import dagger.hilt.android.AndroidEntryPoint
 import com.github.passit.R
 import com.github.passit.databinding.ActivitySigninBinding
-import com.github.passit.domain.usecase.core.Result
+import com.github.passit.core.domain.Result
 import com.github.passit.domain.usecase.exception.auth.SignInError
 import com.github.passit.ui.contracts.auth.ConfirmCodeContract
 import com.github.passit.ui.models.auth.AuthViewModel
@@ -59,8 +59,8 @@ class SignInActivity : AppCompatActivity(), CoroutineScope by MainScope() {
         }
     }
 
-    private fun handleSignInResult(authSignInResult: Result<Error, AuthSignInResult>) {
-        authSignInResult
+    private fun handleSignInResult(authSignIn: Result<Error, AuthSignIn>) {
+        authSignIn
             .onSuccess { data ->
                 if (data.isSignedIn) {
                     startActivity(Intent(this@SignInActivity, MainActivity::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))

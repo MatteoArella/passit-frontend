@@ -17,7 +17,7 @@ import com.github.passit.ui.validators.isValidEmail
 import com.github.passit.ui.validators.isValidPassword
 import com.github.passit.ui.validators.setValidator
 import com.github.passit.ui.view.ErrorAlert
-import com.github.passit.util.crypto.CryptoManager
+import com.github.passit.core.platform.CryptoManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch

@@ -1,9 +1,9 @@
 package com.github.passit.domain.usecase.auth
 
-import com.github.passit.domain.model.User
+import com.github.passit.domain.model.auth.User
 import com.github.passit.domain.repository.IdentityRepository
-import com.github.passit.domain.usecase.core.Result
-import com.github.passit.domain.usecase.core.UseCase
+import com.github.passit.core.domain.Result
+import com.github.passit.core.domain.UseCase
 import javax.inject.Inject
 
 class FetchUserAttributes @Inject constructor(

@@ -8,19 +8,19 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import com.github.passit.R
-import com.github.passit.domain.usecase.core.Result
-import com.github.passit.data.repository.auth.AuthSignUpResult
+import com.github.passit.domain.model.auth.AuthSignUp
 import com.github.passit.databinding.FragmentSignUpSecondStepBinding
 import com.github.passit.ui.view.ErrorAlert
 import dagger.hilt.android.AndroidEntryPoint
-import com.github.passit.domain.model.SignUpUserAttributes
+import com.github.passit.domain.model.auth.SignUpUserAttributes
 import com.github.passit.ui.contracts.auth.ConfirmCodeContract
 import com.github.passit.ui.models.auth.AuthViewModel
-import com.github.passit.util.crypto.CryptoManager
+import com.github.passit.core.platform.CryptoManager
+import com.github.passit.core.domain.Result
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -68,8 +68,8 @@ class SignUpSecondStepFragment : Fragment(), CoroutineScope by MainScope() {
         }
     }
 
-    private fun handleSignUpResult(authSignUpResult: Result<Error, AuthSignUpResult>) {
-        authSignUpResult
+    private fun handleSignUpResult(authSignUp: Result<Error, AuthSignUp>) {
+        authSignUp
             .onSuccess {
                 confirmSignUp.launch(authModel.email.value)
             }

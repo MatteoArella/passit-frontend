@@ -5,23 +5,23 @@ import android.content.Intent
 import androidx.annotation.NonNull
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
-import com.github.passit.data.repository.auth.AuthSessionResult
-import com.github.passit.data.repository.auth.AuthResetPasswordResult
-import com.github.passit.data.repository.auth.AuthSignInResult
-import com.github.passit.data.repository.auth.AuthSignUpResult
-import com.github.passit.domain.model.SignUpUserAttributes
-import com.github.passit.domain.model.User
+import com.github.passit.domain.model.auth.AuthSession
+import com.github.passit.domain.model.auth.AuthResetPassword
+import com.github.passit.domain.model.auth.AuthSignIn
+import com.github.passit.domain.model.auth.AuthSignUp
+import com.github.passit.domain.model.auth.SignUpUserAttributes
+import com.github.passit.domain.model.auth.User
 import com.github.passit.domain.repository.IdentityRepository
 import com.github.passit.domain.usecase.auth.*
-import com.github.passit.domain.usecase.core.Result
 import com.github.passit.domain.usecase.exception.auth.SignInError
-import com.github.passit.util.crypto.EncryptedData
+import com.github.passit.core.domain.EncryptedData
+import com.github.passit.core.domain.Result
 import kotlinx.coroutines.flow.*
 import java.io.InputStream
 import java.net.URL
 
 class AuthViewModel @ViewModelInject constructor(
-    private val identityRepository: IdentityRepository,
+    identityRepository: IdentityRepository,
     private val signIn: SignIn,
     private val signInWithGoogle: SignInWithGoogle,
     private val handleFederatedSignInResponse: HandleFederatedSignInResponse,
@@ -44,13 +44,13 @@ class AuthViewModel @ViewModelInject constructor(
     fun fetchUserAttributes(): Flow<Result<Error, User>> =
             fetchUserAttributes(FetchUserAttributes.Params())
 
-    fun fetchAuthSession(): Flow<Result<Error, AuthSessionResult>> = fetchAuthSession(
+    fun fetchAuthSession(): Flow<Result<Error, AuthSession>> = fetchAuthSession(
         FetchAuthSession.Params())
 
-    fun signIn(@NonNull email: String, @NonNull password: String): Flow<Result<SignInError, AuthSignInResult>> =
+    fun signIn(@NonNull email: String, @NonNull password: String): Flow<Result<SignInError, AuthSignIn>> =
             signIn(SignIn.Params(email, password))
 
-    fun signInWithGoogle(@NonNull context: Activity): Flow<Result<Error, AuthSignInResult>> =
+    fun signInWithGoogle(@NonNull context: Activity): Flow<Result<Error, AuthSignIn>> =
             signInWithGoogle(SignInWithGoogle.Params(context))
 
     fun handleFederatedSignInResponse(@NonNull data: Intent): Flow<Result<Error, Unit>> =
@@ -58,16 +58,16 @@ class AuthViewModel @ViewModelInject constructor(
 
     fun signUp(@NonNull email: String,
                        @NonNull password: String,
-                       @NonNull attributes: SignUpUserAttributes): Flow<Result<Error, AuthSignUpResult>> =
+                       @NonNull attributes: SignUpUserAttributes): Flow<Result<Error, AuthSignUp>> =
             signUp(SignUp.Params(email, password, attributes))
 
-    fun confirmSignUp(@NonNull email: String, @NonNull confirmationCode: String): Flow<Result<Error, AuthSignUpResult>> =
+    fun confirmSignUp(@NonNull email: String, @NonNull confirmationCode: String): Flow<Result<Error, AuthSignUp>> =
             confirmSignUp(ConfirmSignUp.Params(email, confirmationCode))
 
-    fun resendConfirmationCode(@NonNull email: String): Flow<Result<Error, AuthSignUpResult>> =
+    fun resendConfirmationCode(@NonNull email: String): Flow<Result<Error, AuthSignUp>> =
             resendConfirmationCode(ResendConfirmationCode.Params(email))
 
-    fun resetPassword(@NonNull email: String): Flow<Result<Error, AuthResetPasswordResult>> =
+    fun resetPassword(@NonNull email: String): Flow<Result<Error, AuthResetPassword>> =
             resetPassword(ResetPassword.Params(email))
 
     fun confirmResetPassword(@NonNull newPassword: String, @NonNull confirmationCode: String): Flow<Result<Error, Unit>> =

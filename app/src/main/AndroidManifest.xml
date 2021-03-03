@@ -45,6 +45,7 @@
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+        <activity android:name=".ui.screens.insertions.CreateInsertionActivity" />
 
         <meta-data
             android:name="preloaded_fonts"

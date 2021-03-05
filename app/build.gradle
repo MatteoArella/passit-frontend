@@ -132,6 +132,9 @@ dependencies {
     // dexter
     implementation Libs.dexter
 
+    // uCrop
+    implementation Libs.ucrop
+
     testImplementation TestLibs.junit
     testImplementation TestLibs.extJunit
 

@@ -1,10 +1,15 @@
 package com.github.passit.ui.screens.profile
 
 import android.Manifest
+import android.app.Activity.RESULT_OK
 import android.content.Intent
-import android.content.*
+import android.graphics.Bitmap
 import android.graphics.Bitmap.CompressFormat
+import android.graphics.ImageDecoder
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -27,13 +32,14 @@ import com.karumi.dexter.listener.PermissionGrantedResponse
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.single.PermissionListener
 import com.squareup.picasso.Picasso
+import com.yalantis.ucrop.UCrop
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
-import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
-import java.io.InputStream
+import java.io.File
+import java.io.FileOutputStream
 import java.util.*
 
 
@@ -44,34 +50,70 @@ class ProfileFragment : Fragment(), CoroutineScope by MainScope() {
     private val binding get() = _binding!!
 
     private val authModel: AuthViewModel by activityViewModels()
+
     private val takePicture = registerForActivityResult(ActivityResultContracts.TakePicture()) { bitmap ->
-        bitmap?.let {
-            launch {
-                ByteArrayOutputStream().use { bos ->
-                    withContext(Dispatchers.IO) { bitmap.compress(CompressFormat.PNG, 50, bos) }
-                    ByteArrayInputStream(bos.toByteArray()).buffered().use { bs ->
-                        authModel.changeUserPicture(bs).catch { e -> Log.i("changePicture", "$e") }.collect {
-                            Log.i("upload", Gson().toJson(it))
-                        }
-                    }
-                }
+        launch {
+            cropBitmap(bitmap, this@ProfileFragment)
+        }
+    }
+
+    private val uploadPicture = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+        launch {
+            var bitmap : Bitmap? = null
+
+            // Create the bitmap from the URI with different APIs depending on the system version
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                val source: ImageDecoder.Source = ImageDecoder.createSource(requireActivity().applicationContext?.contentResolver!!, uri)
+                bitmap = ImageDecoder.decodeBitmap(source)
+            }
+            else {
+                bitmap = MediaStore.Images.Media.getBitmap(requireActivity().applicationContext?.contentResolver, uri)
+            }
+
+            cropBitmap(bitmap!!, this@ProfileFragment)
+        }
+    }
+
+    private suspend fun cropBitmap(bitmap: Bitmap, frag: Fragment) {
+        withContext(Dispatchers.IO) {
+            ByteArrayOutputStream().use { bos ->
+                bitmap.compress(CompressFormat.PNG, 50, bos)
+                val byteArray: ByteArray = bos.toByteArray()
+
+                val photoFile: File = File(getActivity()?.getCacheDir(), "IMG_" + System.currentTimeMillis())
+
+                val fos: FileOutputStream = FileOutputStream(photoFile)
+                fos.write(byteArray)
+                fos.close()
+
+                val srcUri = Uri.fromFile(photoFile)
+                val destUri = Uri.fromFile(File(getActivity()?.getCacheDir(), "IMG_" + System.currentTimeMillis()))
+
+                UCrop.of(srcUri, destUri)
+                        .withMaxResultSize(1000, 1000)
+                        .withAspectRatio(1.0F, 1.0F)
+                        .start(requireActivity(), frag)
             }
         }
     }
 
-   private val uploadPicture = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-        uri?.let {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        Log.i("Handler", "Inside onActivityResult")
+        if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP) {
             launch {
-                withContext(Dispatchers.IO) {
-                    getActivity()?.applicationContext?.contentResolver?.openInputStream(it)?.buffered()?.use {
-                        authModel.changeUserPicture(it).catch { e -> Log.i("changePicture", "$e") }.collect {
-                            Log.i("upload", Gson().toJson(it))
-                        }
+                val resultUri = UCrop.getOutput(data!!)
+                getActivity()?.applicationContext?.contentResolver?.openInputStream(resultUri!!)?.buffered()?.use {
+                    authModel.changeUserPicture(it).catch { e -> Log.i("changePicture", "$e") }.collect {
+                        Log.i("upload", Gson().toJson(it))
                     }
                 }
             }
+        } else if (resultCode == UCrop.RESULT_ERROR) {
+            val cropError = UCrop.getError(data!!)
+            ErrorAlert(requireActivity()).setTitle(getString(R.string.signin_error_alert_title)).setMessage(cropError?.localizedMessage?.toString()).show()
         }
     }
+
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -122,6 +164,7 @@ class ProfileFragment : Fragment(), CoroutineScope by MainScope() {
                         .withPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
                         .withListener(object : PermissionListener {
                             override fun onPermissionGranted(response: PermissionGrantedResponse) {
+                                // uploadPicture.launch(null)
                                 uploadPicture.launch("image/*")
                             }
 

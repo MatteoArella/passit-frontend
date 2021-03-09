@@ -20,7 +20,6 @@ import androidx.fragment.app.activityViewModels
 import com.github.passit.R
 import com.github.passit.databinding.FragmentProfileBinding
 import com.github.passit.domain.model.auth.User
-import com.github.passit.core.domain.Result
 import com.github.passit.ui.models.auth.AuthViewModel
 import com.github.passit.ui.screens.auth.SignInActivity
 import com.github.passit.ui.view.ErrorAlert
@@ -37,6 +36,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.flow.onStart
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
@@ -133,7 +134,18 @@ class ProfileFragment : Fragment(), CoroutineScope by MainScope() {
         authModel.currentUser.observe(viewLifecycleOwner, ::showUserProfile)
 
         binding.signOutBtn.setOnClickListener {
-            launch { authModel.signOut().collect(::handleSignOutResult) }
+            launch {
+                authModel.signOut().onStart {
+                    binding.progressIndicator.visibility = View.VISIBLE
+                }.onCompletion {
+                    binding.progressIndicator.visibility = View.INVISIBLE
+                }.catch { error ->
+                    ErrorAlert(requireContext()).setTitle("Error").setMessage(error.message).show()
+                }.collect {
+                    startActivity(Intent(context, SignInActivity::class.java))
+                    requireActivity().finish()
+                }
+            }
         }
 
         binding.shootProfilePicBtn.setOnClickListener {
@@ -199,19 +211,6 @@ class ProfileFragment : Fragment(), CoroutineScope by MainScope() {
                 Picasso.get().load(picture.toURI().toString()).into(binding.profilePicture)
             }
         }
-    }
-
-    private fun handleSignOutResult(result: Result<Error, Unit>) {
-        result
-            .onSuccess {
-                startActivity(Intent(context, SignInActivity::class.java))
-                requireActivity().finish()
-            }
-            .onError { error ->
-                ErrorAlert(requireContext()).setTitle("Error").setMessage(error.message).show()
-            }
-            .onStateLoading { binding.progressIndicator.visibility = View.VISIBLE }
-            .onStateLoaded { binding.progressIndicator.visibility = View.INVISIBLE }
     }
 
     override fun onDestroyView() {

@@ -3,17 +3,15 @@ package com.github.passit.domain.usecase.auth
 import android.content.Intent
 import com.github.passit.domain.repository.IdentityRepository
 import com.github.passit.core.domain.UseCase
-import com.github.passit.core.domain.Result
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class HandleFederatedSignInResponse @Inject constructor(
         private val identityRepository: IdentityRepository
-) : UseCase<HandleFederatedSignInResponse.Params, Error, Unit>() {
+) : UseCase<HandleFederatedSignInResponse.Params, Unit>() {
 
-    override suspend fun run(params: Params): Result<Error, Unit> {
-        identityRepository.handleFederatedSignInResponse(params.data)
-        return Result.Success(Unit)
-    }
+    override fun run(params: Params): Flow<Unit> =
+            identityRepository.handleFederatedSignInResponse(params.data)
 
     data class Params(val data: Intent)
 }

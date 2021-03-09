@@ -2,22 +2,16 @@ package com.github.passit.domain.usecase.auth
 
 import androidx.annotation.NonNull
 import com.github.passit.domain.repository.IdentityRepository
-import com.github.passit.core.domain.Result
 import com.github.passit.core.domain.UseCase
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class ConfirmResetPassword @Inject constructor(
         private val identityRepository: IdentityRepository
-) : UseCase<ConfirmResetPassword.Params, Error, Unit>() {
+) : UseCase<ConfirmResetPassword.Params, Unit>() {
 
-    override suspend fun run(params: Params): Result<Error, Unit> {
-        return try {
+    override fun run(params: Params): Flow<Unit> =
             identityRepository.confirmResetPassword(params.newPassword, params.confirmationCode)
-            Result.Success(Unit)
-        } catch (error: Error) {
-            Result.Error(error)
-        }
-    }
 
     data class Params(@NonNull val newPassword: String, @NonNull val confirmationCode: String)
 }

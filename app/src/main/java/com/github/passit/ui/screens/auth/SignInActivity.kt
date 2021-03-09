@@ -11,7 +11,6 @@ import com.github.passit.domain.model.auth.AuthSignIn
 import dagger.hilt.android.AndroidEntryPoint
 import com.github.passit.R
 import com.github.passit.databinding.ActivitySigninBinding
-import com.github.passit.core.domain.Result
 import com.github.passit.domain.usecase.exception.auth.SignInError
 import com.github.passit.ui.contracts.auth.ConfirmCodeContract
 import com.github.passit.ui.models.auth.AuthViewModel
@@ -21,7 +20,7 @@ import com.github.passit.ui.validators.setValidator
 import kotlinx.coroutines.*
 import com.github.passit.ui.validators.isValidPassword
 import com.github.passit.ui.view.ErrorAlert
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.*
 
 @AndroidEntryPoint
 class SignInActivity : AppCompatActivity(), CoroutineScope by MainScope() {
@@ -48,39 +47,43 @@ class SignInActivity : AppCompatActivity(), CoroutineScope by MainScope() {
     private fun signIn() {
         if (!binding.emailTextLayout.editText?.text.isNullOrEmpty() and !binding.passwordTextLayout.editText?.text.isNullOrEmpty()) {
             lifecycleScope.launchWhenResumed {
-                authModel.signIn(binding.emailTextLayout.editText?.text.toString(), binding.passwordTextLayout.editText?.text.toString()).collect(::handleSignInResult)
+                authModel.signIn(binding.emailTextLayout.editText?.text.toString(), binding.passwordTextLayout.editText?.text.toString())
+                        .handleSignInFlow().collect { data ->
+                    if (data.isSignedIn) {
+                        startActivity(Intent(this@SignInActivity, MainActivity::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+                        this@SignInActivity.finish()
+                    }
+                }
             }
         }
     }
 
     private fun signInWithGoogle() {
         launch {
-            authModel.signInWithGoogle(this@SignInActivity).collect(::handleSignInResult)
-        }
-    }
-
-    private fun handleSignInResult(authSignIn: Result<Error, AuthSignIn>) {
-        authSignIn
-            .onSuccess { data ->
+            authModel.signInWithGoogle(this@SignInActivity).handleSignInFlow().collect { data ->
                 if (data.isSignedIn) {
                     startActivity(Intent(this@SignInActivity, MainActivity::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
                     this@SignInActivity.finish()
                 }
             }
-            .onError { error -> when (error) {
+        }
+    }
+
+    private fun Flow<AuthSignIn>.handleSignInFlow(): Flow<AuthSignIn> {
+        return this.onStart {
+            binding.progressIndicator.visibility = View.VISIBLE
+        }.onCompletion {
+            binding.progressIndicator.visibility = View.INVISIBLE
+        }.catch { error ->
+            when (error) {
                 is SignInError.Unconfirmed -> {
                     confirmSignUp.launch(binding.emailTextLayout.editText?.text.toString())
                 }
                 else -> launch {
                     ErrorAlert(this@SignInActivity).setTitle(getString(R.string.signin_error_alert_title)).setMessage(error.localizedMessage?.toString()).show()
                 }
-            }}
-            .onStateLoading {
-                binding.progressIndicator.visibility = View.VISIBLE
             }
-            .onStateLoaded {
-                binding.progressIndicator.visibility = View.INVISIBLE
-            }
+        }
     }
 
     private fun onConfirmCodeResult(confirmed: Boolean) {

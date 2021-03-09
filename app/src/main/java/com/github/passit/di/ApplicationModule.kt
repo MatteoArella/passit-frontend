@@ -1,6 +1,7 @@
 package com.github.passit.di
 
 import android.content.Context
+import androidx.paging.PagedList
 import androidx.room.Room
 import com.github.passit.data.datasource.local.db.ApplicationDatabase
 import dagger.Module

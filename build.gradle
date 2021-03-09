@@ -15,6 +15,7 @@ buildscript {
                 amplify: "1.6.4",
                 dexter: "6.2.2",
                 roomVersion: "2.2.6",
+                pagingVersion: "3.0.0-alpha11",
                 junitVersion: "4.13.1"
         ]
         Android = [
@@ -57,7 +58,8 @@ buildscript {
                 ucrop: "com.github.yalantis:ucrop:2.2.6",
                 roomRuntime: "androidx.room:room-runtime:${Versions.roomVersion}",
                 roomCompiler: "androidx.room:room-compiler:${Versions.roomVersion}",
-                roomKotlinExt: "androidx.room:room-ktx:${Versions.roomVersion}"
+                roomKotlinExt: "androidx.room:room-ktx:${Versions.roomVersion}",
+                pagingRuntime: "androidx.paging:paging-runtime-ktx:${Versions.pagingVersion}"
         ]
         TestLibs = [
                 junit: "junit:junit:${Versions.junitVersion}",

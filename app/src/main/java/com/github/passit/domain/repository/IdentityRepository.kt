@@ -12,35 +12,36 @@ import com.github.passit.domain.model.auth.AuthSession
 import com.github.passit.domain.model.auth.AuthSignIn
 import com.github.passit.domain.model.auth.AuthSignUp
 import com.github.passit.domain.usecase.exception.auth.SignInError
+import kotlinx.coroutines.flow.Flow
 import kotlin.jvm.Throws
 
 interface IdentityRepository {
     val currentUser: LiveData<User?>
 
-    suspend fun fetchUserAttributes(): User
+    fun fetchUserAttributes(): Flow<User>
 
-    suspend fun fetchAuthSession(): AuthSession
+    fun fetchAuthSession(): Flow<AuthSession>
 
     @Throws(SignInError::class)
-    suspend fun signIn(@NonNull email: String, @NonNull password: String): AuthSignIn
+    fun signIn(@NonNull email: String, @NonNull password: String): Flow<AuthSignIn>
 
-    suspend fun signInWithGoogle(@NonNull context: Activity): AuthSignIn
+    fun signInWithGoogle(@NonNull context: Activity): Flow<AuthSignIn>
 
-    suspend fun handleFederatedSignInResponse(@NonNull data: Intent)
+    fun handleFederatedSignInResponse(@NonNull data: Intent): Flow<Unit>
 
-    suspend fun signUp(@NonNull email: String,
+    fun signUp(@NonNull email: String,
                        @NonNull password: String,
-                       @NonNull attributes: SignUpUserAttributes): AuthSignUp
+                       @NonNull attributes: SignUpUserAttributes): Flow<AuthSignUp>
 
-    suspend fun confirmSignUp(@NonNull email: String, @NonNull confirmationCode: String): AuthSignUp
+    fun confirmSignUp(@NonNull email: String, @NonNull confirmationCode: String): Flow<AuthSignUp>
 
-    suspend fun resendConfirmationCode(@NonNull email: String): AuthSignUp
+    fun resendConfirmationCode(@NonNull email: String): Flow<AuthSignUp>
 
-    suspend fun resetPassword(@NonNull email: String): AuthResetPassword
+    fun resetPassword(@NonNull email: String): Flow<AuthResetPassword>
 
-    suspend fun confirmResetPassword(@NonNull newPassword: String, @NonNull confirmationCode: String)
+    fun confirmResetPassword(@NonNull newPassword: String, @NonNull confirmationCode: String): Flow<Unit>
 
-    suspend fun updateUserAttribute(@NonNull attribute: UserAttribute, @NonNull value: String)
+    fun updateUserAttribute(@NonNull attribute: UserAttribute, @NonNull value: String): Flow<Unit>
 
-    suspend fun signOut()
+    fun signOut(): Flow<Unit>
 }

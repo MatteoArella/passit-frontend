@@ -1,7 +1,7 @@
 package com.github.passit.data.datasource.remote.model
 
 data class UserRemoteData(
-    var id: String?,
+    var id: String,
     var email: String?,
     var familyName: String?,
     var givenName: String?,

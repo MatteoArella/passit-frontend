@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import com.github.passit.R
 import com.github.passit.databinding.FragmentResetPasswordSecondStepBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -17,6 +16,7 @@ import com.github.passit.ui.validators.setValidator
 import com.github.passit.ui.view.ErrorAlert
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.collect
 
@@ -43,11 +43,9 @@ class ResetPasswordSecondStepFragment : Fragment(), CoroutineScope by MainScope(
 
         binding.sendNewResetPasswordBtn.setOnClickListener {
             launch {
-                authModel.resetPassword(authModel.email.value.toString()).collect { result ->
-                    result.onError { error ->
+                authModel.resetPassword(authModel.email.value.toString()).catch { error ->
                         ErrorAlert(requireContext()).setTitle(getString(R.string.reset_password_error_alert_title)).setMessage(error.localizedMessage).show()
-                    }
-                }
+                    }.collect()
             }
         }
 
@@ -56,15 +54,13 @@ class ResetPasswordSecondStepFragment : Fragment(), CoroutineScope by MainScope(
                 launch { ErrorAlert(requireContext()).setTitle(getString(R.string.reset_password_error_alert_title)).setMessage(resources.getString(R.string.signup_passwords_missmatch)).show() }
             } else {
                 launch {
-                    authModel.confirmResetPassword(binding.passwordTextLayout.editText?.text.toString(), binding.verificationCodeTextLayout.editText?.text.toString()).collect { result ->
-                        result.onSuccess {
-                                startActivity(Intent(requireContext(), SignInActivity::class.java))
-                                activity?.finishAffinity()
-                            }
-                            .onError { error ->
-                                ErrorAlert(requireContext()).setTitle(getString(R.string.reset_password_error_alert_title)).setMessage(error.localizedMessage).show()
-                            }
-                    }
+                    authModel.confirmResetPassword(binding.passwordTextLayout.editText?.text.toString(), binding.verificationCodeTextLayout.editText?.text.toString())
+                        .catch { error ->
+                            ErrorAlert(requireContext()).setTitle(getString(R.string.reset_password_error_alert_title)).setMessage(error.localizedMessage).show()
+                        }.collect {
+                            startActivity(Intent(requireContext(), SignInActivity::class.java))
+                            activity?.finishAffinity()
+                        }
                 }
             }
         }

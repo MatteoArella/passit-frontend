@@ -1,17 +1,17 @@
 package com.github.passit.domain.usecase.auth
 
 import androidx.annotation.NonNull
-import com.github.passit.data.repository.auth.AuthSignUpResult
+import com.github.passit.domain.model.auth.AuthSignUp
 import com.github.passit.domain.repository.IdentityRepository
-import com.github.passit.domain.usecase.core.Result
-import com.github.passit.domain.usecase.core.UseCase
+import com.github.passit.core.domain.Result
+import com.github.passit.core.domain.UseCase
 import javax.inject.Inject
 
 class ResendConfirmationCode @Inject constructor(
         private val identityRepository: IdentityRepository
-) : UseCase<ResendConfirmationCode.Params, Error, AuthSignUpResult>() {
+) : UseCase<ResendConfirmationCode.Params, Error, AuthSignUp>() {
 
-    override suspend fun run(params: Params): Result<Error, AuthSignUpResult> {
+    override suspend fun run(params: Params): Result<Error, AuthSignUp> {
         return try {
             val result = identityRepository.resendConfirmationCode(params.email)
             Result.Success(result)

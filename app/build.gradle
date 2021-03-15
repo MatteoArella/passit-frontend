@@ -111,6 +111,7 @@ dependencies {
     // navigation fragment
     implementation Libs.fragment
     implementation Libs.navigationFragment
+    implementation Libs.navigationUi
 
     // coroutines
     implementation Libs.coroutines
@@ -125,6 +126,7 @@ dependencies {
     implementation Libs.coreKtx
 
     implementation Libs.constraintLayout
+    implementation Libs.coordinatorLayout
 
     // square picasso
     implementation Libs.squarePicasso
@@ -135,8 +137,14 @@ dependencies {
     // uCrop
     implementation Libs.ucrop
 
+    // room
+    implementation Libs.roomRuntime
+    kapt Libs.roomCompiler
+    implementation Libs.roomKotlinExt
+
     testImplementation TestLibs.junit
     testImplementation TestLibs.extJunit
+    testImplementation TestLibs.roomTesting
 
     androidTestImplementation TestLibs.extJunit
     androidTestImplementation TestLibs.espressoCore

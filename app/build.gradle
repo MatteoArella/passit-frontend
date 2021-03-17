@@ -74,7 +74,7 @@ android {
 
     kotlinOptions {
         jvmTarget = "1.8"
-        freeCompilerArgs += ["-Xuse-experimental=kotlinx.coroutines.ExperimentalCoroutinesApi"]
+        freeCompilerArgs += ["-Xuse-experimental=kotlinx.coroutines.ExperimentalCoroutinesApi", "-Xopt-in=kotlin.RequiresOptIn"]
     }
 }
 
@@ -141,6 +141,9 @@ dependencies {
     implementation Libs.roomRuntime
     kapt Libs.roomCompiler
     implementation Libs.roomKotlinExt
+
+    // paging
+    implementation Libs.pagingRuntime
 
     testImplementation TestLibs.junit
     testImplementation TestLibs.extJunit

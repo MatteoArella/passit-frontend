@@ -35,7 +35,7 @@ class IdentityRemoteDataSource @Inject constructor() {
                         run {
                             val attributesMap: Map<AuthUserAttributeKey, String> = result.associateBy({ it.key }, { it.value })
                             val user = UserRemoteData(
-                                    id = attributesMap[AuthUserAttributeKey.custom("sub")],
+                                    id = attributesMap[AuthUserAttributeKey.custom("sub")] ?: "",
                                     email = attributesMap[AuthUserAttributeKey.email()],
                                     givenName = attributesMap[AuthUserAttributeKey.givenName()],
                                     familyName = attributesMap[AuthUserAttributeKey.familyName()],

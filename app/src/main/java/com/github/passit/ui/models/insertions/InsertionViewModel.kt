@@ -6,9 +6,8 @@ import androidx.lifecycle.*
 import com.github.passit.domain.model.Insertion
 import com.github.passit.domain.usecase.insertions.CreateInsertion
 import kotlinx.coroutines.flow.Flow
-import com.github.passit.core.domain.Result
-import com.github.passit.core.domain.onSuccess
 import com.github.passit.ui.mapper.InsertionEntityToUIMapper
+import kotlinx.coroutines.flow.onEach
 
 class InsertionViewModel @ViewModelInject constructor(
         private val createInsertion: CreateInsertion
@@ -16,8 +15,9 @@ class InsertionViewModel @ViewModelInject constructor(
     private val _insertion: MutableLiveData<InsertionView> = MutableLiveData()
     val insertion: LiveData<InsertionView> = _insertion
 
-    fun createInsertion(@NonNull title: String, @NonNull description: String, @NonNull subject: String): Flow<Result<Error, Insertion>>
-        = createInsertion(CreateInsertion.Params(title, description, subject)).onSuccess {
-            _insertion.postValue(InsertionEntityToUIMapper.map(this))
+    fun createInsertion(@NonNull title: String, @NonNull description: String, @NonNull subject: String,
+                        @NonNull city: String, @NonNull state: String, @NonNull country: String): Flow<Insertion>
+        = createInsertion(CreateInsertion.Params(title, description, subject, city, state, country)).onEach {
+            _insertion.postValue(InsertionEntityToUIMapper.map(it))
         }
 }

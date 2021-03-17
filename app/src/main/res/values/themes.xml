@@ -6,6 +6,7 @@
         <item name="colorAccent">@color/colorPrimary</item>
 
         <item name="android:fontFamily">@font/poppins</item>
+        <item name="android:textSize">15sp</item>
 
         <item name="borderlessButtonStyle">@style/Widget.App.Button.TextButton</item>
         <item name="materialButtonOutlinedStyle">@style/Widget.App.Button.OutlinedButton</item>

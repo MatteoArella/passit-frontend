@@ -13,9 +13,7 @@ import com.github.passit.domain.model.auth.SignUpUserAttributes
 import com.github.passit.domain.model.auth.User
 import com.github.passit.domain.repository.IdentityRepository
 import com.github.passit.domain.usecase.auth.*
-import com.github.passit.domain.usecase.exception.auth.SignInError
 import com.github.passit.core.domain.EncryptedData
-import com.github.passit.core.domain.Result
 import kotlinx.coroutines.flow.*
 import java.io.InputStream
 import java.net.URL
@@ -41,40 +39,40 @@ class AuthViewModel @ViewModelInject constructor(
     val email = MutableLiveData<String?>()
     val password = MutableLiveData<EncryptedData?>()
 
-    fun fetchUserAttributes(): Flow<Result<Error, User>> =
+    fun fetchUserAttributes(): Flow<User> =
             fetchUserAttributes(FetchUserAttributes.Params())
 
-    fun fetchAuthSession(): Flow<Result<Error, AuthSession>> = fetchAuthSession(
-        FetchAuthSession.Params())
+    fun fetchAuthSession(): Flow<AuthSession> =
+            fetchAuthSession(FetchAuthSession.Params())
 
-    fun signIn(@NonNull email: String, @NonNull password: String): Flow<Result<SignInError, AuthSignIn>> =
+    fun signIn(@NonNull email: String, @NonNull password: String): Flow<AuthSignIn> =
             signIn(SignIn.Params(email, password))
 
-    fun signInWithGoogle(@NonNull context: Activity): Flow<Result<Error, AuthSignIn>> =
+    fun signInWithGoogle(@NonNull context: Activity): Flow<AuthSignIn> =
             signInWithGoogle(SignInWithGoogle.Params(context))
 
-    fun handleFederatedSignInResponse(@NonNull data: Intent): Flow<Result<Error, Unit>> =
+    fun handleFederatedSignInResponse(@NonNull data: Intent): Flow<Unit> =
             handleFederatedSignInResponse(HandleFederatedSignInResponse.Params(data))
 
     fun signUp(@NonNull email: String,
                        @NonNull password: String,
-                       @NonNull attributes: SignUpUserAttributes): Flow<Result<Error, AuthSignUp>> =
+                       @NonNull attributes: SignUpUserAttributes): Flow<AuthSignUp> =
             signUp(SignUp.Params(email, password, attributes))
 
-    fun confirmSignUp(@NonNull email: String, @NonNull confirmationCode: String): Flow<Result<Error, AuthSignUp>> =
+    fun confirmSignUp(@NonNull email: String, @NonNull confirmationCode: String): Flow<AuthSignUp> =
             confirmSignUp(ConfirmSignUp.Params(email, confirmationCode))
 
-    fun resendConfirmationCode(@NonNull email: String): Flow<Result<Error, AuthSignUp>> =
+    fun resendConfirmationCode(@NonNull email: String): Flow<AuthSignUp> =
             resendConfirmationCode(ResendConfirmationCode.Params(email))
 
-    fun resetPassword(@NonNull email: String): Flow<Result<Error, AuthResetPassword>> =
+    fun resetPassword(@NonNull email: String): Flow<AuthResetPassword> =
             resetPassword(ResetPassword.Params(email))
 
-    fun confirmResetPassword(@NonNull newPassword: String, @NonNull confirmationCode: String): Flow<Result<Error, Unit>> =
+    fun confirmResetPassword(@NonNull newPassword: String, @NonNull confirmationCode: String): Flow<Unit> =
             confirmResetPassword(ConfirmResetPassword.Params(newPassword, confirmationCode))
 
-    fun changeUserPicture(@NonNull picture: InputStream): Flow<Result<Error, URL>> =
+    fun changeUserPicture(@NonNull picture: InputStream): Flow<URL> =
             changeUserPicture(ChangeUserPicture.Params(picture))
 
-    fun signOut(): Flow<Result<Error, Unit>> = signOut(SignOut.Params())
+    fun signOut(): Flow<Unit> = signOut(SignOut.Params())
 }

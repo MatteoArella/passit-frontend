@@ -62,6 +62,13 @@
 
     <!-- INSERTIONS LIST -->
     <string name="create_insertion">Create</string>
+    <string name="search_subject">Subject</string>
+    <string name="search_city">City</string>
+    <string name="search_state">State</string>
+    <string name="search_country">Country</string>
+    <string name="search_insertions">Search</string>
+    <string name="search_insertions_error">Search error</string>
+    <string name="empty_insertions_result">No insertions found.</string>
 
     <!-- CREATE INSERTION -->
     <string name="create_insertion_title">Create a new Insertion</string>
@@ -69,9 +76,15 @@
     <string name="insertion_input_title">Title</string>
     <string name="insertion_input_description">Description</string>
     <string name="insertion_input_subject">Subject</string>
+    <string name="insertion_input_city">City</string>
+    <string name="insertion_input_state">State</string>
+    <string name="insertion_input_country">Country</string>
     <string name="create_insertion_ok">Create</string>
     <string name="create_insertion_cancel">Cancel</string>
     <string name="create_insertion_title_empty_error">Title cannot be empty</string>
     <string name="create_insertion_description_empty_error">Description cannot be empty</string>
     <string name="create_insertion_subject_empty_error">Subject cannot be empty</string>
+    <string name="create_insertion_city_empty_error">City cannot be empty</string>
+    <string name="create_insertion_state_empty_error">State cannot be empty</string>
+    <string name="create_insertion_country_empty_error">Country cannot be empty</string>
 </resources>

@@ -10,7 +10,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import com.github.passit.R
-
 import com.github.passit.databinding.FragmentSignUpFirstStepBinding
 import com.github.passit.ui.models.auth.AuthViewModel
 import com.github.passit.ui.validators.isValidEmail

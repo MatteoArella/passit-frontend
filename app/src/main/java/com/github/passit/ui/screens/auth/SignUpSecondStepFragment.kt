@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import com.github.passit.R
-import com.github.passit.domain.model.auth.AuthSignUp
 import com.github.passit.databinding.FragmentSignUpSecondStepBinding
 import com.github.passit.ui.view.ErrorAlert
 import dagger.hilt.android.AndroidEntryPoint
@@ -16,11 +15,13 @@ import com.github.passit.domain.model.auth.SignUpUserAttributes
 import com.github.passit.ui.contracts.auth.ConfirmCodeContract
 import com.github.passit.ui.models.auth.AuthViewModel
 import com.github.passit.core.platform.CryptoManager
-import com.github.passit.core.domain.Result
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.flow.onStart
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -63,21 +64,17 @@ class SignUpSecondStepFragment : Fragment(), CoroutineScope by MainScope() {
                     authModel.email.value!!,
                     cryptoManager.decrypt(authModel.password.value!!.encrypted, cryptoManager.getCipherForDecryption(authModel.password.value!!.initializationVector)),
                     attributes
-                ).collect(::handleSignUpResult)
+                ).onStart {
+                    binding.progressIndicator.visibility = View.VISIBLE
+                }.onCompletion {
+                    binding.progressIndicator.visibility = View.INVISIBLE
+                }.catch { error ->
+                    ErrorAlert(requireContext()).setTitle(getString(R.string.signup_error_alert_title)).setMessage(error.localizedMessage).show()
+                }.collect {
+                    confirmSignUp.launch(authModel.email.value)
+                }
             }
         }
-    }
-
-    private fun handleSignUpResult(authSignUp: Result<Error, AuthSignUp>) {
-        authSignUp
-            .onSuccess {
-                confirmSignUp.launch(authModel.email.value)
-            }
-            .onError { error ->
-                ErrorAlert(requireContext()).setTitle(getString(R.string.signup_error_alert_title)).setMessage(error.localizedMessage).show()
-            }
-            .onStateLoading { binding.progressIndicator.visibility = View.VISIBLE }
-            .onStateLoaded { binding.progressIndicator.visibility = View.INVISIBLE }
     }
 
     private fun onConfirmCodeResult(confirmed: Boolean) {

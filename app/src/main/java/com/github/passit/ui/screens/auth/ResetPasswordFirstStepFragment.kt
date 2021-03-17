@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.github.passit.R
 import com.github.passit.databinding.FragmentResetPasswordFirstStepBinding
@@ -18,6 +17,7 @@ import com.github.passit.ui.view.ErrorAlert
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
@@ -45,16 +45,13 @@ class ResetPasswordFirstStepFragment : Fragment(), CoroutineScope by MainScope()
 
         binding.confirmResetEmailBtn.setOnClickListener {
             launch {
-                authModel.resetPassword(binding.emailTextLayout.editText?.text.toString()).collect { result ->
-                    result
-                        .onSuccess {
+                authModel.resetPassword(binding.emailTextLayout.editText?.text.toString())
+                        .catch { error ->
+                            ErrorAlert(requireContext()).setTitle(getString(R.string.reset_password_error_alert_title)).setMessage(error.localizedMessage).show()
+                        }.collect {
                             authModel.email.postValue(binding.emailTextLayout.editText?.text.toString())
                             findNavController().navigate(R.id.action_resetPasswordFirstStepFragment_to_resetPasswordSecondStepFragment)
                         }
-                        .onError { error ->
-                            ErrorAlert(requireContext()).setTitle(getString(R.string.reset_password_error_alert_title)).setMessage(error.localizedMessage).show()
-                        }
-                }
             }
         }
     }

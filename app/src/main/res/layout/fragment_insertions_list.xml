@@ -4,31 +4,135 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimaryText"
+    android:fitsSystemWindows="true"
     tools:context=".ui.screens.list.InsertionsListFragment">
 
-    <LinearLayout
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_centerHorizontal="true"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:padding="25dp"
-        android:clipToPadding="false">
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true">
 
-        <TextView
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/toolbar_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="LISTA ANNUNCI" />
-    </LinearLayout>
+            android:minHeight="20dp"
+            android:fitsSystemWindows="true"
+            app:contentScrim="@color/colorSecondary"
+            android:background="@color/colorSecondaryLight"
+            app:layout_scrollFlags="scroll|snap">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp"
+                android:clipToPadding="false">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/searchSubjectTextLayout"
+                    style="@style/TextInputLayoutStyle"
+                    app:startIconDrawable="@drawable/ic_search_black_24dp"
+                    android:hint="@string/search_subject">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/searchCityTextLayout"
+                    style="@style/TextInputLayoutStyle"
+                    app:startIconDrawable="@drawable/ic_search_black_24dp"
+                    android:hint="@string/search_city">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/searchStateTextLayout"
+                        style="@style/TextInputLayoutStyle"
+                        app:startIconDrawable="@drawable/ic_search_black_24dp"
+                        android:hint="@string/search_state">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/searchCountryTextLayout"
+                        style="@style/TextInputLayoutStyle"
+                        app:startIconDrawable="@drawable/ic_search_black_24dp"
+                        android:hint="@string/search_country">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/searchInsertionsBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/search_insertions"/>
+
+            </LinearLayout>
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/refreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/scrollView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fillViewport="true">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <com.google.android.material.progressindicator.LinearProgressIndicator
+                    android:id="@+id/progressIndicator"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:indeterminate="true"
+                    android:visibility="invisible" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/insertionsRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:descendantFocusability="blocksDescendants"
+                    android:fitsSystemWindows="false"
+                    android:focusableInTouchMode="true"
+                    app:layoutManager="LinearLayoutManager"
+                    android:nestedScrollingEnabled="false" />
+
+                <include android:id="@+id/emptyLayout" layout="@layout/empty_layout" />
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/createInsertionFab"
+        android:id="@+id/createInsertionExtendedFab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:layout_gravity="bottom|right"
+        android:layout_gravity="bottom|end"
         android:text="@string/create_insertion"
         app:icon="@drawable/ic_add_white_24dp"/>
 

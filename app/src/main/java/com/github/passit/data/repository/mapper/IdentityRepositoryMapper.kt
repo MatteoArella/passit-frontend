@@ -21,16 +21,30 @@ object UserRemoteToEntityMapper: Mapper<UserRemoteData, User>() {
     }
 }
 
-object UserRemoteToLocalMapper: Mapper<UserRemoteData, UserLocalData>() {
-    override fun map(from: UserRemoteData): UserLocalData {
+object UserRemoteToLocalMapper: Mapper<UserRemoteData?, UserLocalData>() {
+    override fun map(from: UserRemoteData?): UserLocalData {
         return UserLocalData(
-                userId = from.id ?: "",
-                email = from.email,
-                familyName = from.familyName,
-                givenName = from.givenName,
+                userId = from?.id ?: "",
+                email = from?.email,
+                familyName = from?.familyName,
+                givenName = from?.givenName,
+                phoneNumber = from?.phoneNumber,
+                birthDate = from?.birthDate,
+                picture = from?.picture
+        )
+    }
+}
+
+object UserLocalToEntityMapper: Mapper<UserLocalData, User>() {
+    override fun map(from: UserLocalData): User {
+        return User(
+                id = from.userId,
+                email = from.email ?: "",
+                familyName = from.familyName ?: "",
+                givenName = from.givenName ?: "",
                 phoneNumber = from.phoneNumber,
                 birthDate = from.birthDate,
-                picture = from.picture
+                picture = from.picture?.let { runCatching { URL(it) }.getOrNull() }
         )
     }
 }

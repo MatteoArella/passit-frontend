@@ -19,6 +19,7 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onCompletion
 
 @AndroidEntryPoint
 class ResetPasswordSecondStepFragment : Fragment(), CoroutineScope by MainScope() {
@@ -57,10 +58,10 @@ class ResetPasswordSecondStepFragment : Fragment(), CoroutineScope by MainScope(
                     authModel.confirmResetPassword(binding.passwordTextLayout.editText?.text.toString(), binding.verificationCodeTextLayout.editText?.text.toString())
                         .catch { error ->
                             ErrorAlert(requireContext()).setTitle(getString(R.string.reset_password_error_alert_title)).setMessage(error.localizedMessage).show()
-                        }.collect {
+                        }.onCompletion {
                             startActivity(Intent(requireContext(), SignInActivity::class.java))
                             activity?.finishAffinity()
-                        }
+                        }.collect()
                 }
             }
         }

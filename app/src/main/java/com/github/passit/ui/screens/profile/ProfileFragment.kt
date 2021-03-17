@@ -138,12 +138,11 @@ class ProfileFragment : Fragment(), CoroutineScope by MainScope() {
                     binding.progressIndicator.visibility = View.VISIBLE
                 }.onCompletion {
                     binding.progressIndicator.visibility = View.INVISIBLE
-                }.catch { error ->
-                    ErrorAlert(requireContext()).setTitle("Error").setMessage(error.message).show()
-                }.collect {
                     startActivity(Intent(context, SignInActivity::class.java))
                     requireActivity().finish()
-                }
+                }.catch { error ->
+                    ErrorAlert(requireContext()).setTitle("Error").setMessage(error.message).show()
+                }.collect()
             }
         }
 

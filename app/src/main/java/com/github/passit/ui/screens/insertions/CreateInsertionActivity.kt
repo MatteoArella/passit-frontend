@@ -9,7 +9,6 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.github.passit.R
 import com.github.passit.databinding.ActivityInsertionsCreateBinding
-import com.github.passit.domain.model.Insertion
 import com.github.passit.ui.models.insertions.InsertionViewModel
 import com.github.passit.ui.validators.setValidator
 import com.github.passit.ui.view.ErrorAlert

@@ -43,7 +43,6 @@ import java.io.File
 import java.io.FileOutputStream
 import java.util.*
 
-
 @AndroidEntryPoint
 class ProfileFragment : Fragment(), CoroutineScope by MainScope() {
 

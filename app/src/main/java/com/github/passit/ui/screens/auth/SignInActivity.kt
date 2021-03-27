@@ -7,19 +7,19 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.amplifyframework.auth.cognito.AWSCognitoAuthPlugin.WEB_UI_SIGN_IN_ACTIVITY_CODE
-import com.github.passit.domain.model.auth.AuthSignIn
-import dagger.hilt.android.AndroidEntryPoint
 import com.github.passit.R
 import com.github.passit.databinding.ActivitySigninBinding
+import com.github.passit.domain.model.auth.AuthSignIn
 import com.github.passit.domain.usecase.exception.auth.SignInError
 import com.github.passit.ui.contracts.auth.ConfirmCodeContract
 import com.github.passit.ui.models.auth.AuthViewModel
 import com.github.passit.ui.screens.main.MainActivity
 import com.github.passit.ui.validators.isValidEmail
-import com.github.passit.ui.validators.setValidator
-import kotlinx.coroutines.*
 import com.github.passit.ui.validators.isValidPassword
+import com.github.passit.ui.validators.setValidator
 import com.github.passit.ui.view.ErrorAlert
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 
 @AndroidEntryPoint

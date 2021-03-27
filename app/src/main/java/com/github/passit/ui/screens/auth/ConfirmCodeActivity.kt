@@ -1,15 +1,15 @@
 package com.github.passit.ui.screens.auth
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import com.github.passit.R
 import com.github.passit.databinding.ActivityConfirmCodeBinding
-import com.github.passit.ui.view.ErrorAlert
-import dagger.hilt.android.AndroidEntryPoint
 import com.github.passit.ui.models.auth.AuthViewModel
 import com.github.passit.ui.validators.setValidator
+import com.github.passit.ui.view.ErrorAlert
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect

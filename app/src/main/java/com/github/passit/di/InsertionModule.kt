@@ -1,11 +1,11 @@
 package com.github.passit.di
 
+import com.github.passit.data.repository.InsertionRepositoryImpl
+import com.github.passit.domain.repository.InsertionRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ApplicationComponent
-import com.github.passit.domain.repository.InsertionRepository
-import com.github.passit.data.repository.InsertionRepositoryImpl
 import javax.inject.Singleton
 
 @Module

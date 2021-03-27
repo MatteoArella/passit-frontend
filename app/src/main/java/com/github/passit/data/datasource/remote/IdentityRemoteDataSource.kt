@@ -16,8 +16,6 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 import javax.inject.Inject
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
-import kotlin.coroutines.suspendCoroutine
-import kotlin.jvm.Throws
 
 class IdentityRemoteDataSource @Inject constructor() {
     private val userAttributeKeys = mapOf<UserAttribute, AuthUserAttributeKey>(
@@ -186,7 +184,7 @@ class IdentityRemoteDataSource @Inject constructor() {
     }
 
     suspend fun signOut() {
-        return suspendCoroutine { continuation ->
+        return suspendCancellableCoroutine { continuation ->
             Amplify.Auth.signOut(
                     { continuation.resume(Unit) },
                     { error -> continuation.resumeWithException(error) }

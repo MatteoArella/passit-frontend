@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/conversationCard"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="3dp"
+    card_view:cardCornerRadius="3dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.2"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:layout_gravity="center">
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/userPictureCard"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="50dp"
+                app:strokeColor="@color/colorSecondaryDark"
+                app:strokeWidth="1.5dp">
+
+                <ImageView
+                    android:id="@+id/userPicture"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp" />
+            </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.4"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:layout_marginLeft="15dp">
+
+            <TextView
+                android:id="@+id/conversationName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?attr/textAppearanceHeadline6"
+                android:textStyle="bold"
+                android:text="Nome Cognome"
+                />
+
+            <TextView
+                android:id="@+id/conversationUpdateDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?attr/textAppearanceBody2"
+                android:textColor="?android:attr/textColorSecondary"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+            <TextView
+                android:id="@+id/unreadMessages"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:textSize="12sp"
+                android:background="@drawable/circle"
+                android:textColor="@android:color/white"
+                android:gravity="center"
+                android:visibility="invisible"
+                />
+        </LinearLayout>
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

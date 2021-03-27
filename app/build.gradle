@@ -96,6 +96,8 @@ dependencies {
     implementation Libs.appcompat
     implementation Libs.activity
 
+    debugImplementation 'com.amitshekhar.android:debug-db:1.0.6'
+
     // aws amplify
     Libs.amplify.each { amplify -> implementation amplify }
 
@@ -115,6 +117,10 @@ dependencies {
 
     // coroutines
     implementation Libs.coroutines
+
+    // lifecycle
+    implementation Libs.lifecycle
+    implementation Libs.lifecycleService
 
     implementation Libs.viewpager
 

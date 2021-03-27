@@ -1,15 +1,15 @@
 package com.github.passit.robots.auth
 
 import androidx.lifecycle.Lifecycle
-import androidx.test.ext.junit.rules.ActivityScenarioRule
-import com.github.passit.ui.screens.auth.SignInActivity
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.intent.Intents.intended
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent
 import androidx.test.espresso.intent.rule.IntentsTestRule
+import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.ext.junit.rules.ActivityScenarioRule
 import com.github.passit.R
+import com.github.passit.ui.screens.auth.SignInActivity
 import com.github.passit.ui.screens.main.MainActivity
 import org.junit.Rule
 

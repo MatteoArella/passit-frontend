@@ -1,7 +1,7 @@
 package com.github.passit.ui.screens.auth
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.github.passit.databinding.ActivityResetPasswordBinding
 import dagger.hilt.android.AndroidEntryPoint
 

@@ -5,7 +5,7 @@ import cucumber.api.CucumberOptions
 @CucumberOptions(
     features = ["features" ],
     plugin = ["pretty"],
-    glue = ["it.uniroma1.macc.project.steps"],
+    glue = ["com.github.passit.steps"],
     tags = ["@ui, @smoke, @acceptance"]
 )
 @SuppressWarnings("unused")

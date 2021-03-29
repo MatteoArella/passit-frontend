@@ -1,5 +1,6 @@
 package com.github.passit.data.repository
 
+import android.util.Log
 import androidx.annotation.NonNull
 import androidx.paging.*
 import com.github.passit.data.datasource.local.InsertionLocalDataSource
@@ -43,6 +44,13 @@ class InsertionRepositoryImpl @Inject constructor(
             ),
             pagingSourceFactory = insertionsSourceFactory
         ).flow
+    }
+
+    override fun getInsertion(insertionId: String): Flow<Insertion> = flow {
+        val insertion = insertionRemoteDataSource.getInsertion(insertionId)
+        // Update the local data source after fetching from the remote one
+        insertionLocalDataSource.createInsertion(InsertionRemoteToLocalMapper.map(insertion))
+        emit(InsertionRemoteToEntityMapper.map(insertion))
     }
 
     companion object {

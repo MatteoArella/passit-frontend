@@ -87,4 +87,14 @@
     <string name="create_insertion_city_empty_error">City cannot be empty</string>
     <string name="create_insertion_state_empty_error">State cannot be empty</string>
     <string name="create_insertion_country_empty_error">Country cannot be empty</string>
+
+    <!-- SHOW INSERTION -->
+    <string name="show_insertion_back_button">Back</string>
+    <string name="show_insertion_title_placeholder">Insertion title</string>
+    <string name="show_insertion_location_placeholder">Insertion location</string>
+    <string name="show_insertion_tutor_name_placeholder">Tutor Name</string>
+    <string name="show_insertion_date_placeholder">Ins. Date</string>
+    <string name="show_insertion_location_format">%1$s, %2$s, %3s</string>
+    <string name="show_insertion_tutor_name_format">%1$s %2$s</string>
+
 </resources>

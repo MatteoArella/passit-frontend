@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -25,6 +26,7 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.util.*
 import com.github.passit.R
+import com.github.passit.ui.contracts.insertion.ShowInsertionContract
 import com.github.passit.ui.models.insertions.InsertionSearchView
 import com.github.passit.ui.view.ErrorAlert
 
@@ -33,11 +35,12 @@ class InsertionsListFragment : Fragment(), CoroutineScope by MainScope() {
 
     private var _binding: FragmentInsertionsListBinding? = null
     private val binding get() = _binding!!
+    private val showInsertion = registerForActivityResult(ShowInsertionContract()) { }
     private val createInsertion = registerForActivityResult(CreateInsertionContract()) {
-        // TODO: handle created insertion
+        // Launch fragment/activity to show insertion
         launch {
             it?.let { insertion ->
-                Alert(this@InsertionsListFragment.requireContext()).setTitle(insertion.title).setMessage(Gson().toJson(insertion)).show()
+                showInsertion.launch(insertion.id)
             }
         }
     }
@@ -66,7 +69,7 @@ class InsertionsListFragment : Fragment(), CoroutineScope by MainScope() {
             binding.searchCountryTextLayout.editText?.text = SpannableStringBuilder(search.country)
         }
 
-        insertionsAdapter = InsertionsAdapter { insertionView -> Log.i("insertions-frag", "clicked on item ${insertionView.id}") }
+        insertionsAdapter = InsertionsAdapter { insertionView -> showInsertion.launch(insertionView.id) }
         binding.insertionsRecyclerView.adapter = insertionsAdapter
 
         binding.createInsertionExtendedFab.setOnClickListener {

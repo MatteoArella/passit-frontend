@@ -1,5 +1,6 @@
 package com.github.passit.data.datasource.remote
 
+import android.util.Log
 import com.amplifyframework.api.aws.GsonVariablesSerializer
 import com.amplifyframework.api.graphql.GraphQLRequest
 import com.amplifyframework.api.graphql.SimpleGraphQLRequest
@@ -27,6 +28,16 @@ class InsertionRemoteDataSource @Inject constructor() {
             Amplify.API.query(
                 getInsertionsRequest(subject, city, state, country, limit, pageNum),
                 { response -> continuation.resume(response.data) },
+                { error -> continuation.resumeWithException(error) }
+            )
+        }
+    }
+
+    suspend fun getInsertion(insertionId: String): InsertionRemoteData {
+        return suspendCancellableCoroutine { continuation ->
+            Amplify.API.query(
+                getInsertionRequest(insertionId),
+                { response -> Log.i("insertions", "$response"); continuation.resume(response.data) },
                 { error -> continuation.resumeWithException(error) }
             )
         }
@@ -64,6 +75,39 @@ class InsertionRemoteDataSource @Inject constructor() {
             document,
             mapOf("subject" to subject, "city" to city, "state" to state, "country" to country, "first" to limit, "after" to pageNum),
             InsertionPageRemoteData::class.java,
+            GsonVariablesSerializer()
+        )
+    }
+
+    private fun getInsertionRequest(insertionId: String): GraphQLRequest<InsertionRemoteData> {
+        val document = (
+            "query GetInsertion(\$insertionId: ID!) { "
+                + "getInsertion(insertion: \$insertionId) { "
+                    + "id "
+                    + "createdAt "
+                    + "description "
+                    + "subject "
+                    + "title "
+                    + "location { "
+                        + "city "
+                        + "country "
+                        + "state "
+                    + "} "
+                    + "updatedAt "
+                    + "tutor { "
+                        + "familyName "
+                        + "givenName "
+                        + "picture "
+                        + "id "
+                    + "} "
+                + "} "
+            + "} "
+        )
+
+        return SimpleGraphQLRequest(
+            document,
+            mapOf("insertionId" to insertionId),
+            InsertionRemoteData::class.java,
             GsonVariablesSerializer()
         )
     }

@@ -10,4 +10,6 @@ interface InsertionRepository {
                                 @NonNull city: String, @NonNull state: String, @NonNull country: String): Flow<Insertion>
 
     fun getInsertions(@NonNull subject: String, city: String, state: String, country: String): Flow<PagingData<Insertion>>
+
+    fun getInsertion(insertionId: String): Flow<Insertion>
 }

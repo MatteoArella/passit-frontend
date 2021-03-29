@@ -46,6 +46,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
         <activity android:name=".ui.screens.insertions.CreateInsertionActivity" />
+        <activity android:name=".ui.screens.insertions.ShowInsertionActivity" />
 
         <meta-data
             android:name="preloaded_fonts"

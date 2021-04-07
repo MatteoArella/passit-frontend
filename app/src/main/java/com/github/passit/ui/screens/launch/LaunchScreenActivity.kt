@@ -4,8 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import com.github.passit.R
 import com.github.passit.ui.models.auth.AuthViewModel
+import androidx.lifecycle.lifecycleScope
 import com.github.passit.ui.screens.auth.SignInActivity
 import com.github.passit.ui.screens.main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -13,7 +13,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class LaunchScreenActivity : AppCompatActivity(), CoroutineScope by MainScope() {
@@ -23,10 +22,11 @@ class LaunchScreenActivity : AppCompatActivity(), CoroutineScope by MainScope() 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.activity_launch_screen)
+        val view = LaunchScreenView(this)
+        setContentView(view)
 
-        launch {
-            authModel.fetchAuthSession().catch{}.collect { authSession ->
+        lifecycleScope.launchWhenStarted {
+            authModel.fetchAuthSession().catch {}.collect { authSession ->
                 if (authSession.isSignedIn) {
                     startActivity(Intent(this@LaunchScreenActivity, MainActivity::class.java))
                     this@LaunchScreenActivity.finish()

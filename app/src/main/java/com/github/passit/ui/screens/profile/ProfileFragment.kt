@@ -24,6 +24,7 @@ import androidx.lifecycle.lifecycleScope
 import com.github.passit.BuildConfig
 import com.github.passit.R
 import com.github.passit.databinding.FragmentProfileBinding
+import com.github.passit.domain.model.auth.UploadResult
 import com.github.passit.domain.model.auth.User
 import com.github.passit.ui.contracts.insertion.ShowInsertionContract
 import com.github.passit.ui.models.auth.AuthViewModel
@@ -38,12 +39,14 @@ import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
+import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import com.yalantis.ucrop.UCrop
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import java.io.File
+import java.lang.Exception
 import java.util.*
 
 
@@ -97,8 +100,23 @@ class ProfileFragment : Fragment(), CoroutineScope by MainScope() {
             launch {
                 UCrop.getOutput(data!!)?.toFile()?.let { pictureFile ->
                     authModel.changeUserPicture(pictureFile)
+                        .onStart {
+                            binding.pictureProgressIndicator.visibility = View.INVISIBLE
+                            binding.pictureProgressIndicator.isIndeterminate = false
+                            binding.pictureProgressIndicator.visibility = View.VISIBLE
+                        }
                         .catch { e -> Log.i("changePicture", "$e") }
-                        .collect()
+                        .onCompletion {
+                            binding.pictureProgressIndicator.visibility = View.INVISIBLE
+                            binding.pictureProgressIndicator.isIndeterminate = true
+                            binding.pictureProgressIndicator.visibility = View.VISIBLE
+                        }
+                        .collectIndexed { _, uploadResult ->
+                            when (uploadResult) {
+                                is UploadResult.UploadProgress -> { binding.pictureProgressIndicator.progress = (uploadResult.progress * 100).toInt() }
+                                else -> {}
+                            }
+                        }
                 }
             }
         } else if (resultCode == UCrop.RESULT_ERROR) {
@@ -108,7 +126,6 @@ class ProfileFragment : Fragment(), CoroutineScope by MainScope() {
             ).show()
         }
     }
-
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -281,7 +298,15 @@ class ProfileFragment : Fragment(), CoroutineScope by MainScope() {
                 binding.phoneTextField.visibility = View.VISIBLE
             }
             it.picture?.let { picture ->
-                Picasso.get().load(picture.toURI().toString()).into(binding.profilePicture)
+                binding.pictureProgressIndicator.visibility = View.VISIBLE
+                Picasso.get().load(picture.toURI().toString()).placeholder(R.drawable.ic_person).into(binding.profilePicture, object: Callback {
+                    override fun onSuccess() {
+                        binding.pictureProgressIndicator.visibility = View.INVISIBLE
+                    }
+                    override fun onError(e: Exception?) {
+                        binding.pictureProgressIndicator.visibility = View.INVISIBLE
+                    }
+                })
             }
         }
     }

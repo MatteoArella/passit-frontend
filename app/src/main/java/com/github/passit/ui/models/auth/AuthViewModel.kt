@@ -13,7 +13,6 @@ import com.github.passit.domain.usecase.auth.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 import java.io.File
-import java.net.URL
 
 class AuthViewModel @ViewModelInject constructor(
     identityRepository: IdentityRepository,
@@ -68,7 +67,7 @@ class AuthViewModel @ViewModelInject constructor(
     fun confirmResetPassword(@NonNull newPassword: String, @NonNull confirmationCode: String): Flow<Unit> =
             confirmResetPassword(ConfirmResetPassword.Params(newPassword, confirmationCode))
 
-    fun changeUserPicture(@NonNull picture: File): Flow<URL> =
+    fun changeUserPicture(@NonNull picture: File): Flow<UploadResult> =
             changeUserPicture(ChangeUserPicture.Params(picture))
 
     fun signOut(): Flow<Unit> = signOut(SignOut.Params())

@@ -33,37 +33,60 @@
                 android:padding="30dp"
                 android:elevation="40dp"
                 android:clipToPadding="false"
+                android:clipChildren="false"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/changeProfilePictureCard"
+                <FrameLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:cardCornerRadius="54dp"
-                    app:cardElevation="50dp"
                     app:strokeColor="@color/colorSecondaryDark"
                     app:strokeWidth="4dp">
-                    <ImageView
-                        android:id="@+id/profilePicture"
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/changeProfilePictureCard"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
-                        android:layout_margin="4dp"
-                        android:src="@drawable/ic_person_outline_black_24dp"
-                        android:contentDescription="@string/profile_user_picture_content_description" />
+                        android:layout_gravity="center"
+                        app:cardCornerRadius="54dp"
+                        app:cardElevation="50dp"
+                        app:strokeColor="@color/colorSecondaryLight"
+                        app:strokeWidth="4dp">
 
-                    <ImageView
-                        android:id="@+id/plusProfilePictureImageView"
-                        android:alpha="0.8"
-                        android:background="@color/colorSecondaryDark"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:layout_margin="4dp"
-                        android:src="@drawable/ic_add_white_24dp"
-                        android:visibility="gone"
-                        android:contentDescription="TODO" />
-                </com.google.android.material.card.MaterialCardView>
+                        <ImageView
+                            android:id="@+id/profilePicture"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/ic_person"
+                            android:contentDescription="@string/profile_user_picture_content_description" />
+
+                        <ImageView
+                            android:id="@+id/plusProfilePictureImageView"
+                            android:alpha="0.8"
+                            android:background="@color/colorSecondaryDark"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/ic_add_white_24dp"
+                            android:visibility="gone"
+                            android:contentDescription="TODO" />
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.progressindicator.CircularProgressIndicator
+                        android:id="@+id/pictureProgressIndicator"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:indeterminate="true"
+                        app:showAnimationBehavior="outward"
+                        app:indicatorSize="100dp"
+                        app:indicatorInset="0dp"
+                        app:indicatorColor="@color/colorPrimaryLight"
+                        android:elevation="50dp"
+                        android:visibility="invisible"
+                        />
+
+                </FrameLayout>
 
                 <TextView
                     android:id="@+id/userName"

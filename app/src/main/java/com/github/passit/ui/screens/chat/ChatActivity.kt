@@ -63,7 +63,7 @@ class ChatActivity: AppCompatActivity(), CoroutineScope by MainScope() {
             conversation.associated?.givenName?.capitalize(Locale.getDefault()),
             conversation.associated?.familyName?.capitalize(Locale.getDefault())
         )
-        Picasso.get().load(conversation.associated?.picture?.toURI().toString()).into(binding.tutorPicture)
+        Picasso.get().load(conversation.associated?.picture?.toURI().toString()).placeholder(R.drawable.ic_person).into(binding.tutorPicture)
 
         binding.chatToolbar.setNavigationOnClickListener {
             finish()

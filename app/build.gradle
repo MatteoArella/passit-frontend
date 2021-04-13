@@ -162,5 +162,4 @@ dependencies {
 amplify {
     backendStackName "AppStack"
     amplifyTemplate file("amplifyconfiguration.mustache")
-    awsTemplate file("awsconfiguration.mustache")
 }

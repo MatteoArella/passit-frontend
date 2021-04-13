@@ -21,33 +21,19 @@ open class ConfigureAmplifyTask : DefaultTask() {
     @InputFile
     val amplifyTemplate: Property<File> = project.objects.property(File::class.java)
 
-    @InputFile
-    val awsTemplate: Property<File> = project.objects.property(File::class.java)
-
     @OutputFile
     val amplifyConfigFile: Property<File> = project.objects.property(File::class.java)
-
-    @OutputFile
-    val awsConfigFile: Property<File> = project.objects.property(File::class.java)
 
     @TaskAction
     @Throws(IOException::class)
     fun configureAmplify() {
         logger.info("writing amplify configurations")
         val mf: MustacheFactory = DefaultMustacheFactory()
-        var mustache = mf.compile(
+        val mustache = mf.compile(
             BufferedReader(FileReader(amplifyTemplate.get())),
             "amplifyconfiguration"
         )
         FileWriter(amplifyConfigFile.get()).use { writer ->
-            mustache.execute(writer, stackOutputs.get())
-            writer.flush()
-        }
-        mustache = mf.compile(
-            BufferedReader(FileReader(awsTemplate.get())),
-            "awsconfiguration"
-        )
-        FileWriter(awsConfigFile.get()).use { writer ->
             mustache.execute(writer, stackOutputs.get())
             writer.flush()
         }

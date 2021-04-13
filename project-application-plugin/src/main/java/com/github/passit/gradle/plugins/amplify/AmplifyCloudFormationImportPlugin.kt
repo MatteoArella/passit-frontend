@@ -34,9 +34,7 @@ open class AmplifyCloudFormationImportPlugin : Plugin<Project> {
                 task.projectDirectory.set(extension.projectDirectory)
                 task.stackOutputs.set(cloudFormationImportTask.get().stackOutputs)
                 task.amplifyTemplate.set(extension.amplifyTemplate)
-                task.awsTemplate.set(extension.awsTemplate)
                 task.amplifyConfigFile.set(extension.amplifyConfigFile)
-                task.awsConfigFile.set(extension.awsConfigFile)
                 task.dependsOn(cloudFormationImportTask)
             }
 

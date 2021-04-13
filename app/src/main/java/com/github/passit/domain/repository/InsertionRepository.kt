@@ -11,6 +11,8 @@ interface InsertionRepository {
 
     fun getInsertions(@NonNull subject: String, city: String, state: String, country: String): Flow<PagingData<Insertion>>
 
+    fun getUserInsertions(@NonNull userID: String): Flow<PagingData<Insertion>>
+
     fun getInsertion(insertionId: String): Flow<Insertion>
 
     fun deleteInsertions(): Flow<Unit>

@@ -6,6 +6,7 @@ import com.github.passit.data.datasource.local.db.ApplicationDatabase
 import com.github.passit.data.datasource.local.model.InsertionAndTutorLocalData
 import com.github.passit.data.datasource.local.model.InsertionLocalData
 import com.github.passit.data.datasource.local.model.InsertionRemoteKeys
+import com.github.passit.data.datasource.local.model.UserInsertionsRemoteKeys
 import javax.inject.Inject
 
 class InsertionLocalDataSource @Inject constructor(
@@ -27,6 +28,16 @@ class InsertionLocalDataSource @Inject constructor(
 
     suspend fun getRemoteKeyByInsertionId(insertionId: String): InsertionRemoteKeys? =
             applicationDatabase.insertionRemoteKeysDao().getRemoteKeyByInsertionId(insertionId)
+
+    fun getUserInsertions(userID: String): DataSource.Factory<Int, InsertionAndTutorLocalData>
+            = applicationDatabase.insertionDao().getInsertionsByTutor("%$userID%")
+
+    suspend fun insertAllUserInsertionsRemoteKeys(insertionRemoteKeys: List<UserInsertionsRemoteKeys>) =
+            applicationDatabase.userInsertionsRemoteKeysDao().insertAll(insertionRemoteKeys)
+
+    suspend fun getRemoteKeyByUserInsertionId(insertionId: String): UserInsertionsRemoteKeys? =
+            applicationDatabase.userInsertionsRemoteKeysDao().getRemoteKeyByInsertionId(insertionId)
+
 
     suspend fun cleanInsertionsRemoteKeys() = applicationDatabase.insertionRemoteKeysDao().cleanRemoteKeys()
 

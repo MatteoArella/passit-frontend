@@ -14,8 +14,6 @@ open class AmplifyCloudFormationImportExtension @Inject constructor(
     val projectDirectory: DirectoryProperty
     val amplifyConfigFile: Property<File>
     val amplifyTemplate: Property<File>
-    val awsConfigFile: Property<File>
-    val awsTemplate: Property<File>
     val backendStackName: Property<String>
 
     init {
@@ -24,8 +22,6 @@ open class AmplifyCloudFormationImportExtension @Inject constructor(
         this.projectDirectory = objectFactory.directoryProperty().apply { set(projectLayout.projectDirectory) }
         this.amplifyConfigFile = objectFactory.property(File::class.java).apply { set(projectLayout.projectDirectory.file(String.format("%s/amplifyconfiguration.json", configFilesPrefixDir)).asFile) }
         this.amplifyTemplate = objectFactory.property(File::class.java)
-        this.awsConfigFile = objectFactory.property(File::class.java).apply { set(projectLayout.projectDirectory.file(String.format("%s/awsconfiguration.json", configFilesPrefixDir)).asFile) }
-        this.awsTemplate = objectFactory.property(File::class.java)
         this.backendStackName = objectFactory.property(String::class.java)
     }
 
@@ -43,22 +39,6 @@ open class AmplifyCloudFormationImportExtension @Inject constructor(
 
     fun amplifyTemplate(file: File) {
         this.amplifyTemplate.set(file)
-    }
-
-    fun setAwsConfigFile(file: File) {
-        this.awsConfigFile(file)
-    }
-
-    fun awsConfigFile(file: File) {
-        this.awsConfigFile.set(file)
-    }
-
-    fun setAwsTemplate(file: File) {
-        this.awsTemplate(file)
-    }
-
-    fun awsTemplate(file: File) {
-        this.awsTemplate.set(file)
     }
 
     fun setBackendStackName(backendStackName: String) {

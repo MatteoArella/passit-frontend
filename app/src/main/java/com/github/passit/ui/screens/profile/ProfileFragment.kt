@@ -28,7 +28,6 @@ import com.github.passit.ui.screens.auth.SignInActivity
 import com.github.passit.ui.services.ChatService
 import com.github.passit.ui.screens.list.InsertionsAdapter
 import com.github.passit.ui.view.ErrorAlert
-import com.google.gson.Gson
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
@@ -75,7 +74,7 @@ class ProfileFragment : Fragment(), CoroutineScope by MainScope() {
 
     private fun cropBitmap(pictureUri: Uri?) {
         pictureUri?.let { uri ->
-            val destUri = getTempUri()
+            val destUri = Uri.fromFile(getPictureTempFile())
 
             val options = UCrop.Options().apply {
                 setCompressionFormat(CompressFormat.JPEG)
@@ -97,19 +96,21 @@ class ProfileFragment : Fragment(), CoroutineScope by MainScope() {
                 UCrop.getOutput(data!!)?.toFile()?.let { pictureFile ->
                     authModel.changeUserPicture(pictureFile)
                         .catch { e -> Log.i("changePicture", "$e") }
-                        .collect { Log.i("upload", Gson().toJson(it)) }
+                        .collect()
                 }
             }
         } else if (resultCode == UCrop.RESULT_ERROR) {
             val cropError = UCrop.getError(data!!)
-            ErrorAlert(requireActivity()).setTitle(getString(R.string.signin_error_alert_title)).setMessage(cropError?.localizedMessage?.toString()).show()
+            ErrorAlert(requireActivity()).setTitle(getString(R.string.change_picture_error_alert_title)).setMessage(
+                cropError?.localizedMessage?.toString()
+            ).show()
         }
     }
 
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
         return binding.root
@@ -153,20 +154,24 @@ class ProfileFragment : Fragment(), CoroutineScope by MainScope() {
         binding.shootProfilePicBtn.setOnClickListener {
             launch {
                 Dexter.withContext(context)
-                    .withPermissions(listOf(Manifest.permission.CAMERA,
-                        Manifest.permission.READ_EXTERNAL_STORAGE,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE))
+                    .withPermissions(
+                        listOf(
+                            Manifest.permission.CAMERA,
+                            Manifest.permission.READ_EXTERNAL_STORAGE,
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE
+                        )
+                    )
                     .withListener(object : MultiplePermissionsListener {
                         override fun onPermissionsChecked(response: MultiplePermissionsReport) {
                             if (response.areAllPermissionsGranted()) {
-                                pictureUri = getTempUri()
+                                pictureUri = getUriFromFile(getPictureTempFile())
                                 takePicture.launch(pictureUri)
                             }
                         }
 
                         override fun onPermissionRationaleShouldBeShown(
-                                permission: MutableList<PermissionRequest>?,
-                                token: PermissionToken?
+                            permission: MutableList<PermissionRequest>?,
+                            token: PermissionToken?
                         ) {
                             token?.continuePermissionRequest()
                         }
@@ -178,8 +183,12 @@ class ProfileFragment : Fragment(), CoroutineScope by MainScope() {
         binding.uploadProfilePicBtn.setOnClickListener {
             launch {
                 Dexter.withContext(context)
-                    .withPermissions(listOf(Manifest.permission.READ_EXTERNAL_STORAGE,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE))
+                    .withPermissions(
+                        listOf(
+                            Manifest.permission.READ_EXTERNAL_STORAGE,
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE
+                        )
+                    )
                     .withListener(object : MultiplePermissionsListener {
                         override fun onPermissionsChecked(response: MultiplePermissionsReport) {
                             if (response.areAllPermissionsGranted()) {
@@ -188,8 +197,8 @@ class ProfileFragment : Fragment(), CoroutineScope by MainScope() {
                         }
 
                         override fun onPermissionRationaleShouldBeShown(
-                                permission: MutableList<PermissionRequest>?,
-                                token: PermissionToken?
+                            permission: MutableList<PermissionRequest>?,
+                            token: PermissionToken?
                         ) {
                             token?.continuePermissionRequest()
                         }
@@ -216,18 +225,25 @@ class ProfileFragment : Fragment(), CoroutineScope by MainScope() {
         }*/
     }
 
-    private fun getTempUri(): Uri {
-        val tmpFile = File.createTempFile("IMG_", null, requireActivity().filesDir)
-        return FileProvider.getUriForFile(requireActivity().applicationContext, "${BuildConfig.APPLICATION_ID}.provider", tmpFile)
+    private fun getPictureTempFile(): File {
+        return File.createTempFile("IMG_", ".jpg", requireActivity().filesDir)
+    }
+
+    private fun getUriFromFile(file: File): Uri {
+        return FileProvider.getUriForFile(
+                requireActivity(),
+                "${BuildConfig.APPLICATION_ID}.provider",
+                file
+        )
     }
 
     private fun showUserProfile(profile: User?) {
         profile?.let {
             binding.emailTextField.text = profile.email
             binding.userName.text = getString(
-                    R.string.profile_username,
-                    it.givenName.capitalize(Locale.getDefault()),
-                    it.familyName.capitalize(Locale.getDefault())
+                R.string.profile_username,
+                it.givenName.capitalize(Locale.getDefault()),
+                it.familyName.capitalize(Locale.getDefault())
             )
             it.phoneNumber?.let { phone ->
                 binding.phoneTextField.text = phone

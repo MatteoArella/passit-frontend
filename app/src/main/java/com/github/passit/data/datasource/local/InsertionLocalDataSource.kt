@@ -30,7 +30,7 @@ class InsertionLocalDataSource @Inject constructor(
             applicationDatabase.insertionRemoteKeysDao().getRemoteKeyByInsertionId(insertionId)
 
     fun getUserInsertions(userID: String): DataSource.Factory<Int, InsertionAndTutorLocalData>
-            = applicationDatabase.insertionDao().getInsertionsByTutor("%$userID%")
+            = applicationDatabase.insertionDao().getInsertionsByTutor(userID)
 
     suspend fun insertAllUserInsertionsRemoteKeys(insertionRemoteKeys: List<UserInsertionsRemoteKeys>) =
             applicationDatabase.userInsertionsRemoteKeysDao().insertAll(insertionRemoteKeys)

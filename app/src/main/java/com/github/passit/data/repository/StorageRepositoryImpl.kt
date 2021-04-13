@@ -1,6 +1,8 @@
 package com.github.passit.data.repository
 
 import com.amplifyframework.core.Amplify
+import com.amplifyframework.storage.options.StorageUploadFileOptions
+import com.amplifyframework.storage.options.StorageUploadInputStreamOptions
 import com.github.passit.data.datasource.remote.model.UploadResultRemoteData
 import com.github.passit.domain.repository.StorageRepository
 import kotlinx.coroutines.channels.awaitClose
@@ -17,10 +19,12 @@ class StorageRepositoryImpl @Inject constructor() : StorageRepository {
         val upload = Amplify.Storage.uploadInputStream(
             key,
             inputStream,
+            StorageUploadInputStreamOptions.defaultInstance(),
+            { progress -> offer(UploadResultRemoteData.UploadProgress(progress.fractionCompleted)) },
             {
                 Amplify.Storage.getUrl(
                     key,
-                    { result -> offer(UploadResultRemoteData(URL("${result.url.protocol}://${result.url.host}/public/$key"))); close() },
+                    { result -> offer(UploadResultRemoteData.UploadResult(URL("${result.url.protocol}://${result.url.host}/public/$key"))); close() },
                     { close(it) }
                 )
             },
@@ -33,10 +37,12 @@ class StorageRepositoryImpl @Inject constructor() : StorageRepository {
         val upload = Amplify.Storage.uploadFile(
             key,
             file,
+            StorageUploadFileOptions.defaultInstance(),
+            { progress -> offer(UploadResultRemoteData.UploadProgress(progress.fractionCompleted)) },
             {
                 Amplify.Storage.getUrl(
                     key,
-                    { result -> offer(UploadResultRemoteData(URL("${result.url.protocol}://${result.url.host}/public/$key"))); close() },
+                    { result -> offer(UploadResultRemoteData.UploadResult(URL("${result.url.protocol}://${result.url.host}/public/$key"))); close() },
                     { close(it) }
                 )
             },

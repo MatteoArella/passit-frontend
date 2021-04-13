@@ -25,7 +25,7 @@ class ConversationsAdapter @Inject constructor(private val onClick: (Conversatio
                     conversationView.associated?.givenName?.capitalize(Locale.getDefault()),
                     conversationView.associated?.familyName?.capitalize(Locale.getDefault())
             )
-            Picasso.get().load(conversationView.associated?.picture?.toURI().toString()).into(binding.userPicture)
+            Picasso.get().load(conversationView.associated?.picture?.toURI().toString()).placeholder(R.drawable.ic_person).into(binding.userPicture)
             conversationView.unread?.let {
                 binding.unreadMessages.text = "$it"
                 binding.unreadMessages.visibility = View.VISIBLE

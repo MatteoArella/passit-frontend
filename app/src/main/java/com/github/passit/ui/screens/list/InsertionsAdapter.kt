@@ -27,7 +27,7 @@ class InsertionsAdapter @Inject constructor(private val onClick: (InsertionView)
                     insertionView.tutor?.givenName?.capitalize(Locale.getDefault()),
                     insertionView.tutor?.familyName?.capitalize(Locale.getDefault())
             )
-            Picasso.get().load(insertionView.tutor?.picture?.toURI().toString()).into(binding.tutorPicture)
+            Picasso.get().load(insertionView.tutor?.picture?.toURI().toString()).placeholder(R.drawable.ic_person).into(binding.tutorPicture)
             itemView.setOnClickListener {
                 onClick(insertionView)
             }

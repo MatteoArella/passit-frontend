@@ -48,7 +48,7 @@ class ShowInsertionActivity: AppCompatActivity(), CoroutineScope by MainScope() 
         binding.tutorName.text = getString(R.string.show_insertion_tutor_name_format, insertion.tutor?.givenName ?: "", insertion.tutor?.familyName ?: "")
         binding.insertionDescription.text = insertion.description
         insertion.tutor?.picture?.let { picture ->
-            Picasso.get().load(picture.toURI().toString()).into(binding.tutorPicture)
+            Picasso.get().load(picture.toURI().toString()).placeholder(R.drawable.ic_person).into(binding.tutorPicture)
         }
         if (insertion.status != InsertionStatus.CLOSED) {
             binding.insertionStatus.visibility = View.GONE

@@ -1,30 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimaryText"
+    android:fitsSystemWindows="true"
     tools:context=".ui.screens.profile.ProfileFragment">
 
-     <!--<ScrollView
-         android:layout_width="match_parent"
-         android:layout_height="match_parent"
-         app:layout_constraintBottom_toBottomOf="parent"
-         app:layout_constraintEnd_toEndOf="parent"
-         app:layout_constraintStart_toStartOf="parent"
-         app:layout_constraintTop_toTopOf="parent">
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true">
 
-        <LinearLayout
-            android:id="@+id/coverView"
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/toolbar_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:clipToPadding="false"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"> -->
+            android:layout_height="wrap_content"
+            android:minHeight="20dp"
+            android:fitsSystemWindows="true"
+            app:contentScrim="@color/colorSecondary"
+            android:background="@color/colorSecondaryLight"
+            app:layout_scrollFlags="scroll|snap">
 
             <LinearLayout
                 android:id="@+id/profileSection"
@@ -48,27 +45,49 @@
                     app:cardElevation="50dp"
                     app:strokeColor="@color/colorSecondaryDark"
                     app:strokeWidth="4dp">
+                <ImageView
+                    android:id="@+id/profilePicture"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_margin="4dp"
+                    android:src="@drawable/ic_person_outline_black_24dp"
+                    android:contentDescription="TODO" />
 
-                    <ImageView
-                        android:id="@+id/profilePicture"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:layout_margin="4dp"
-                        android:src="@drawable/ic_person_outline_black_24dp"
-                        android:contentDescription="TODO" />
+                <ImageView
+                    android:id="@+id/plusProfilePictureImageView"
+                    android:alpha="0.8"
+                    android:background="@color/colorSecondaryDark"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_margin="4dp"
+                    android:src="@drawable/ic_add_white_24dp"
+                    android:visibility="gone"
+                    android:contentDescription="TODO" />
+            </com.google.android.material.card.MaterialCardView>
 
-                    <ImageView
-                        android:id="@+id/plusProfilePictureImageView"
-                        android:alpha="0.8"
-                        android:background="@color/colorSecondaryDark"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:layout_margin="4dp"
-                        android:src="@drawable/ic_add_white_24dp"
-                        android:visibility="gone"
-                        android:contentDescription="TODO" />
+            <LinearLayout
+                android:id="@+id/profilePicButtons"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/whiteSpace"
+                >
 
-                </com.google.android.material.card.MaterialCardView>
+                <Button
+                    android:id="@+id/uploadProfilePicBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="50"
+                    android:text="Upload new profile picture" />
+
+                <Button
+                    android:id="@+id/shootProfilePicBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="50"
+                    android:text="Shoot new profile picture" />
+            </LinearLayout>
 
                 <TextView
                     android:id="@+id/userName"
@@ -78,56 +97,6 @@
                     android:textColor="@color/colorPrimaryText"
                     android:text=""
                     android:textSize="20sp"/>
-
-            </LinearLayout>
-
-            <com.google.android.material.progressindicator.LinearProgressIndicator
-                android:id="@+id/progressIndicator"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:indeterminate="true"
-                android:visibility="invisible"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/profileSection" />
-
-            <LinearLayout
-                android:id="@+id/whiteSpace"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="center"
-                android:padding="30dp"
-                android:clipToPadding="false"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-
-                app:layout_constraintTop_toBottomOf="@id/progressIndicator" >
-                <!-- app:layout_constraintBottom_toTopOf="@id/signOutBtn" -->
-
-                <LinearLayout
-                    android:id="@+id/profilePicButtons"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/whiteSpace"
-                    >
-
-                    <Button
-                        android:id="@+id/uploadProfilePicBtn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="50"
-                        android:text="Upload new profile picture" />
-
-                    <Button
-                        android:id="@+id/shootProfilePicBtn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="50"
-                        android:text="Shoot new profile picture" />
-                </LinearLayout>
 
                 <TextView
                     android:id="@+id/emailTextField"
@@ -147,52 +116,46 @@
                     app:layout_constraintTop_toBottomOf="@+id/emailTextField"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent" />
-
-                <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-                    android:id="@+id/refreshLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                    app:layout_constraintTop_toBottomOf="@+id/phoneTextField"
-                    app:layout_constraintBottom_toTopOf="@+id/signOutBtn"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent" >
-                   <!-- <androidx.core.widget.NestedScrollView
-                        android:id="@+id/scrollView"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fillViewport="true"> -->
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
-                            <androidx.recyclerview.widget.RecyclerView
-                                android:id="@+id/insertionsRecyclerView"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:descendantFocusability="blocksDescendants"
-                                android:fitsSystemWindows="false"
-                                android:focusableInTouchMode="true"
-                                app:layoutManager="LinearLayoutManager"
-                                android:nestedScrollingEnabled="false" />
-
-                            <include android:id="@+id/emptyLayout" layout="@layout/empty_layout" />
-                        </LinearLayout>
-<!--                    </androidx.core.widget.NestedScrollView> -->
-                </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
             </LinearLayout>
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/signOutBtn"
-                android:layout_gravity="bottom"
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/refreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:layout_constraintTop_toBottomOf="@+id/phoneTextField"
+        app:layout_constraintBottom_toTopOf="@+id/signOutBtn"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/insertionsRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="sign out"
-                android:paddingBottom="20dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent" />
+                android:descendantFocusability="blocksDescendants"
+                android:fitsSystemWindows="false"
+                android:focusableInTouchMode="true"
+                app:layoutManager="LinearLayoutManager"
+                android:nestedScrollingEnabled="true" />
 
-    <!--   </LinearLayout>
-    </ScrollView>-->
+            <include android:id="@+id/emptyLayout" layout="@layout/empty_layout" />
+        </LinearLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/signOutBtn"
+        android:layout_gravity="bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="sign out"
+        android:paddingBottom="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

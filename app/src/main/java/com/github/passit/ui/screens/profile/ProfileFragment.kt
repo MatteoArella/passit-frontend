@@ -159,9 +159,9 @@ class ProfileFragment : Fragment(), CoroutineScope by MainScope() {
         binding.signOutBtn.setOnClickListener {
             lifecycleScope.launch {
                 authModel.signOut().onStart {
-                    binding.progressIndicator.visibility = View.VISIBLE
+                    //binding.progressIndicator.visibility = View.VISIBLE
                 }.onCompletion {
-                    binding.progressIndicator.visibility = View.INVISIBLE
+                    // binding.progressIndicator.visibility = View.INVISIBLE
                     // stop chat service
                     requireActivity().let { it.stopService(Intent(it, ChatService::class.java)) }
                     startActivity(Intent(context, SignInActivity::class.java))

@@ -13,7 +13,6 @@ import android.os.Build
 import android.os.IBinder
 import android.os.PowerManager
 import android.util.Log
-import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.lifecycleScope
@@ -87,18 +86,19 @@ class ChatService: LifecycleService() {
     override fun onDestroy() {
         super.onDestroy()
         isServiceStarted = false
+        stopService()
         // broadcast service restart intent
         Intent().apply {
             action = BROADCAST_SERVICE_RESTART
             sendBroadcast(this)
         }
-        Toast.makeText(this, "Service destroyed", Toast.LENGTH_SHORT).show()
+        Log.i("chat-service", "Service destroyed")
     }
 
     private fun startService() {
         if (isServiceStarted) return
         isServiceStarted = true
-        Toast.makeText(this, "Service started", Toast.LENGTH_SHORT).show()
+        Log.i("chat-service", "Service started")
 
         // we need this lock so our service gets not affected by Doze Mode
         wakeLock =

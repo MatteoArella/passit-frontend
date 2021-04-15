@@ -7,6 +7,8 @@ import com.amplifyframework.api.graphql.SimpleGraphQLRequest
 import com.amplifyframework.core.Amplify
 import com.github.passit.data.datasource.remote.model.InsertionPageRemoteData
 import com.github.passit.data.datasource.remote.model.InsertionRemoteData
+import com.github.passit.data.datasource.remote.model.LocationRemoteData
+import com.github.passit.domain.model.InsertionStatus
 import kotlinx.coroutines.suspendCancellableCoroutine
 import javax.inject.Inject
 import kotlin.coroutines.resume
@@ -49,6 +51,17 @@ class InsertionRemoteDataSource @Inject constructor() {
                 getInsertionRequest(insertionId),
                 { response -> Log.i("insertions", "$response"); continuation.resume(response.data) },
                 { error -> continuation.resumeWithException(error) }
+            )
+        }
+    }
+
+    suspend fun updateInsertion(insertionId: String, status: InsertionStatus?, title: String?, description: String?, subject: String?,
+                               location: LocationRemoteData?): InsertionRemoteData {
+        return suspendCancellableCoroutine { continuation ->
+            Amplify.API.mutate(
+                    updateInsertionRequest(insertionId, status, title, description, subject, location),
+                    { response -> continuation.resume(response.data) },
+                    { error -> continuation.resumeWithException(error) }
             )
         }
     }
@@ -97,6 +110,7 @@ class InsertionRemoteDataSource @Inject constructor() {
                     + "createdAt "
                     + "description "
                     + "subject "
+                    + "status "
                     + "title "
                     + "location { "
                         + "city "
@@ -191,6 +205,40 @@ class InsertionRemoteDataSource @Inject constructor() {
                 "city" to city, "state" to state, "country" to country),
             InsertionRemoteData::class.java,
             GsonVariablesSerializer()
+        )
+    }
+
+    private fun updateInsertionRequest(insertionId: String, status: InsertionStatus?, title: String?, description: String?, subject: String?,
+                                       location: LocationRemoteData?): GraphQLRequest<InsertionRemoteData> {
+        val document = (
+                "mutation UpdateInsertion(\$insertionId: ID!, \$status: InsertionStatus, \$title: String, \$description: String, \$subject: String, \$location: LocationInput) { "
+                    + "updateInsertion(insertion: {id: \$insertionId, status: \$status, title: \$title, description: \$description, subject: \$subject, location: \$location}) { "
+                        + "id "
+                        + "title "
+                        + "description "
+                        + "subject "
+                        + "status "
+                        + "tutor { "
+                            + "id "
+                            + "familyName "
+                            + "givenName "
+                            + "picture "
+                        + "} "
+                        + "location { "
+                            + "city "
+                            + "state "
+                            + "country "
+                        + "} "
+                        + "createdAt "
+                        + "updatedAt "
+                    + "} "
+                + "}")
+        return SimpleGraphQLRequest(
+                document,
+                mapOf("insertionId" to insertionId, "status" to status?.status, "title" to title, "description" to description, "subject" to subject,
+                        "location" to location),
+                InsertionRemoteData::class.java,
+                GsonVariablesSerializer()
         )
     }
 }

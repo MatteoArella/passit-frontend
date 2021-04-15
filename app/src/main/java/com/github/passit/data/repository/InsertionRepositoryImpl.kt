@@ -9,10 +9,12 @@ import com.github.passit.data.datasource.local.InsertionLocalDataSource
 import com.github.passit.data.datasource.remote.InsertionRemoteDataSource
 import com.github.passit.data.datasource.remote.InsertionRemoteMediator
 import com.github.passit.data.datasource.remote.UserInsertionsRemoteMediator
+import com.github.passit.data.datasource.remote.model.LocationRemoteData
 import com.github.passit.data.repository.mapper.InsertionAndTutorLocalToEntityMapper
 import com.github.passit.data.repository.mapper.InsertionRemoteToEntityMapper
 import com.github.passit.data.repository.mapper.InsertionRemoteToLocalMapper
 import com.github.passit.domain.model.Insertion
+import com.github.passit.domain.model.InsertionStatus
 import com.github.passit.domain.repository.InsertionRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -68,6 +70,14 @@ class InsertionRepositoryImpl @Inject constructor(
     override fun getInsertion(insertionId: String): Flow<Insertion> = flow {
         val insertion = insertionRemoteDataSource.getInsertion(insertionId)
         // Update the local data source after fetching from the remote one
+        insertionLocalDataSource.createInsertion(InsertionRemoteToLocalMapper.map(insertion))
+        emit(InsertionRemoteToEntityMapper.map(insertion))
+    }
+
+    override fun updateInsertion(insertionId: String, status: InsertionStatus?, title: String?, description: String?, subject: String?,
+                                 city: String?, state: String?, country: String?): Flow<Insertion> = flow {
+        val location = if (city != null && state != null && country != null) LocationRemoteData(city, state, country) else null
+        val insertion = insertionRemoteDataSource.updateInsertion(insertionId, status, title, description, subject, location)
         insertionLocalDataSource.createInsertion(InsertionRemoteToLocalMapper.map(insertion))
         emit(InsertionRemoteToEntityMapper.map(insertion))
     }

@@ -96,6 +96,7 @@
     <string name="show_insertion_back_button">Back</string>
     <string name="show_insertion_title_placeholder">Insertion title</string>
     <string name="show_insertion_location_placeholder">Insertion location</string>
+    <string name="show_insertion_status_format">Status: %1$s</string>
     <string name="show_insertion_tutor_name_placeholder">Tutor Name</string>
     <string name="show_insertion_date_placeholder">Ins. Date</string>
     <string name="show_insertion_location_format">%1$s, %2$s, %3s</string>
@@ -104,6 +105,8 @@
     <string name="show_insertion_conversation_same_user_error">You are the tutor for this insertion</string>
     <string name="show_insertion_description_placeholder">Insertion description</string>
     <string name="show_insertion_tutor_picture_content_description">Tutor profile picture</string>
+    <string name="show_insertion_open_button">Open Insertion</string>
+    <string name="show_insertion_close_button">Close Insertion</string>
 
     <!-- CONVERSATIONS LIST -->
     <string name="get_conversations_error">Get conversations error</string>

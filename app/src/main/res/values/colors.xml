@@ -8,4 +8,5 @@
   <color name="colorSecondaryDark">#707070</color>
   <color name="colorPrimaryText">#fafafa</color>
   <color name="colorSecondaryText">#000000</color>
+  <color name="colorAccent">#ff0000</color>
 </resources>

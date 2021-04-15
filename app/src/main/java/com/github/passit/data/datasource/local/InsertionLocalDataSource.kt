@@ -23,6 +23,9 @@ class InsertionLocalDataSource @Inject constructor(
     fun getInsertions(subject: String, city: String, state: String, country: String): DataSource.Factory<Int, InsertionAndTutorLocalData>
         = applicationDatabase.insertionDao().getInsertionsAndTutor("%$subject%", "%$city%", "%$state%", "%$country%")
 
+    suspend fun updateInsertion(insertion: InsertionLocalData)
+        = applicationDatabase.insertionDao().updateInsertion(insertion)
+
     suspend fun insertAllInsertionRemoteKeys(insertionRemoteKeys: List<InsertionRemoteKeys>) =
             applicationDatabase.insertionRemoteKeysDao().insertAll(insertionRemoteKeys)
 

@@ -63,6 +63,17 @@
                         android:text="@string/show_insertion_location_placeholder"
                         android:textSize="18sp" />
 
+                    <TextView
+                        android:id="@+id/insertionStatus"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom|end"
+                        android:gravity="center"
+                        android:textColor="@color/colorAccent"
+                        android:visibility="gone"
+                        android:text="@string/show_insertion_status_format"
+                        android:textSize="14sp" />
+
                 </LinearLayout>
             </com.google.android.material.appbar.MaterialToolbar>
         </com.google.android.material.appbar.CollapsingToolbarLayout>
@@ -151,13 +162,21 @@
 
     </androidx.core.widget.NestedScrollView>
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/openCloseInsertionBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:layout_gravity="bottom"
+        android:visibility="gone" />
+
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/contactTutorExtendedFab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:layout_gravity="bottom|end"
-        android:visibility="invisible"
+        android:visibility="gone"
         android:text="@string/show_insertion_contact_tutor"
         app:icon="@drawable/ic_question_answer_24"/>
 

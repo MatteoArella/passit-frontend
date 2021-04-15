@@ -30,7 +30,7 @@ abstract class InsertionDao constructor(
     @Transaction
     @Query("SELECT * FROM insertions "
             + "WHERE tutor_id = :tutorId "
-            + "ORDER BY created_at DESC")
+            + "ORDER BY updated_at DESC")
     abstract fun getInsertionsByTutor(tutorId: String): DataSource.Factory<Int, InsertionAndTutorLocalData>
 
     @Update(onConflict = OnConflictStrategy.REPLACE)

@@ -26,9 +26,8 @@ class ConversationRepositoryImpl @Inject constructor(
 ) : ConversationRepository {
     override fun createConversation(userId: String, tutorId: String): Flow<Conversation> = flow {
         val convLink = conversationRemoteDataSource.createConversation(tutorId = tutorId)
-        val associated = convLink.conversation?.associated?.first { it.user?.id != userId }
         val conversationLocalData = ConversationRemoteToLocalMapper.map(convLink.conversation!!)
-        conversationLocalData.associated = associated?.id ?: ""
+        conversationLocalData.associated = tutorId
         conversationLocalDataSource.createConversation(conversationLocalData)
         emit(ConversationRemoteToEntityMapper.map(convLink))
     }

@@ -47,6 +47,7 @@ android {
         debug {
             buildConfigField("String", "TEST_TAGS", "\"" + getTestTags() + "\"")
             buildConfigField "String", "TEST_SCENARIO", "\"" + getTestScenario() + "\""
+            resValue("string", "PORT_NUMBER", "8099")
             debuggable true
         }
         release {
@@ -163,6 +164,9 @@ dependencies {
     androidTestImplementation TestLibs.rules
     androidTestImplementation TestLibs.runner
     androidTestImplementation TestLibs.espressoIntents
+
+    // debug
+    debugImplementation 'com.amitshekhar.android:debug-db:1.0.6'
 }
 
 amplify {

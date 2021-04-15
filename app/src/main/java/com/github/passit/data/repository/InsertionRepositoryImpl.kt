@@ -8,6 +8,7 @@ import androidx.paging.PagingData
 import com.github.passit.data.datasource.local.InsertionLocalDataSource
 import com.github.passit.data.datasource.remote.InsertionRemoteDataSource
 import com.github.passit.data.datasource.remote.InsertionRemoteMediator
+import com.github.passit.data.datasource.remote.UserInsertionsRemoteMediator
 import com.github.passit.data.repository.mapper.InsertionAndTutorLocalToEntityMapper
 import com.github.passit.data.repository.mapper.InsertionRemoteToEntityMapper
 import com.github.passit.data.repository.mapper.InsertionRemoteToLocalMapper
@@ -45,6 +46,23 @@ class InsertionRepositoryImpl @Inject constructor(
                     insertionRemoteDataSource = insertionRemoteDataSource
             ),
             pagingSourceFactory = insertionsSourceFactory
+        ).flow
+    }
+
+    @ExperimentalPagingApi
+    override fun getUserInsertions(@NonNull userID: String): Flow<PagingData<Insertion>> {
+        val insertionsSourceFactory = insertionLocalDataSource.getUserInsertions(userID).mapByPage {
+            Log.i("repository", "${it.size} insertions in page")
+            InsertionAndTutorLocalToEntityMapper.map(it)
+        }.asPagingSourceFactory(Dispatchers.IO)
+        return Pager(
+                config = PagingConfig(pageSize = INSERTIONS_PAGE_SIZE, enablePlaceholders = true),
+                remoteMediator = UserInsertionsRemoteMediator(
+                        userId = userID,
+                        insertionRemoteDataSource = insertionRemoteDataSource,
+                        insertionLocalDataSource = insertionLocalDataSource
+                ),
+                pagingSourceFactory = insertionsSourceFactory
         ).flow
     }
 

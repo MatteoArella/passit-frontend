@@ -6,29 +6,26 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
+import com.github.passit.R
+import com.github.passit.core.extension.hideKeyboard
 import com.github.passit.databinding.FragmentInsertionsListBinding
 import com.github.passit.ui.contracts.insertion.CreateInsertionContract
+import com.github.passit.ui.contracts.insertion.ShowInsertionContract
 import com.github.passit.ui.models.insertions.GetInsertionsViewModel
-import com.github.passit.ui.view.Alert
-import com.github.passit.core.extension.hideKeyboard
-import com.google.gson.Gson
+import com.github.passit.ui.models.insertions.InsertionSearchView
+import com.github.passit.ui.view.ErrorAlert
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import java.util.*
-import com.github.passit.R
-import com.github.passit.ui.contracts.insertion.ShowInsertionContract
-import com.github.passit.ui.models.insertions.InsertionSearchView
-import com.github.passit.ui.view.ErrorAlert
 
 @AndroidEntryPoint
 class InsertionsListFragment : Fragment(), CoroutineScope by MainScope() {
@@ -130,5 +127,6 @@ class InsertionsListFragment : Fragment(), CoroutineScope by MainScope() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        searchJob?.cancel()
     }
 }

@@ -3,7 +3,6 @@ package com.github.passit.data.repository.mapper
 import com.github.passit.core.domain.Mapper
 import com.github.passit.data.datasource.local.model.UserLocalData
 import com.github.passit.data.datasource.remote.model.*
-import com.github.passit.domain.model.auth.User
 import com.github.passit.domain.model.auth.*
 import java.net.URL
 

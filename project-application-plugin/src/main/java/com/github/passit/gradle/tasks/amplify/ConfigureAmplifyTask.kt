@@ -7,8 +7,6 @@ import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.*
-import software.amazon.awssdk.services.cloudformation.CloudFormationClient
-import software.amazon.awssdk.services.cloudformation.model.DescribeStacksRequest
 import java.io.*
 
 open class ConfigureAmplifyTask : DefaultTask() {

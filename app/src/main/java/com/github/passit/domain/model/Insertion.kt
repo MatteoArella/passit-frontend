@@ -1,7 +1,7 @@
 package com.github.passit.domain.model
 
 import com.github.passit.domain.model.auth.User
-import java.util.Date
+import java.util.*
 
 data class Insertion(
     var id: String,

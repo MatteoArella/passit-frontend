@@ -10,4 +10,6 @@ class UserLocalDataSource @Inject constructor(
     suspend fun createUser(user: UserLocalData) {
         applicationDatabase.userDao().create(user)
     }
+
+    suspend fun cleanUsers() = applicationDatabase.userDao().clearUsers()
 }

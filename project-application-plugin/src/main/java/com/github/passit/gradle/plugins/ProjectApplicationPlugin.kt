@@ -1,6 +1,6 @@
 package com.github.passit.gradle.plugins
 
-import com.android.build.api.dsl.*
+import com.android.build.api.dsl.CommonExtension
 import com.github.passit.gradle.plugins.amplify.AmplifyCloudFormationImportPlugin
 import com.github.passit.gradle.tasks.amplify.CloudFormationImportTask
 import org.gradle.api.Plugin

@@ -17,11 +17,13 @@ import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import com.github.passit.R
 import com.github.passit.databinding.FragmentProfileBinding
 import com.github.passit.domain.model.auth.User
 import com.github.passit.ui.models.auth.AuthViewModel
 import com.github.passit.ui.screens.auth.SignInActivity
+import com.github.passit.ui.services.ChatService
 import com.github.passit.ui.view.ErrorAlert
 import com.google.gson.Gson
 import com.karumi.dexter.Dexter
@@ -126,11 +128,13 @@ class ProfileFragment : Fragment(), CoroutineScope by MainScope() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        launch {
+        lifecycleScope.launch {
             authModel.fetchUserAttributes().collect()
         }
 
-        authModel.currentUser.observe(viewLifecycleOwner, ::showUserProfile)
+        lifecycleScope.launchWhenResumed {
+            authModel.currentUser.collect(::showUserProfile)
+        }
 
         binding.signOutBtn.setOnClickListener {
             launch {
@@ -138,6 +142,8 @@ class ProfileFragment : Fragment(), CoroutineScope by MainScope() {
                     binding.progressIndicator.visibility = View.VISIBLE
                 }.onCompletion {
                     binding.progressIndicator.visibility = View.INVISIBLE
+                    // stop chat service
+                    requireActivity().let { it.stopService(Intent(it, ChatService::class.java)) }
                     startActivity(Intent(context, SignInActivity::class.java))
                     requireActivity().finish()
                 }.catch { error ->

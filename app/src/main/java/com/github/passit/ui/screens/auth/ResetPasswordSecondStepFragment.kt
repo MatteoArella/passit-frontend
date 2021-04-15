@@ -2,24 +2,24 @@ package com.github.passit.ui.screens.auth
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.github.passit.R
 import com.github.passit.databinding.FragmentResetPasswordSecondStepBinding
-import dagger.hilt.android.AndroidEntryPoint
 import com.github.passit.ui.models.auth.AuthViewModel
 import com.github.passit.ui.validators.isValidPassword
 import com.github.passit.ui.validators.setValidator
 import com.github.passit.ui.view.ErrorAlert
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ResetPasswordSecondStepFragment : Fragment(), CoroutineScope by MainScope() {

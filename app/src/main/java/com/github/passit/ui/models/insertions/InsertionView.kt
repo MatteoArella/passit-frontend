@@ -1,6 +1,6 @@
 package com.github.passit.ui.models.insertions
 
-import java.util.Date
+import java.util.*
 
 data class InsertionView(
     var id: String?,

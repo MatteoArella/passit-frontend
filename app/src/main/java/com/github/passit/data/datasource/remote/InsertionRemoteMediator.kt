@@ -8,7 +8,6 @@ import com.github.passit.data.datasource.local.InsertionLocalDataSource
 import com.github.passit.data.datasource.local.model.InsertionRemoteKeys
 import com.github.passit.data.repository.mapper.InsertionAndTutorRemoteToLocalMapper
 import com.github.passit.domain.model.Insertion
-import java.lang.Exception
 
 @OptIn(ExperimentalPagingApi::class)
 class InsertionRemoteMediator(

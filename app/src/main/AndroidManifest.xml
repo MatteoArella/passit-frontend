@@ -1,52 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     package="com.github.passit">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
-        android:name="com.github.passit.MainApplication"
+        android:name=".MainApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.App">
+        <receiver
+            android:name=".ui.receivers.ChatBroadcastReceiver"
+            android:enabled="false"
+            android:exported="false" />
+        <receiver
+            android:name=".ui.receivers.RestartServiceBroadcastReceiver"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.ACTION_BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
 
-        <activity android:name="com.github.passit.ui.screens.auth.ResetPasswordActivity" android:launchMode="singleTop"/>
-        <activity android:name="com.github.passit.ui.screens.launch.LaunchScreenActivity"
+        <service
+            android:name=".ui.services.ChatService"
+            android:enabled="true"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.screens.auth.ResetPasswordActivity"
+            android:launchMode="singleTop" />
+        <activity
+            android:name=".ui.screens.launch.LaunchScreenActivity"
             android:alwaysRetainTaskState="true"
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.github.passit.ui.screens.auth.ConfirmCodeActivity" android:launchMode="singleTop"/>
         <activity
-            android:name="com.github.passit.ui.screens.auth.SignInActivity"
-            android:screenOrientation="portrait"
-            android:launchMode="singleTop"/>
+            android:name=".ui.screens.auth.ConfirmCodeActivity"
+            android:launchMode="singleTop" />
         <activity
-            android:name="com.amazonaws.mobileconnectors.cognitoauth.activities.CustomTabsRedirectActivity">
+            android:name=".ui.screens.auth.SignInActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity android:name="com.amazonaws.mobileconnectors.cognitoauth.activities.CustomTabsRedirectActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data android:scheme="${RedirectPrefix}" />
             </intent-filter>
         </activity>
-        <activity android:name="com.github.passit.ui.screens.auth.SignUpActivity" android:launchMode="singleTop"/>
-        <activity android:name="com.github.passit.ui.screens.main.MainActivity" android:launchMode="singleTop" android:alwaysRetainTaskState="true"/>
+        <activity
+            android:name=".ui.screens.auth.SignUpActivity"
+            android:launchMode="singleTop" />
+        <activity
+            android:name=".ui.screens.main.MainActivity"
+            android:alwaysRetainTaskState="true"
+            android:launchMode="singleTop" />
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".ui.screens.insertions.CreateInsertionActivity" />
         <activity android:name=".ui.screens.insertions.ShowInsertionActivity" />
+        <activity
+            android:name=".ui.screens.chat.ChatActivity"
+            android:launchMode="singleTop" />
 
         <meta-data
             android:name="preloaded_fonts"

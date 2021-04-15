@@ -7,6 +7,7 @@ data class InsertionRemoteData(
     var subject: String?,
     var tutor: UserRemoteData?,
     var location: LocationRemoteData?,
+    var status: String?,
     var createdAt: String?,
     var updatedAt: String?
 )

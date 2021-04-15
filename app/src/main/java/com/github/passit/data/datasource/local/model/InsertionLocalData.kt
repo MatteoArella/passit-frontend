@@ -14,6 +14,7 @@ data class InsertionLocalData(
         var subject: String,
         @Embedded var location: LocationLocalData,
         @ColumnInfo(name = "tutor_id") var tutorId: String,
+        @ColumnInfo(name = "status") var status: String,
         @ColumnInfo(name = "created_at") var createdAt: String,
         @ColumnInfo(name = "updated_at") var updatedAt: String
 ): Serializable

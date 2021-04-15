@@ -11,7 +11,8 @@ import com.github.passit.ui.mapper.InsertionEntityToUIMapper
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class GetInsertionsViewModel @ViewModelInject constructor(
+class
+GetInsertionsViewModel @ViewModelInject constructor(
         private val getInsertions: GetInsertions
 ) : ViewModel() {
     private var insertions: Flow<PagingData<InsertionView>>? = null

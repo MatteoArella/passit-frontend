@@ -27,6 +27,12 @@ abstract class InsertionDao constructor(
             + "ORDER BY created_at DESC")
     abstract fun getInsertionsAndTutor(subject: String, city: String, state: String, country: String): DataSource.Factory<Int, InsertionAndTutorLocalData>
 
+    @Transaction
+    @Query("SELECT * FROM insertions "
+            + "WHERE tutor_id = :tutorId "
+            + "ORDER BY created_at DESC")
+    abstract fun getInsertionsByTutor(tutorId: String): DataSource.Factory<Int, InsertionAndTutorLocalData>
+
     @Query("DELETE FROM insertions")
     abstract suspend fun clearInsertions()
 }

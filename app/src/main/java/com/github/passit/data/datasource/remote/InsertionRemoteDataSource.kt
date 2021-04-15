@@ -33,6 +33,16 @@ class InsertionRemoteDataSource @Inject constructor() {
         }
     }
 
+    suspend fun getUserInsertions(userID: String): InsertionPageRemoteData {
+        return suspendCancellableCoroutine { continuation ->
+            Amplify.API.query(
+                    getUserInsertionsRequest(userID),
+                    { response -> continuation.resume(response.data) },
+                    { error -> continuation.resumeWithException(error) }
+            )
+        }
+    }
+
     suspend fun getInsertion(insertionId: String): InsertionRemoteData {
         return suspendCancellableCoroutine { continuation ->
             Amplify.API.query(
@@ -111,6 +121,43 @@ class InsertionRemoteDataSource @Inject constructor() {
             GsonVariablesSerializer()
         )
     }
+
+    private fun getUserInsertionsRequest(userID: String): GraphQLRequest<InsertionPageRemoteData> {
+        val document = (
+                "query GetUserInsertions(\$userID: ID!) { "
+                        + "getUserInsertions(userID: \$userID) { "
+                        + "items { "
+                        + "id "
+                        + "title "
+                        + "subject "
+                        + "tutor { "
+                        + "id "
+                        + "familyName "
+                        + "givenName "
+                        + "picture "
+                        + "} "
+                        + "location { "
+                        + "city "
+                        + "country "
+                        + "state "
+                        + "} "
+                        + "createdAt "
+                        + "} "
+                        + "pageInfo { "
+                        + "hasNextPage "
+                        + "total "
+                        + "} "
+                        + "} "
+                        + "}")
+
+        return SimpleGraphQLRequest(
+                document,
+                mapOf("userID" to userID),
+                InsertionPageRemoteData::class.java,
+                GsonVariablesSerializer()
+        )
+    }
+
 
     private fun createInsertionRequest(title: String, description: String, subject: String, city: String, state: String, country: String): GraphQLRequest<InsertionRemoteData> {
         val document = (

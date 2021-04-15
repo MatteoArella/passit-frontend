@@ -9,7 +9,7 @@ import java.net.URL
 object UserRemoteToEntityMapper: Mapper<UserRemoteData, User>() {
     override fun map(from: UserRemoteData): User {
         return User(
-                id = from.id ?: "",
+                id = from.id,
                 email = from.email ?: "",
                 givenName = from.givenName ?: "",
                 familyName = from.familyName ?: "",

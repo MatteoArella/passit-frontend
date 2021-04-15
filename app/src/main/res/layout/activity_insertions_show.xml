@@ -108,7 +108,8 @@
                     <ImageView
                         android:id="@+id/tutorPicture"
                         android:layout_width="30dp"
-                        android:layout_height="30dp"/>
+                        android:layout_height="30dp"
+                        android:contentDescription="@string/show_insertion_tutor_picture_content_description"/>
 
                 </com.google.android.material.card.MaterialCardView>
 
@@ -132,7 +133,7 @@
                         android:id="@+id/insertionDate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="50dp"
+                        android:layout_marginStart="50dp"
                         android:textAppearance="?attr/textAppearanceBody2"
                         android:textColor="?android:attr/textColorSecondary"
                         android:text="@string/show_insertion_date_placeholder"/>
@@ -144,8 +145,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:padding="20dp"
-                android:text="Lorem ipsum">
-
+                android:text="@string/show_insertion_description_placeholder">
             </TextView>
         </LinearLayout>
 

@@ -20,9 +20,11 @@ GetInsertionsViewModel @ViewModelInject constructor(
     var searchView: InsertionSearchView? = null
 
     fun getInsertions(subject: String, city: String, state: String, country: String): Flow<PagingData<InsertionView>> {
+        /*
         if (insertions != null && subject == searchView?.subject && city == searchView?.city && state == searchView?.state && country == searchView?.country) {
             return insertions!!
         }
+        */
         this.searchView = InsertionSearchView(subject = subject, city = city, state = state, country = country)
         val newResult = getInsertions(GetInsertions.Params(subject, city, state, country))
                 .map { page -> page.map { insertion -> InsertionEntityToUIMapper.map(insertion) } }

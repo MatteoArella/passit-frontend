@@ -14,6 +14,7 @@ object InsertionEntityToUIMapper: Mapper<Insertion, InsertionView>() {
                 LocationView(from.location?.city, from.location?.state, from.location?.country),
                 from.tutor?.let { UserEntityToUIMapper.map(it) },
                 from.subject,
+                from.status,
                 from.createdAt,
                 from.updatedAt
         )

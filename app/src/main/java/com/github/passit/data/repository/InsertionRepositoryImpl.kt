@@ -52,7 +52,6 @@ class InsertionRepositoryImpl @Inject constructor(
     @ExperimentalPagingApi
     override fun getUserInsertions(@NonNull userID: String): Flow<PagingData<Insertion>> {
         val insertionsSourceFactory = insertionLocalDataSource.getUserInsertions(userID).mapByPage {
-            Log.i("repository", "${it.size} insertions in page")
             InsertionAndTutorLocalToEntityMapper.map(it)
         }.asPagingSourceFactory(Dispatchers.IO)
         return Pager(

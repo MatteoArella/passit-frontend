@@ -1,6 +1,5 @@
 package com.github.passit.data.datasource.remote
 
-import android.util.Log
 import com.amplifyframework.api.aws.GsonVariablesSerializer
 import com.amplifyframework.api.graphql.GraphQLRequest
 import com.amplifyframework.api.graphql.SimpleGraphQLRequest

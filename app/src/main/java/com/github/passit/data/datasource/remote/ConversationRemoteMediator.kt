@@ -1,6 +1,5 @@
 package com.github.passit.data.datasource.remote
 
-import android.util.Log
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
@@ -43,12 +42,10 @@ class ConversationRemoteMediator(
                     ConversationRemoteKeys(conversationId = it.conversation?.id!!, nextKey = nextKey)
                 }
                 conversationLocalDataSource.insertAllConversationRemoteKeys(keys)
-                conversations.map { link ->
+                conversations.onEach { link ->
                     val associated = link.conversation?.associated?.first { it.user?.id != userId }
                     link.conversation?.associated = associated?.let { listOf(associated) }
-                    link
                 }
-                Log.i("conversations-mediator", "$conversations")
                 conversationLocalDataSource.insertAllWithAssociated(PartialConversationAndAssociatedRemoteToLocalMapper.map(conversations))
             }
             return MediatorResult.Success(endOfPaginationReached = endOfPaginationReached)

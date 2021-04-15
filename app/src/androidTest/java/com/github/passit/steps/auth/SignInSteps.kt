@@ -1,9 +1,9 @@
 package com.github.passit.steps.auth
 
+import com.github.passit.robots.auth.SignInRobot
 import cucumber.api.java.en.And
 import cucumber.api.java.en.Given
 import cucumber.api.java.en.Then
-import com.github.passit.robots.auth.SignInRobot
 
 class SignInSteps {
     private val signInRobot = SignInRobot()

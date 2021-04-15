@@ -1,14 +1,16 @@
 package com.github.passit.data.repository
 
-import android.util.Log
 import androidx.annotation.NonNull
-import androidx.paging.*
+import androidx.paging.ExperimentalPagingApi
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import com.github.passit.data.datasource.local.InsertionLocalDataSource
 import com.github.passit.data.datasource.remote.InsertionRemoteDataSource
 import com.github.passit.data.datasource.remote.InsertionRemoteMediator
 import com.github.passit.data.repository.mapper.InsertionAndTutorLocalToEntityMapper
-import com.github.passit.data.repository.mapper.InsertionRemoteToLocalMapper
 import com.github.passit.data.repository.mapper.InsertionRemoteToEntityMapper
+import com.github.passit.data.repository.mapper.InsertionRemoteToLocalMapper
 import com.github.passit.domain.model.Insertion
 import com.github.passit.domain.repository.InsertionRepository
 import kotlinx.coroutines.Dispatchers
@@ -51,6 +53,14 @@ class InsertionRepositoryImpl @Inject constructor(
         // Update the local data source after fetching from the remote one
         insertionLocalDataSource.createInsertion(InsertionRemoteToLocalMapper.map(insertion))
         emit(InsertionRemoteToEntityMapper.map(insertion))
+    }
+
+    override fun deleteInsertions(): Flow<Unit> = flow {
+        insertionLocalDataSource.withTransaction {
+            insertionLocalDataSource.cleanInsertionsRemoteKeys()
+            insertionLocalDataSource.clearInsertions()
+        }
+        emit(Unit)
     }
 
     companion object {

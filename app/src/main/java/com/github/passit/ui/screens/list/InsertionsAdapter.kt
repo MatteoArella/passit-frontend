@@ -7,12 +7,12 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.github.passit.R
-import com.github.passit.ui.models.insertions.InsertionView
-import javax.inject.Inject
 import com.github.passit.databinding.InsertionRowItemBinding
+import com.github.passit.ui.models.insertions.InsertionView
 import com.squareup.picasso.Picasso
 import java.text.DateFormat
 import java.util.*
+import javax.inject.Inject
 
 class InsertionsAdapter @Inject constructor(private val onClick: (InsertionView) -> Unit): PagingDataAdapter<InsertionView, InsertionsAdapter.ViewHolder>(InsertionDiffCallback) {
     class ViewHolder(itemView: View, val onClick: (InsertionView) -> Unit): RecyclerView.ViewHolder(itemView) {

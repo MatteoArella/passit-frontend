@@ -1,19 +1,19 @@
 package com.github.passit.ui.screens.auth
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.github.passit.R
 import com.github.passit.databinding.FragmentResetPasswordFirstStepBinding
-import dagger.hilt.android.AndroidEntryPoint
 import com.github.passit.ui.models.auth.AuthViewModel
 import com.github.passit.ui.validators.isValidEmail
 import com.github.passit.ui.validators.setValidator
 import com.github.passit.ui.view.ErrorAlert
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.MainScope

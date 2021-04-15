@@ -1,9 +1,9 @@
 package com.github.passit.data.datasource.local.model
 
 import androidx.room.ColumnInfo
+import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import androidx.room.Embedded
 import java.io.Serializable
 
 @Entity(tableName = "insertions")

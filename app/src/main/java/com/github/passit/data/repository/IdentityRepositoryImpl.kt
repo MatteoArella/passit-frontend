@@ -2,36 +2,33 @@ package com.github.passit.data.repository
 
 import android.app.Activity
 import android.content.Intent
-import javax.inject.Inject
 import androidx.annotation.NonNull
-import androidx.lifecycle.MutableLiveData
 import com.github.passit.data.datasource.local.UserLocalDataSource
 import com.github.passit.data.datasource.remote.IdentityRemoteDataSource
 import com.github.passit.data.repository.mapper.*
-import com.github.passit.domain.model.auth.SignUpUserAttributes
-import com.github.passit.domain.model.auth.User
-import com.github.passit.domain.model.auth.UserAttribute
-import com.github.passit.domain.model.auth.AuthResetPassword
-import com.github.passit.domain.model.auth.AuthSession
-import com.github.passit.domain.model.auth.AuthSignIn
-import com.github.passit.domain.model.auth.AuthSignUp
+import com.github.passit.domain.model.auth.*
 import com.github.passit.domain.repository.IdentityRepository
 import com.github.passit.domain.usecase.exception.auth.SignInError
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.*
 import java.net.URL
-import kotlin.jvm.Throws
+import javax.inject.Inject
 
 class IdentityRepositoryImpl @Inject constructor(
     private val userLocalDataSource: UserLocalDataSource,
     private val identityRemoteDataSource: IdentityRemoteDataSource
 ) : IdentityRepository {
-    override val currentUser = MutableLiveData<User?>(null)
+    private val _currentUser = MutableStateFlow<User?>(null)
+    override val currentUser get() = _currentUser.asStateFlow()
 
     override fun fetchUserAttributes(): Flow<User> = flow {
+        // if currentUser exists return it immediately
+        _currentUser.value?.let {
+            emit(it)
+            return@flow
+        }
         val userRemoteData = identityRemoteDataSource.fetchUserAttributes()
         val user = UserRemoteToEntityMapper.map(userRemoteData)
-        currentUser.postValue(user)
+        _currentUser.value = user
         emit(user)
     }
 
@@ -57,6 +54,7 @@ class IdentityRepositoryImpl @Inject constructor(
 
     override fun handleFederatedSignInResponse(@NonNull data: Intent): Flow<Unit> = flow {
         identityRemoteDataSource.handleFederatedSignInResponse(data)
+        emit(Unit)
     }
 
     override fun signUp(@NonNull email: String,
@@ -83,6 +81,7 @@ class IdentityRepositoryImpl @Inject constructor(
 
     override fun confirmResetPassword(newPassword: String, confirmationCode: String): Flow<Unit> = flow {
         identityRemoteDataSource.confirmResetPassword(newPassword, confirmationCode)
+        emit(Unit)
     }
 
     override fun updateUserAttribute(attribute: UserAttribute, value: String): Flow<Unit> = flow {
@@ -95,13 +94,15 @@ class IdentityRepositoryImpl @Inject constructor(
                 UserAttribute.PHONE -> user.phoneNumber = value
                 UserAttribute.PICTURE -> user.picture = runCatching { URL(value) }.getOrNull()
             }
-            currentUser.postValue(user)
+            _currentUser.value = user
         }
     }
 
     override fun signOut(): Flow<Unit> = flow {
-        // TODO: clean db?
         identityRemoteDataSource.signOut()
+        userLocalDataSource.cleanUsers()
+        _currentUser.value = null
+        emit(Unit)
     }
 }
 

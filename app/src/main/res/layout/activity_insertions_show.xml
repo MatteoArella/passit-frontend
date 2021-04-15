@@ -24,37 +24,47 @@
             android:background="@color/colorSecondaryLight"
             app:layout_scrollFlags="scroll|snap">
 
-            <LinearLayout
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/insertionToolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="20dp"
-                android:clipToPadding="false"
-                android:minHeight="200dp"
-                android:gravity="center">
+                app:contentInsetStartWithNavigation="0dp"
+                app:buttonGravity="center_vertical"
+                app:navigationIconTint="@color/colorPrimary"
+                app:navigationIcon="@drawable/ic_arrow_back_white_24dp">
 
-                <TextView
-                    android:id="@+id/insertionTitle"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:fontFamily="@font/poppins_bold"
-                    android:gravity="center"
-                    android:text="@string/show_insertion_title_placeholder"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="24sp"
-                    android:textStyle="bold" />
+                    android:orientation="vertical"
+                    android:padding="20dp"
+                    android:clipToPadding="false"
+                    android:minHeight="200dp"
+                    android:gravity="center">
 
-                <TextView
-                    android:id="@+id/insertionLocation"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:gravity="center"
-                    android:text="@string/show_insertion_location_placeholder"
-                    android:textSize="18sp" />
+                    <TextView
+                        android:id="@+id/insertionTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:fontFamily="@font/poppins_bold"
+                        android:gravity="center"
+                        android:text="@string/show_insertion_title_placeholder"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="24sp"
+                        android:textStyle="bold" />
 
-            </LinearLayout>
+                    <TextView
+                        android:id="@+id/insertionLocation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:gravity="center"
+                        android:text="@string/show_insertion_location_placeholder"
+                        android:textSize="18sp" />
+
+                </LinearLayout>
+            </com.google.android.material.appbar.MaterialToolbar>
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -66,16 +76,19 @@
         android:visibility="invisible" />
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical">
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical"
-            android:padding="5dp"
-            android:clipToPadding="false">
+            android:padding="20dp"
+            android:clipToPadding="false"
+            android:fillViewport="true">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -129,6 +142,8 @@
                 android:id="@+id/insertionDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:padding="20dp"
                 android:text="Lorem ipsum">
 
             </TextView>
@@ -136,12 +151,14 @@
 
     </androidx.core.widget.NestedScrollView>
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/backBtn"
-        app:backgroundTint="@color/colorSecondary"
-        android:layout_width="match_parent"
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/contactTutorExtendedFab"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/show_insertion_back_button"
-        android:layout_gravity="bottom|end"/>
+        android:layout_margin="16dp"
+        android:layout_gravity="bottom|end"
+        android:visibility="invisible"
+        android:text="@string/show_insertion_contact_tutor"
+        app:icon="@drawable/ic_question_answer_24"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

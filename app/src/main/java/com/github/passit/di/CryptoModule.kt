@@ -1,10 +1,10 @@
 package com.github.passit.di
 
+import com.github.passit.core.platform.CryptoManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ApplicationComponent
-import com.github.passit.core.platform.CryptoManager
 import javax.inject.Singleton
 
 @Module

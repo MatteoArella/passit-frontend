@@ -96,5 +96,11 @@
     <string name="show_insertion_date_placeholder">Ins. Date</string>
     <string name="show_insertion_location_format">%1$s, %2$s, %3s</string>
     <string name="show_insertion_tutor_name_format">%1$s %2$s</string>
+    <string name="show_insertion_contact_tutor">Contact</string>
+    <string name="show_insertion_conversation_same_user_error">You are the tutor for this insertion</string>
 
+    <!-- CONVERSATIONS LIST -->
+    <string name="get_conversations_error">Get conversations error</string>
+    <string name="messageDatePlaceholder">dd/MM/yyyyy</string>
+    <string name="write_message_hint">Write a message</string>
 </resources>

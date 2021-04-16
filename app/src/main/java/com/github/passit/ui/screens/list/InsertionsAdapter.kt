@@ -21,7 +21,7 @@ class InsertionsAdapter @Inject constructor(private val onClick: (InsertionView)
         fun bind(insertionView: InsertionView) {
             binding.insertionTitle.text = insertionView.title
             binding.insertionSubject.text = insertionView.subject
-            insertionView.createdAt?.let { binding.insertionDate.text = DateFormat.getDateInstance(DateFormat.MEDIUM, Locale.getDefault()).format(it) }
+            insertionView.updatedAt?.let { binding.insertionDate.text = DateFormat.getDateInstance(DateFormat.MEDIUM, Locale.getDefault()).format(it) }
             binding.insertionTutor.text = itemView.context.getString(
                     R.string.profile_username,
                     insertionView.tutor?.givenName?.capitalize(Locale.getDefault()),

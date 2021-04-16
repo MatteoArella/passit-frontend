@@ -1,0 +1,121 @@
+<resources>
+    <string name="app_name">PassIt!</string>
+    <string name="menu_insertions">Annunci</string>
+    <string name="menu_chat">Messaggi</string>
+    <string name="menu_profile">Profilo</string>
+
+    <!-- SIGN IN -->
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="signin">Accedi</string>
+    <string name="signin_or">O</string>
+    <string name="google">Accedi con Google</string>
+    <string name="forgot_password">Password dimenticata?</string>
+    <string name="register_link_prefix">Non hai un account?</string>
+    <string name="register_link">Registrati</string>
+    <string name="error_invalid_email">"Email non valida"</string>
+    <string name="error_invalid_password">Password non valida\nMin 12 caratteri, numeri, minuscole, maiuscole, simboli</string>
+    <string name="signin_error_alert_title">Errore di acesso</string>
+
+    <!-- FIRST STEP SIGN UP -->
+    <string name="signup_title">Cominciamo!</string>
+    <string name="signup_subtitle">Crea un account con PassIt…</string>
+    <string name="confirmation_password">Conferma Password</string>
+    <string name="signup_next">Avanti</string>
+    <string name="signin_link_prefix">Hai già un account?</string>
+    <string name="signin_link">Accedi</string>
+    <string name="signup_passwords_missmatch">Le password non combaciano</string>
+    <string name="signup_error_alert_title">Errore di registrazione</string>
+
+    <!-- SECOND STEP SIGN UP -->
+    <string name="signup_final_title">Quasi fatto!</string>
+    <string name="family_name">Cognome</string>
+    <string name="given_name">Nome</string>
+    <string name="phone_number">Cellulare</string>
+    <string name="birth_date">Data di nascita</string>
+    <string name="birth_date_placeholder">dd/mm/yyyy</string>
+    <string name="birth_date_helper">Giorno, mese, anno</string>
+    <string name="signup_final">Registrati</string>
+    <string name="signup_missing_parameters">Parametri richiesti non presenti</string>
+
+    <!-- SIGN UP CONFIRM -->
+    <string name="signup_confirm_title">Verifica l\'indirizzo email</string>
+    <string name="signup_confirm_subtitle">Insertisci il codice di verifica che abbiamo mandato alla tua email</string>
+    <string name="verification_code_hint">Codice di Verifica</string>
+    <string name="resend_confirmation_code_prefix">Non hai ricevuto nessuna email?</string>
+    <string name="resend_confirmation_code">Invia di nuovo</string>
+    <string name="signup_confirm">Conferma</string>
+    <string name="confirmation_error_alert_title">Errore di verifica</string>
+    <string name="verification_code_empty_error">Il codice di verifica non può essere vuoto</string>
+
+    <!-- RESET PASSWORD -->
+    <string name="reset_password_title">Reset Password</string>
+    <string name="reset_password_subtitle">Insertisci la tua email dove abbiamo inviato il codice per resettare la password</string>
+    <string name="reset_password_next">Avanti</string>
+    <string name="resend_reset_link_prefix">Non hai ricevuto nessuna email?</string>
+    <string name="resend_reset_link">Invia di nuovo</string>
+    <string name="new_password">Nuova Password</string>
+    <string name="confirm_new_password">Conferma Nuova Password</string>
+    <string name="reset_password_confirm">Conferma</string>
+    <string name="reset_password_error_alert_title">Errore Reset Password</string>
+
+    <!-- PROFILE -->
+    <string name="profile_username">%1$s %2$s</string>
+    <string name="profile_user_picture_content_description">Immagine profilo utente</string>
+    <string name="profile_change_profile_picture_title">Scegli la tua immagine di profilo</string>
+    <string name="profile_take_picture">Cattura dalla fotocamera</string>
+    <string name="profile_choose_picture">Scegli dalla galleria</string>
+    <string name="profile_new_picture_cancel">Annulla</string>
+    <string name="change_picture_error_alert_title">Errore cambio immagine</string>
+    <string name="profile_signout">Esci</string>
+
+    <!-- INSERTIONS LIST -->
+    <string name="create_insertion">Crea</string>
+    <string name="search_subject">Materia</string>
+    <string name="search_city">Città</string>
+    <string name="search_state">Stato</string>
+    <string name="search_country">Nazione</string>
+    <string name="search_insertions">Cerca</string>
+    <string name="search_insertions_error">Errore di ricerca</string>
+    <string name="empty_insertions_result">Nessun annuncio trovato.</string>
+    <string name="insertions_list_tutor_picture_content_description">Immagine profilo del tutor</string>
+
+    <!-- CREATE INSERTION -->
+    <string name="create_insertion_title">Crea un nuovo annuncio</string>
+    <string name="create_insertion_subtitle">Così che altri utenti possono trovare il tuo servizio</string>
+    <string name="insertion_input_title">Titolo</string>
+    <string name="insertion_input_description">Descrizione</string>
+    <string name="insertion_input_subject">Materia</string>
+    <string name="insertion_input_city">Città</string>
+    <string name="insertion_input_state">Stato</string>
+    <string name="insertion_input_country">Nazione</string>
+    <string name="create_insertion_ok">Crea</string>
+    <string name="create_insertion_cancel">Annulla</string>
+    <string name="create_insertion_title_empty_error">Titolo non può essere vuoto</string>
+    <string name="create_insertion_description_empty_error">Descrizione non può essere vuota</string>
+    <string name="create_insertion_subject_empty_error">Materia non può essere vuota</string>
+    <string name="create_insertion_city_empty_error">Città non può essere vuota</string>
+    <string name="create_insertion_state_empty_error">Stato non può essere vuoto</string>
+    <string name="create_insertion_country_empty_error">Nazione non può essere vuota</string>
+
+    <!-- SHOW INSERTION -->
+    <string name="show_insertion_back_button">Indietro</string>
+    <string name="show_insertion_title_placeholder">Titolo annuncio</string>
+    <string name="show_insertion_location_placeholder">Posizione annuncio</string>
+    <string name="show_insertion_status_format">Stato: %1$s</string>
+    <string name="show_insertion_tutor_name_placeholder">Nome Tutor</string>
+    <string name="show_insertion_date_placeholder">Data Ann.</string>
+    <string name="show_insertion_location_format">%1$s, %2$s, %3s</string>
+    <string name="show_insertion_tutor_name_format">%1$s %2$s</string>
+    <string name="show_insertion_contact_tutor">Contatta</string>
+    <string name="show_insertion_conversation_same_user_error">Sei il tutor per questo annuncio</string>
+    <string name="show_insertion_description_placeholder">Descrizione annuncio</string>
+    <string name="show_insertion_tutor_picture_content_description">Immagine profilo Tutor</string>
+    <string name="show_insertion_open_button">Apri annuncio</string>
+    <string name="show_insertion_close_button">Chiudi annuncio</string>
+
+    <!-- CONVERSATIONS LIST -->
+    <string name="get_conversations_error">Errore ottenimento conversazioni</string>
+    <string name="messageDatePlaceholder">dd/MM/yyyyy</string>
+    <string name="write_message_hint">Scrivi un messaggio</string>
+</resources>

@@ -8,12 +8,13 @@
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="signin">Sign In</string>
+    <string name="signin_or">OR</string>
     <string name="google">Sign in with Google</string>
     <string name="forgot_password">Forgot Password?</string>
     <string name="register_link_prefix">Don\'t have an account?</string>
     <string name="register_link">Sign up</string>
     <string name="error_invalid_email">"Invalid email address"</string>
-    <string name="error_invalid_password">Invalid Password</string>
+    <string name="error_invalid_password">Invalid Password\nMin 12 characters, digits, lowercase, uppercase, symbols</string>
     <string name="signin_error_alert_title">Sign In Error</string>
 
     <!-- FIRST STEP SIGN UP -->

@@ -4,19 +4,23 @@ import android.Manifest
 import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.graphics.Bitmap.CompressFormat
+import android.graphics.Rect
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.lifecycleScope
-import androidx.fragment.app.viewModels
 import androidx.core.content.FileProvider
 import androidx.core.net.toFile
+import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.lifecycleScope
 import com.github.passit.BuildConfig
 import com.github.passit.R
 import com.github.passit.databinding.FragmentProfileBinding
@@ -25,8 +29,9 @@ import com.github.passit.ui.contracts.insertion.ShowInsertionContract
 import com.github.passit.ui.models.auth.AuthViewModel
 import com.github.passit.ui.models.insertions.GetUserInsertionsViewModel
 import com.github.passit.ui.screens.auth.SignInActivity
-import com.github.passit.ui.services.ChatService
 import com.github.passit.ui.screens.list.InsertionsAdapter
+import com.github.passit.ui.services.ChatService
+import com.github.passit.ui.view.Alert
 import com.github.passit.ui.view.ErrorAlert
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
@@ -38,12 +43,9 @@ import com.yalantis.ucrop.UCrop
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.onCompletion
-import kotlinx.coroutines.flow.onStart
 import java.io.File
 import java.util.*
+
 
 @AndroidEntryPoint
 class ProfileFragment : Fragment(), CoroutineScope by MainScope() {
@@ -102,15 +104,15 @@ class ProfileFragment : Fragment(), CoroutineScope by MainScope() {
         } else if (resultCode == UCrop.RESULT_ERROR) {
             val cropError = UCrop.getError(data!!)
             ErrorAlert(requireActivity()).setTitle(getString(R.string.change_picture_error_alert_title)).setMessage(
-                cropError?.localizedMessage?.toString()
+                    cropError?.localizedMessage?.toString()
             ).show()
         }
     }
 
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View {
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
         return binding.root
@@ -124,14 +126,15 @@ class ProfileFragment : Fragment(), CoroutineScope by MainScope() {
                 Log.i("User id", it.id)
                 getUserInsertionsModel.getUserInsertions(it.id).catch { error ->
                     Log.e("unknown_error", error.toString())
-                }.collectLatest {  pagingData ->
+                }.collectLatest { pagingData ->
                     Log.i("Insertions", "actually showing insertions")
                     insertionsAdapter.submitData(pagingData)
                     Log.i("Insertions", insertionsAdapter.snapshot().toString())
                 }
             }
         }
-        lifecycleScope.launchWhenResumed {
+
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             authModel.currentUser.collect(::showUserProfile)
         }
 
@@ -151,15 +154,61 @@ class ProfileFragment : Fragment(), CoroutineScope by MainScope() {
             }
         }
 
-        binding.shootProfilePicBtn.setOnClickListener {
-            launch {
-                Dexter.withContext(context)
+        view.setOnTouchListener { v, event ->
+            val viewRect = Rect()
+            binding.plusProfilePictureImageView.getGlobalVisibleRect(viewRect)
+            if (!viewRect.contains(event.rawX.toInt(), event.rawY.toInt())) {
+                binding.plusProfilePictureImageView.isVisible = false
+            }
+            if (event.action == MotionEvent.ACTION_UP) v.performClick()
+
+            true
+        }
+
+        binding.changeProfilePictureCard.setOnClickListener {
+            binding.plusProfilePictureImageView.isVisible = true
+        }
+
+        binding.plusProfilePictureImageView.setOnClickListener {
+            binding.plusProfilePictureImageView.isVisible = false
+
+            Alert(requireContext())
+                .setItems(R.array.dialog_change_profile_picture) { dialog, item ->
+                    when (item) {
+                        0 -> takeProfilePicture()
+                        1 -> chooseProfilePicture()
+                        else -> {
+                            dialog.dismiss()
+                        }
+                    }
+                }
+                .setTitle(getString(R.string.profile_change_profile_picture_title))
+                .setPositiveButton(null, null)
+                .setNeutralButton(getString(R.string.profile_new_picture_cancel)) { dialog, _ ->
+                    binding.plusProfilePictureImageView.isVisible = false
+                    dialog.dismiss()
+                }
+                .show()
+        }
+
+        insertionsAdapter = InsertionsAdapter { insertionView -> showInsertion.launch(insertionView.id) }
+        binding.insertionsRecyclerView.adapter = insertionsAdapter
+
+        binding.refreshLayout.setOnRefreshListener {
+            insertionsAdapter.refresh()
+            binding.refreshLayout.isRefreshing = false
+        }
+    }
+
+    private fun takeProfilePicture() {
+        launch {
+            Dexter.withContext(context)
                     .withPermissions(
-                        listOf(
-                            Manifest.permission.CAMERA,
-                            Manifest.permission.READ_EXTERNAL_STORAGE,
-                            Manifest.permission.WRITE_EXTERNAL_STORAGE
-                        )
+                            listOf(
+                                    Manifest.permission.CAMERA,
+                                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                            )
                     )
                     .withListener(object : MultiplePermissionsListener {
                         override fun onPermissionsChecked(response: MultiplePermissionsReport) {
@@ -170,24 +219,24 @@ class ProfileFragment : Fragment(), CoroutineScope by MainScope() {
                         }
 
                         override fun onPermissionRationaleShouldBeShown(
-                            permission: MutableList<PermissionRequest>?,
-                            token: PermissionToken?
+                                permission: MutableList<PermissionRequest>?,
+                                token: PermissionToken?
                         ) {
                             token?.continuePermissionRequest()
                         }
                     })
                     .check()
-            }
         }
+    }
 
-        binding.uploadProfilePicBtn.setOnClickListener {
-            launch {
-                Dexter.withContext(context)
+    private fun chooseProfilePicture() {
+        launch {
+            Dexter.withContext(context)
                     .withPermissions(
-                        listOf(
-                            Manifest.permission.READ_EXTERNAL_STORAGE,
-                            Manifest.permission.WRITE_EXTERNAL_STORAGE
-                        )
+                            listOf(
+                                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                            )
                     )
                     .withListener(object : MultiplePermissionsListener {
                         override fun onPermissionsChecked(response: MultiplePermissionsReport) {
@@ -197,32 +246,14 @@ class ProfileFragment : Fragment(), CoroutineScope by MainScope() {
                         }
 
                         override fun onPermissionRationaleShouldBeShown(
-                            permission: MutableList<PermissionRequest>?,
-                            token: PermissionToken?
+                                permission: MutableList<PermissionRequest>?,
+                                token: PermissionToken?
                         ) {
                             token?.continuePermissionRequest()
                         }
                     })
                     .check()
-            }
         }
-        insertionsAdapter = InsertionsAdapter { insertionView -> showInsertion.launch(insertionView.id) }
-        binding.insertionsRecyclerView.adapter = insertionsAdapter
-
-        binding.refreshLayout.setOnRefreshListener {
-            insertionsAdapter.refresh()
-            binding.refreshLayout.isRefreshing = false
-        }
-
-        /*viewLifecycleOwner.lifecycleScope.launchWhenCreated {
-            insertionsAdapter.loadStateFlow
-                    .collectLatest { loadState ->
-                        binding.progressIndicator.isVisible = loadState.source.refresh is LoadState.Loading
-                        binding.emptyLayout.emptyLayout.isVisible = (loadState.refresh is LoadState.NotLoading &&
-                                insertionsAdapter.itemCount == 0)
-                        binding.insertionsRecyclerView.isVisible = !binding.emptyLayout.emptyLayout.isVisible
-                    }
-        }*/
     }
 
     private fun getPictureTempFile(): File {
@@ -241,9 +272,9 @@ class ProfileFragment : Fragment(), CoroutineScope by MainScope() {
         profile?.let {
             binding.emailTextField.text = profile.email
             binding.userName.text = getString(
-                R.string.profile_username,
-                it.givenName.capitalize(Locale.getDefault()),
-                it.familyName.capitalize(Locale.getDefault())
+                    R.string.profile_username,
+                    it.givenName.capitalize(Locale.getDefault()),
+                    it.familyName.capitalize(Locale.getDefault())
             )
             it.phoneNumber?.let { phone ->
                 binding.phoneTextField.text = phone

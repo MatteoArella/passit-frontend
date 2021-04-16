@@ -11,6 +11,7 @@ import com.github.passit.ui.screens.main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 
@@ -26,6 +27,7 @@ class LaunchScreenActivity : AppCompatActivity(), CoroutineScope by MainScope() 
         setContentView(view)
 
         lifecycleScope.launchWhenStarted {
+            delay(LAUNCH_VIEW_DELAY_MS)
             authModel.fetchAuthSession().catch {}.collect { authSession ->
                 if (authSession.isSignedIn) {
                     startActivity(Intent(this@LaunchScreenActivity, MainActivity::class.java))
@@ -36,5 +38,9 @@ class LaunchScreenActivity : AppCompatActivity(), CoroutineScope by MainScope() 
                 }
             }
         }
+    }
+
+    companion object {
+        const val LAUNCH_VIEW_DELAY_MS = 3000L
     }
 }

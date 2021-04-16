@@ -1,3 +1,5 @@
+![logo](./app/src/main/res/mipmap-xhdpi/ic_launcher_foreground.png)
+
 ![Build](https://github.com/MatteoArella/passit-frontend/workflows/Main/badge.svg?branch=master)
 
 # PassIt! frontend

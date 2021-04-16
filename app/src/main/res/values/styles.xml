@@ -7,4 +7,12 @@
         <item name="android:layout_weight">1</item>
         <item name="android:layout_margin">5dp</item>
     </style>
+
+    <style name="MaterialAlertDialog.App.Title.Text" parent="MaterialAlertDialog.MaterialComponents.Title.Text">
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+
+    <style name="MaterialErrorAlertDialog.App.Title.Text" parent="MaterialAlertDialog.MaterialComponents.Title.Text">
+        <item name="android:textColor">@color/colorAccent</item>
+    </style>
 </resources>

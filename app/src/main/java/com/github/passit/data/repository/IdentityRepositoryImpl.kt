@@ -87,15 +87,19 @@ class IdentityRepositoryImpl @Inject constructor(
     override fun updateUserAttribute(attribute: UserAttribute, value: String): Flow<Unit> = flow {
         identityRemoteDataSource.updateUserAttribute(attribute, value)
         currentUser.value?.let { user ->
-            when (attribute) {
-                UserAttribute.EMAIL -> user.email = value
-                UserAttribute.FAMILY_NAME -> user.familyName = value
-                UserAttribute.GIVEN_NAME -> user.givenName = value
-                UserAttribute.PHONE -> user.phoneNumber = value
-                UserAttribute.PICTURE -> user.picture = runCatching { URL(value) }.getOrNull()
+            // make a copy for stateflow conflation
+            user.copy().also {
+                when (attribute) {
+                    UserAttribute.EMAIL -> it.email = value
+                    UserAttribute.FAMILY_NAME -> it.familyName = value
+                    UserAttribute.GIVEN_NAME -> it.givenName = value
+                    UserAttribute.PHONE -> it.phoneNumber = value
+                    UserAttribute.PICTURE -> it.picture = runCatching { URL(value) }.getOrNull()
+                }
+                _currentUser.value = it
             }
-            _currentUser.value = user
         }
+        emit(Unit)
     }
 
     override fun signOut(): Flow<Unit> = flow {

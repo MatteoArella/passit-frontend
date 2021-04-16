@@ -18,6 +18,8 @@
 
         <item name="extendedFloatingActionButtonStyle">@style/Widget.App.ExtendedFloatingActionButton</item>
         <item name="floatingActionButtonStyle">@style/Widget.App.FloatingActionButton</item>
+
+        <item name="materialAlertDialogTheme">@style/ThemeOverlay.App.MaterialAlertDialog</item>
     </style>
 
     <style name="Widget.App.Button.TextButton" parent="Widget.MaterialComponents.Button.TextButton">
@@ -71,6 +73,14 @@
     <style name="ThemeOverlay.App.FloatingActionButton" parent="">
         <item name="colorSecondary">@color/colorPrimary</item>
         <item name="colorOnSecondary">@color/colorPrimaryText</item>
+    </style>
+
+    <style name="ThemeOverlay.App.MaterialAlertDialog" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="materialAlertDialogTitleTextStyle">@style/MaterialAlertDialog.App.Title.Text</item>
+    </style>
+
+    <style name="ThemeOverlay.App.MaterialErrorAlertDialog" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="materialAlertDialogTitleTextStyle">@style/MaterialErrorAlertDialog.App.Title.Text</item>
     </style>
 
     <style name="ActivityAnimation"

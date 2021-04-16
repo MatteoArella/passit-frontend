@@ -45,49 +45,25 @@
                     app:cardElevation="50dp"
                     app:strokeColor="@color/colorSecondaryDark"
                     app:strokeWidth="4dp">
-                <ImageView
-                    android:id="@+id/profilePicture"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_margin="4dp"
-                    android:src="@drawable/ic_person_outline_black_24dp"
-                    android:contentDescription="TODO" />
+                    <ImageView
+                        android:id="@+id/profilePicture"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_margin="4dp"
+                        android:src="@drawable/ic_person_outline_black_24dp"
+                        android:contentDescription="@string/profile_user_picture_content_description" />
 
-                <ImageView
-                    android:id="@+id/plusProfilePictureImageView"
-                    android:alpha="0.8"
-                    android:background="@color/colorSecondaryDark"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_margin="4dp"
-                    android:src="@drawable/ic_add_white_24dp"
-                    android:visibility="gone"
-                    android:contentDescription="TODO" />
-            </com.google.android.material.card.MaterialCardView>
-
-            <LinearLayout
-                android:id="@+id/profilePicButtons"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/whiteSpace"
-                >
-
-                <Button
-                    android:id="@+id/uploadProfilePicBtn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="50"
-                    android:text="Upload new profile picture" />
-
-                <Button
-                    android:id="@+id/shootProfilePicBtn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="50"
-                    android:text="Shoot new profile picture" />
-            </LinearLayout>
+                    <ImageView
+                        android:id="@+id/plusProfilePictureImageView"
+                        android:alpha="0.8"
+                        android:background="@color/colorSecondaryDark"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_margin="4dp"
+                        android:src="@drawable/ic_add_white_24dp"
+                        android:visibility="gone"
+                        android:contentDescription="TODO" />
+                </com.google.android.material.card.MaterialCardView>
 
                 <TextView
                     android:id="@+id/userName"
@@ -152,8 +128,8 @@
         android:layout_gravity="bottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="sign out"
-        android:paddingBottom="20dp"
+        android:text="@string/profile_signout"
+        android:layout_margin="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent" />

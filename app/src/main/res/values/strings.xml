@@ -61,7 +61,12 @@
     <!-- PROFILE -->
     <string name="profile_username">%1$s %2$s</string>
     <string name="profile_user_picture_content_description">User profile picture</string>
+    <string name="profile_change_profile_picture_title">Choose your profile picture</string>
+    <string name="profile_take_picture">Take picture from camera</string>
+    <string name="profile_choose_picture">Choose from gallery</string>
+    <string name="profile_new_picture_cancel">Cancel</string>
     <string name="change_picture_error_alert_title">Change Picture Error</string>
+    <string name="profile_signout">Sign out</string>
 
     <!-- INSERTIONS LIST -->
     <string name="create_insertion">Create</string>

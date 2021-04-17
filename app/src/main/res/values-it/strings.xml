@@ -15,7 +15,7 @@
     <string name="register_link">Registrati</string>
     <string name="error_invalid_email">"Email non valida"</string>
     <string name="error_invalid_password">Password non valida\nMin 12 caratteri, numeri, minuscole, maiuscole, simboli</string>
-    <string name="signin_error_alert_title">Errore di acesso</string>
+    <string name="signin_error_alert_title">Errore di accesso</string>
 
     <!-- FIRST STEP SIGN UP -->
     <string name="signup_title">Cominciamo!</string>

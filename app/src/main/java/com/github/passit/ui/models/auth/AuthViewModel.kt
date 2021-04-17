@@ -1,7 +1,5 @@
 package com.github.passit.ui.models.auth
 
-import android.app.Activity
-import android.content.Intent
 import androidx.annotation.NonNull
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
@@ -17,8 +15,6 @@ import java.io.File
 class AuthViewModel @ViewModelInject constructor(
     identityRepository: IdentityRepository,
     private val signIn: SignIn,
-    private val signInWithGoogle: SignInWithGoogle,
-    private val handleFederatedSignInResponse: HandleFederatedSignInResponse,
     private val signUp: SignUp,
     private val confirmSignUp: ConfirmSignUp,
     private val resendConfirmationCode: ResendConfirmationCode,
@@ -43,12 +39,6 @@ class AuthViewModel @ViewModelInject constructor(
 
     fun signIn(@NonNull email: String, @NonNull password: String): Flow<AuthSignIn> =
             signIn(SignIn.Params(email, password))
-
-    fun signInWithGoogle(@NonNull context: Activity): Flow<AuthSignIn> =
-            signInWithGoogle(SignInWithGoogle.Params(context))
-
-    fun handleFederatedSignInResponse(@NonNull data: Intent): Flow<Unit> =
-            handleFederatedSignInResponse(HandleFederatedSignInResponse.Params(data))
 
     fun signUp(@NonNull email: String,
                        @NonNull password: String,

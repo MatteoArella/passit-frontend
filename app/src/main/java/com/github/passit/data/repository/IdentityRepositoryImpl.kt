@@ -1,7 +1,5 @@
 package com.github.passit.data.repository
 
-import android.app.Activity
-import android.content.Intent
 import androidx.annotation.NonNull
 import com.github.passit.data.datasource.local.UserLocalDataSource
 import com.github.passit.data.datasource.remote.IdentityRemoteDataSource
@@ -27,6 +25,7 @@ class IdentityRepositoryImpl @Inject constructor(
             return@flow
         }
         val userRemoteData = identityRemoteDataSource.fetchUserAttributes()
+        userLocalDataSource.createUser(UserRemoteToLocalMapper.map(userRemoteData))
         val user = UserRemoteToEntityMapper.map(userRemoteData)
         _currentUser.value = user
         emit(user)
@@ -40,21 +39,7 @@ class IdentityRepositoryImpl @Inject constructor(
     @Throws(SignInError::class)
     override fun signIn(@NonNull email: String, @NonNull password: String): Flow<AuthSignIn> = flow {
         val authSignInRemoteData = identityRemoteDataSource.signIn(email, password)
-        val userRemoteData = identityRemoteDataSource.fetchUserAttributes()
-        userLocalDataSource.createUser(UserRemoteToLocalMapper.map(userRemoteData))
         emit(AuthSignInRemoteToEntityMapper.map(authSignInRemoteData))
-    }
-
-    override fun signInWithGoogle(@NonNull context: Activity): Flow<AuthSignIn> = flow {
-        val authSignInRemoteData = identityRemoteDataSource.signInWithGoogle(context)
-        val userRemoteData = identityRemoteDataSource.fetchUserAttributes()
-        userLocalDataSource.createUser(UserRemoteToLocalMapper.map(userRemoteData))
-        emit(AuthSignInRemoteToEntityMapper.map(authSignInRemoteData))
-    }
-
-    override fun handleFederatedSignInResponse(@NonNull data: Intent): Flow<Unit> = flow {
-        identityRemoteDataSource.handleFederatedSignInResponse(data)
-        emit(Unit)
     }
 
     override fun signUp(@NonNull email: String,

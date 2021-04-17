@@ -1,7 +1,5 @@
 package com.github.passit.domain.repository
 
-import android.app.Activity
-import android.content.Intent
 import androidx.annotation.NonNull
 import com.github.passit.domain.model.auth.*
 import com.github.passit.domain.usecase.exception.auth.SignInError
@@ -17,10 +15,6 @@ interface IdentityRepository {
 
     @Throws(SignInError::class)
     fun signIn(@NonNull email: String, @NonNull password: String): Flow<AuthSignIn>
-
-    fun signInWithGoogle(@NonNull context: Activity): Flow<AuthSignIn>
-
-    fun handleFederatedSignInResponse(@NonNull data: Intent): Flow<Unit>
 
     fun signUp(@NonNull email: String,
                        @NonNull password: String,

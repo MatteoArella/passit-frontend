@@ -77,21 +77,6 @@ class IdentityRemoteDataSource @Inject constructor() {
         }
     }
 
-    suspend fun signInWithGoogle(@NonNull context: Activity): AuthSignInRemoteData {
-        return suspendCancellableCoroutine { continuation ->
-            Amplify.Auth.signInWithSocialWebUI(
-                    AuthProvider.google(),
-                    context,
-                    { result -> continuation.resume(AuthSignInRemoteData(result.isSignInComplete)) },
-                    { error -> continuation.resumeWithException(error) }
-            )
-        }
-    }
-
-    suspend fun handleFederatedSignInResponse(@NonNull data: Intent) {
-        Amplify.Auth.handleWebUISignInResponse(data)
-    }
-
     suspend fun signUp(@NonNull email: String,
                                 @NonNull password: String,
                                 @NonNull attributes: SignUpUserAttributes): AuthSignUpRemoteData {

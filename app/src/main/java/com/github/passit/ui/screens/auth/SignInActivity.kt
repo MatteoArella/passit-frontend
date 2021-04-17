@@ -1,12 +1,15 @@
 package com.github.passit.ui.screens.auth
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.amplifyframework.auth.AuthProvider
 import com.amplifyframework.auth.cognito.AWSCognitoAuthPlugin.WEB_UI_SIGN_IN_ACTIVITY_CODE
+import com.amplifyframework.core.Amplify
 import com.github.passit.R
 import com.github.passit.databinding.ActivitySigninBinding
 import com.github.passit.domain.model.auth.AuthSignIn
@@ -20,6 +23,7 @@ import com.github.passit.ui.validators.setValidator
 import com.github.passit.ui.view.ErrorAlert
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
+import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.*
 
 @AndroidEntryPoint
@@ -60,7 +64,7 @@ class SignInActivity : AppCompatActivity(), CoroutineScope by MainScope() {
 
     private fun signInWithGoogle() {
         launch {
-            authModel.signInWithGoogle(this@SignInActivity).handleSignInFlow().collect { data ->
+            signInWithGoogle(this@SignInActivity).handleSignInFlow().collect { data ->
                 if (data.isSignedIn) {
                     startActivity(Intent(this@SignInActivity, MainActivity::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
                     this@SignInActivity.finish()
@@ -92,15 +96,21 @@ class SignInActivity : AppCompatActivity(), CoroutineScope by MainScope() {
         }
     }
 
+    private suspend fun signInWithGoogle(context: Activity): Flow<AuthSignIn> = callbackFlow {
+        Amplify.Auth.signInWithSocialWebUI(
+                    AuthProvider.google(),
+                    context,
+                    { result -> offer(AuthSignIn(result.isSignInComplete)); close() },
+                    { error -> close(error) }
+            )
+        awaitClose()
+    }
+
     @Suppress("deprecation")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
-            WEB_UI_SIGN_IN_ACTIVITY_CODE -> data?.let {
-                lifecycleScope.launchWhenResumed {
-                    authModel.handleFederatedSignInResponse(it).collect()
-                }
-            }
+            WEB_UI_SIGN_IN_ACTIVITY_CODE -> data?.let { Amplify.Auth.handleWebUISignInResponse(data) }
         }
     }
 }

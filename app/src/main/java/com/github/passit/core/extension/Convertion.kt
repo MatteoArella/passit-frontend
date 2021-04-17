@@ -40,11 +40,3 @@ fun Date?.isSameDay(date: Date?): Boolean {
             calendar1[Calendar.MONTH] == calendar2[Calendar.MONTH] &&
             calendar1[Calendar.DAY_OF_MONTH] == calendar2[Calendar.DAY_OF_MONTH]
 }
-
-suspend fun URL?.toBitmap(): Bitmap? {
-    return this?.let {
-        withContext(Dispatchers.IO) {
-            BitmapFactory.decodeStream(this@toBitmap.openConnection().getInputStream().buffered())
-        }
-    }
-}

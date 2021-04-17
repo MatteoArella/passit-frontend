@@ -59,10 +59,6 @@ class ProfileFragment : Fragment(), CoroutineScope by MainScope() {
 
     private val authModel: AuthViewModel by activityViewModels()
 
-    private var userInsertionsLoadJob: Job? = null
-    private var userInfoLoadJob: Job? = null
-
-
     private val getUserInsertionsModel: GetUserInsertionsViewModel by viewModels() // by activityViewModels()
     private lateinit var insertionsAdapter: InsertionsAdapter
 
@@ -138,7 +134,7 @@ class ProfileFragment : Fragment(), CoroutineScope by MainScope() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        userInfoLoadJob = lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             authModel.fetchUserAttributes().collect {
                 Log.i("User id", it.id)
                 getUserInsertionsModel.getUserInsertions(it.id).catch { error ->
@@ -146,7 +142,6 @@ class ProfileFragment : Fragment(), CoroutineScope by MainScope() {
                 }.collectLatest { pagingData ->
                     Log.i("Insertions", "actually showing insertions")
                     insertionsAdapter.submitData(pagingData)
-                    Log.i("Insertions", insertionsAdapter.snapshot().toString())
                 }
             }
         }

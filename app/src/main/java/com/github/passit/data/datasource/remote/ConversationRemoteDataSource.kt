@@ -21,60 +21,64 @@ import kotlin.coroutines.resumeWithException
 class ConversationRemoteDataSource @Inject constructor() {
     suspend fun createConversation(tutorId: String): ConvLinkRemoteData {
         return suspendCancellableCoroutine { continuation ->
-            Amplify.API.mutate(
+            val operation = Amplify.API.mutate(
                 createConversationRequest(tutorId),
                 { response -> continuation.resume(response.data) },
                 { error -> continuation.resumeWithException(error) }
             )
+            continuation.invokeOnCancellation { operation?.cancel() }
         }
     }
 
     suspend fun getConversations(first: Int?, nextToken: String?): ConvLinkPageRemoteData {
         return suspendCancellableCoroutine { continuation ->
-            Amplify.API.query(
+            val operation = Amplify.API.query(
                     getConversationsRequest(first, nextToken),
                     { response -> continuation.resume(response.data) },
                     { error -> continuation.resumeWithException(error) }
             )
+            continuation.invokeOnCancellation { operation?.cancel() }
         }
     }
 
     suspend fun createMessage(to: String, conversationId: String, content: String): MessageRemoteData {
         return suspendCancellableCoroutine { continuation ->
-            Amplify.API.mutate(
+            val operation = Amplify.API.mutate(
                     createMessageRequest(to, conversationId, content),
                     { response -> continuation.resume(response.data) },
                     { error -> continuation.resumeWithException(error) }
             )
+            continuation.invokeOnCancellation { operation?.cancel() }
         }
     }
 
     suspend fun getMessages(conversationId: String, first: Int?, nextToken: String?): MessagePageRemoteData {
         return suspendCancellableCoroutine { continuation ->
-            Amplify.API.query(
+            val operation = Amplify.API.query(
                     getMessagesRequest(conversationId, first, nextToken),
                     { response -> continuation.resume(response.data) },
                     { error -> continuation.resumeWithException(error) }
             )
+            continuation.invokeOnCancellation { operation?.cancel() }
         }
     }
 
     fun subscribeConversations(userId: String): Flow<ConvLinkRemoteData> = callbackFlow {
-        Amplify.API.subscribe(
+        val subscription = Amplify.API.subscribe(
                 subscribeConversationsRequest(userId),
                 {},
                 { data -> offer(data.data) },
                 { error -> close(error) },
                 { close() }
         )
-        awaitClose { cancel() }
+        awaitClose { subscription?.cancel() }
     }
 
     fun subscribeMessages(userId: String): Flow<MessageRemoteData> = callbackFlow {
         val subscription = Amplify.API.subscribe(
                 subscribeMessagesRequest(userId),
                 {},
-                { data -> sendBlocking(data.data) },
+                { data -> offer(data.data) },
                 { error -> close(error) },
                 { close() }
         )

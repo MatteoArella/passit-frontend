@@ -17,52 +17,57 @@ import kotlin.coroutines.resumeWithException
 class InsertionRemoteDataSource @Inject constructor() {
     suspend fun createInsertion(title: String, description: String, subject: String, city: String, state: String, country: String): InsertionRemoteData {
         return suspendCancellableCoroutine { continuation ->
-            Amplify.API.mutate(
+            val operation = Amplify.API.mutate(
                 createInsertionRequest(title, description, subject, city, state, country),
                 { response -> continuation.resume(response.data) },
                 { error -> continuation.resumeWithException(error) }
             )
+            continuation.invokeOnCancellation { operation?.cancel() }
         }
     }
 
     suspend fun getInsertions(subject: String, city: String, state: String, country: String, limit: Int?, pageNum: Int?): InsertionPageRemoteData {
         return suspendCancellableCoroutine { continuation ->
-            Amplify.API.query(
+            val operation = Amplify.API.query(
                 getInsertionsRequest(subject, city, state, country, limit, pageNum),
                 { response -> continuation.resume(response.data) },
                 { error -> continuation.resumeWithException(error) }
             )
+            continuation.invokeOnCancellation { operation?.cancel() }
         }
     }
 
     suspend fun getUserInsertions(userID: String): InsertionPageRemoteData {
         return suspendCancellableCoroutine { continuation ->
-            Amplify.API.query(
+            val operation = Amplify.API.query(
                     getUserInsertionsRequest(userID),
                     { response -> continuation.resume(response.data) },
                     { error -> continuation.resumeWithException(error) }
             )
+            continuation.invokeOnCancellation { operation?.cancel() }
         }
     }
 
     suspend fun getInsertion(insertionId: String): InsertionRemoteData {
         return suspendCancellableCoroutine { continuation ->
-            Amplify.API.query(
+            val operation = Amplify.API.query(
                 getInsertionRequest(insertionId),
-                { response -> Log.i("insertions", "$response"); continuation.resume(response.data) },
+                { response -> continuation.resume(response.data) },
                 { error -> continuation.resumeWithException(error) }
             )
+            continuation.invokeOnCancellation { operation?.cancel() }
         }
     }
 
     suspend fun updateInsertion(insertionId: String, status: InsertionStatus?, title: String?, description: String?, subject: String?,
                                location: LocationRemoteData?): InsertionRemoteData {
         return suspendCancellableCoroutine { continuation ->
-            Amplify.API.mutate(
+            val operation = Amplify.API.mutate(
                     updateInsertionRequest(insertionId, status, title, description, subject, location),
                     { response -> continuation.resume(response.data) },
                     { error -> continuation.resumeWithException(error) }
             )
+            continuation.invokeOnCancellation { operation?.cancel() }
         }
     }
 

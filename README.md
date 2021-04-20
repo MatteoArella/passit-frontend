@@ -18,3 +18,8 @@ Build the app with:
 ```bash
 ./gradlew build
 ```
+
+## App
+![SignIn](./pictures/sign_in.png) | ![Create](./pictures/create.png) | ![Search](./pictures/search.png) | ![Profile](./pictures/profile.png)
+--------------------------------- | --------------------------------- | --------------------------------- | ---------------------------------
+![Show](./pictures/show_student.png) | ![Conversations](./pictures/conversations.png) | ![Chat](./pictures/chat.png)
